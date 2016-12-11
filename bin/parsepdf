@@ -1,0 +1,45 @@
+//Convert PDF to JSON
+
+// fs = require('fs');
+// PDFParser = require("pdf2json");
+//
+// pdfParser = new PDFParser();
+// pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError) );
+// pdfParser.on("pdfParser_dataReady", pdfData => {
+//     fs.writeFile(__dirname + "/result.json", JSON.stringify(pdfData));
+// });
+//
+// pdfParser.loadPDF(__dirname  + "/mypdf.pdf");
+
+
+//Parsing JSON - PDF
+var fs = require('fs');
+var pdf;
+fs.readFile(__dirname + "/result.json", 'utf8', function (err, data) {
+  if (err)
+    throw err;
+  pdf = JSON.parse(data);
+
+  for(i in pdf.formImage.Pages) {
+    page = pdf.formImage.Pages[i];
+    row = []; rowY = 0;
+    for(j in page.Texts) {
+      text = page.Texts[j];
+      if(Math.abs(text.y - rowY) < 0.1){
+        row.push(decodeURI(text.R[0].T));
+      } else {
+          if(row.length == 3) {
+            last = row[row.length-1];
+            if(last === 'ASISTENCIA'  || last === 'JUSTIFICADA' || last === 'JUSTIFICADA' || last === 'INASISTENCIA' || last === 'CÉDULA')
+              console.log(row);
+          }
+
+          row = [];
+          row.push(decodeURI(text.R[0].T));
+      }
+
+      rowY = text.y;
+    }
+  }
+
+});
