@@ -10,7 +10,8 @@ module.exports = function(sequelize, DataTypes) {
     email: { type: DataTypes.STRING, name: 'email' },
     birthdate: { type: DataTypes.STRING, name: 'birthdate' },
     email: { type: DataTypes.STRING, name: 'email' },
-    picture: { type: DataTypes.STRING, name: 'picture' }
+    picture: { type: DataTypes.STRING, name: 'picture' },
+    sup: { type: DataTypes.STRING, name: 'sup' }
   }, {
     classMethods: {
       associate: function(models) {

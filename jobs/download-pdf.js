@@ -15,7 +15,7 @@ models.sequelize.sync().then(function () {
             .pipe(fs.createWriteStream("./downloads/pdf/" + file.name + ".pdf"))
             .on('finish', function () {
               console.log('File downloaded: ' + file.name);
-              file.update({ step: 1 });
+              file.updateAttributes({ step: 1 });
               callback(null, file.name);
             })
             .on('error', function(error) {

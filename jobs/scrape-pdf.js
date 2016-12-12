@@ -19,6 +19,7 @@ models.sequelize.sync().then(function () {
                 files.push({
                   name: $(this).text().trim(),
                   path: $(this).attr('href'),
+                  step: 0,
                   type: 'ATTENDANCE'
                 });
             });
@@ -29,7 +30,7 @@ models.sequelize.sync().then(function () {
   }
 
   //Execute elevent times (we validate that pages exist)
-  async.times(2, readAttendance , function(err, result) {
+  async.times(1, readAttendance , function(err, result) {
       console.log('Times completed!');
       var bulkFiles = [];
       for(i in result) {
