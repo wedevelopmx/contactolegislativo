@@ -11,11 +11,12 @@ module.exports = function(sequelize, DataTypes) {
     birthdate: { type: DataTypes.STRING, name: 'birthdate' },
     email: { type: DataTypes.STRING, name: 'email' },
     picture: { type: DataTypes.STRING, name: 'picture' },
-    sup: { type: DataTypes.STRING, name: 'sup' }
+    sup: { type: DataTypes.STRING, name: 'sup' },
+    hash: { type: DataTypes.INTEGER, name: 'hash', defaultValue: 0 }
   }, {
     classMethods: {
       associate: function(models) {
-
+        models.Diputado.hasMany(models.Attendance, { as: 'attendance'});
       }
     }
   });

@@ -7,6 +7,27 @@ var models = require("../app/models");
 
 models.sequelize.sync().then(function () {
 
+  var nameHash = {};
+  var namesRecords = [];
+
+  var hashName = function(name) {
+    if(!nameHash.hasOwnProperty(name)) {
+      nameHash[name] = Object.keys(nameHash).length + 1;
+      namesRecords.push({ name: name, hash: nameHash[name]});
+    }
+
+    return nameHash[name];
+  }
+
+  var hashFullName = function(fullName) {
+    key = 1;
+    names = fullName.split(' ');
+    for(i in names) {
+      key *= hashName(names[i]);
+    }
+    return key;
+  }
+
   var readDiputado = function(index, next) {
     var d = {};
     var options =  {
@@ -40,6 +61,11 @@ models.sequelize.sync().then(function () {
                   name = name.substr(name.indexOf('.') + 1, name.lenght).trim();
 
                   d[param] = name;
+
+                  if(index == 0) {
+                    d['hash'] = hashFullName(d[param]);
+                  }
+
                 } else {
                   d[param] = decodeURIComponent($(this).text());
                 }
@@ -60,14 +86,18 @@ models.sequelize.sync().then(function () {
   }
 
   // generate 5 users
-  async.times(500, readDiputado , function(err, bulkDiputados) {
+  async.times(999, readDiputado , function(err, bulkDiputados) {
       console.log('Times completed!');
 
       models.Diputado
-        .bulkCreate(bulkDiputados)
+        .bulkCreate(bulkDiputados, { ignoreDuplicates: true })
         .then(function(diputados) {
-          diputados = diputados.map(function(d) { return d.get({plain:true})});
-          console.log(diputados);
+          models.Name
+            .bulkCreate(namesRecords, { ignoreDuplicates: true })
+            .then(function(names) {
+              console.log(diputados.length + ' diputados have been saved');
+              console.log(names.length + ' names have been saved');
+            });
         });
   });
 
