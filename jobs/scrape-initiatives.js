@@ -8,6 +8,10 @@ var models = require("../app/models");
 models.sequelize.sync().then(function () {
 
   var parseDate = function(stringDate) {
+    //We do not make anything for undefined
+    if(stringDate != undefined)
+      return '';
+    //Parsing
     var date = /(\d+)-(\w+)-(\d+)/.exec(stringDate);
     if(date != null) {
       year = date[3];
@@ -129,7 +133,7 @@ models.sequelize.sync().then(function () {
         //Inserting in database
         //TODO: Insering!
         //Storing in file for inspection
-        fs.writeFile('./data.json', JSON.stringify(result) , 'utf-8');
+        fs.writeFile('./initiatives.json', JSON.stringify(result) , 'utf-8');
       });
   });
 

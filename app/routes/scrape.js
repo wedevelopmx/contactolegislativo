@@ -49,7 +49,7 @@ router.get('/', function(req, res, next) {
   // generate 5 users
   async.times(500, readDiputado , function(err, bulkDiputados) {
       console.log('Times completed!');
-      models.Diputado
+      models.Deputy
         .bulkCreate(bulkDiputados)
         .then(function(diputados) {
           res.json(diputados);

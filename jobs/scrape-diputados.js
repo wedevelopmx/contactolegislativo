@@ -29,11 +29,13 @@ models.sequelize.sync().then(function () {
   }
 
   var readDiputado = function(index, next) {
-    var d = {};
+    var d = {
+      id: index + 1
+    };
     var options =  {
         encoding: null,
         method: 'GET',
-        url: 'http://sitl.diputados.gob.mx/LXIII_leg/curricula.php?dipt=' + (index + 1)
+        url: 'http://sitl.diputados.gob.mx/LXIII_leg/curricula.php?dipt=' + d.id
     }
     request(options, function(error, response, html) {
         if(!error){
@@ -89,7 +91,7 @@ models.sequelize.sync().then(function () {
   async.times(999, readDiputado , function(err, bulkDiputados) {
       console.log('Times completed!');
 
-      models.Diputado
+      models.Deputy
         .bulkCreate(bulkDiputados, { ignoreDuplicates: true })
         .then(function(diputados) {
           models.Name
