@@ -6,6 +6,21 @@ var iconv  = require('iconv-lite');
 var models = require("../app/models");
 
 models.sequelize.sync().then(function () {
+
+  var parseDate = function(stringDate) {
+    var date = /(\d+)-(\w+)-(\d+)/.exec(stringDate);
+    if(date != null) {
+      year = date[3];
+      month = "enefebmarabrmayjunjulagosepoctnovdic".indexOf(date[2].substr(0,3).toLocaleLowerCase()) / 3 ;
+      day = date[1];
+
+      return new Date(year, month, day, 0, 0, 0, 0);
+    } else {
+      console.log(' !Unable to parse date: ' + stringDate);
+      return '';
+    }
+  }
+
   var readDeputy = function(index, next) {
     var initiatives = { id: index + 1, sessions: [] };
     var options =  {
@@ -69,7 +84,7 @@ models.sequelize.sync().then(function () {
                 case 1:
                   comision = /.*?(\d+-\w+-\d+)(.*)/g.exec(text);
                   if(comision != null) {
-                    initiatives[initiatives.length - 1].comisionDate = comision[1];
+                    initiatives[initiatives.length - 1].comisionDate = parseDate(comision[1]);
                     initiatives[initiatives.length - 1].comision = comision[2];
                   } else {
                     console.log(" !Could not parse: <" + text + ">");
@@ -82,8 +97,8 @@ models.sequelize.sync().then(function () {
                   tra = /^(\w+)[^-\d]*(\d+-\w+-\d+)?.*?\:?.*?(\d+-\w+-\d+)$/g.exec(text);
                   if(tra != null) {
                       initiatives[initiatives.length - 1].status = tra[1];
-                      initiatives[initiatives.length - 1].statusDate = tra[2];
-                      initiatives[initiatives.length - 1].publishedDate = tra[3];
+                      initiatives[initiatives.length - 1].statusDate = parseDate(tra[2]);
+                      initiatives[initiatives.length - 1].publishedDate = parseDate(tra[3]);
                   } else {
                     console.log(" !Could not parse: <" + text + ">");
                   }
@@ -117,5 +132,5 @@ models.sequelize.sync().then(function () {
         fs.writeFile('./data.json', JSON.stringify(result) , 'utf-8');
       });
   });
-  
+
 });
