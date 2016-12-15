@@ -71,6 +71,7 @@ models.sequelize.sync().then(function () {
                   initiatives.push({});
                   //Intitiative
                   init = /(\d*)(.*)\./.exec(text);
+                  //init = /(\d*)(.*)\.?/.exec(text);
                   if(init != null) {
                       initiatives[initiatives.length - 1].order = init[1].trim();
                       initiatives[initiatives.length - 1].name = init[2].trim();
@@ -125,16 +126,38 @@ models.sequelize.sync().then(function () {
     });
   }
 
-  //Reading initiatives from 3 deputy
-  async.times(3, readDeputy , function(err, deputies) {
-      //Reading initiative details
-      async.map(deputies, readDeputiesSessions, function(error, result) {
-        console.log('Finish processing diputados');
-        //Inserting in database
-        //TODO: Insering!
-        //Storing in file for inspection
-        fs.writeFile('./initiatives.json', JSON.stringify(result) , 'utf-8');
-      });
+  // //Reading initiatives from 3 deputy
+  // async.times(3, readDeputy , function(err, deputies) {
+  //     //Reading initiative details
+  //     async.map(deputies, readDeputiesSessions, function(error, result) {
+  //       console.log('Finish processing diputados');
+  //       //Inserting in database
+  //       //TODO: Insering!
+  //       //Storing in file for inspection
+  //       fs.writeFile('./initiatives.json', JSON.stringify(result) , 'utf-8');
+  //     });
+  // });
+
+  var sessionsHash = {};
+
+  var save = function(deputies) {
+    deputies.forEach(function(deputy) {
+      models.Session
+        .bulkCreate(deputy.sessions, { ignoreDuplicates: true })
+        .then(function(sessions) {
+          sessions.forEach(function(session) {
+            sessionsHash[sessions.name] = session.get({ plain: true });
+          });
+          console.log(sessionsHash);
+        });
+    });
+  }
+
+  fs.readFile('./initiatives.json', 'utf8', function (err,data) {
+    if (err)
+      return console.log(err);
+    data = JSON.parse(data);
+    save(data);
   });
 
 });
