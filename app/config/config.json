@@ -4,7 +4,8 @@
     "password": null,
     "database": "database_development",
     "dialect": "sqlite",
-    "storage": "dev.sqlite"
+    "storage": "dev.sqlite",
+    "logging": false
   },
   "test": {
     "username": "root",

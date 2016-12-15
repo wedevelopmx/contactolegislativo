@@ -15,7 +15,11 @@ module.exports = function(sequelize, DataTypes) {
         Initiative.belongsTo(models.Session);
         Initiative.belongsToMany(models.Deputy, { through: models.DeputyInitiative });
       }
-    }
+    },
+    indexes: [{
+      unique: true,
+      fields: ['name', 'SessionId']
+    }]
   });
 
   return Initiative;

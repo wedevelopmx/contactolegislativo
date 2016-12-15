@@ -88,7 +88,7 @@ models.sequelize.sync().then(function () {
   }
 
   // generate 5 users
-  async.times(999, readDiputado , function(err, bulkDiputados) {
+  async.times(10, readDiputado , function(err, bulkDiputados) {
       console.log('Times completed!');
 
       models.Deputy

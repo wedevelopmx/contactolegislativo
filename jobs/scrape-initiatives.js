@@ -3,13 +3,14 @@ var cheerio = require('cheerio');
 var async = require('async');
 var fs = require('fs');
 var iconv  = require('iconv-lite');
+var _  = require('underscore');
 var models = require("../app/models");
 
 models.sequelize.sync().then(function () {
 
   var parseDate = function(stringDate) {
     //We do not make anything for undefined
-    if(stringDate != undefined)
+    if(stringDate == undefined)
       return '';
     //Parsing
     var date = /(\d+)-(\w+)-(\d+)/.exec(stringDate);
@@ -70,11 +71,13 @@ models.sequelize.sync().then(function () {
                 case 0:
                   initiatives.push({});
                   //Intitiative
-                  init = /(\d*)(.*)\./.exec(text);
+                  init = /(\d*)(.*)[\.|\,]/.exec(text);
                   //init = /(\d*)(.*)\.?/.exec(text);
                   if(init != null) {
                       initiatives[initiatives.length - 1].order = init[1].trim();
                       initiatives[initiatives.length - 1].name = init[2].trim();
+                  } else {
+                    console.log(" !!Could not parse: <" + text + ">");
                   }
 
                   //Relation
@@ -126,6 +129,111 @@ models.sequelize.sync().then(function () {
     });
   }
 
+  // ---------------------------------------------------------------------------------------
+  // -------------------------  SAVING DATA REQUESTED --------------------------------------
+  // ---------------------------------------------------------------------------------------
+
+
+  var hashSessions = {};
+
+  var saveSessions = function(deputies, callback) {
+    async.map(deputies, function(deputy, callback) {
+      callback(null, deputy.sessions);
+    }, function(err, sessions) {
+      var bulkSessions = [];
+      sessions.forEach(function(session) { bulkSessions = bulkSessions.concat(session); })
+
+      models.Session
+        .bulkCreate(bulkSessions, { ignoreDuplicates: true })
+        .then(function(sessions) {
+          callback(null, sessions.length);
+        });
+    });
+  }
+
+  var hashSessions = function(callback) {
+    models.Session
+      .findAll()
+      .then(function(sessions) {
+        sessions.forEach(function(session) {
+          hashSessions[session.name] = session.get({plain: true});
+        });
+        callback(null, Object.keys(hashSessions).length);
+      });
+  }
+
+  var importSessionInitiatives = function(deputyId, session, callback) {
+    sessionId = hashSessions[session.name].id;
+    initiatives = [];
+    rawInitiativesHash = {};
+
+    //Gather all initiatives
+    session.initiatives.forEach(function(initiative) {
+      //Adding SessionId
+      initiative.SessionId = sessionId;
+      initiatives.push(initiative);
+      //Storing name for DeputyInitiative record
+      if(rawInitiativesHash.hasOwnProperty(initiative.name))
+        console.log(' !Deputy ' + deputyId + ' already have ' + initiative.name.substr(0, 40) );
+
+      rawInitiativesHash[initiative.name] = initiative;
+    });
+
+    console.log('Pair: ' + deputyId + "/" + sessionId +  " with " + initiatives.length + " initiatives ");
+
+    //Bulk insert initiatives
+    models.Initiative
+      .bulkCreate(initiatives, { ignoreDuplicates: true })
+      .then(function(initiatives) {
+        console.log(' Searching ' + Object.keys(rawInitiativesHash).length + ' initiatives');
+        //console.log(Object.keys(rawInitiativesHash));
+        //Reading initiatives to load ID
+        models.Initiative
+          .findAll({ where: { name: { $in: Object.keys(rawInitiativesHash) }, SessionId: sessionId  }})
+          .then(function(initiatives) {
+            console.log(' Read ' + initiatives.length + ' initiatives' )
+
+            var deputyInitiatives = [];
+            //Generating object deputy initiative
+            initiatives.forEach(function(initiative) {
+              deputyInitiatives.push({
+                DeputyId: deputyId,
+                InitiativeId: initiative.id,
+                type: rawInitiativesHash[initiative.name].type
+              });
+            });
+            //Inserting deputy initiatives
+            models.DeputyInitiative
+              .bulkCreate(deputyInitiatives, { ignoreDuplicates: true })
+              .then(function(deputyInitiatives) {
+                callback(null, deputyInitiatives.length);
+              });
+          });
+      });
+  }
+
+  var importDeputyInitiatives = function(deputy, callback) {
+    var tasks = [];
+    deputy.sessions.forEach(function(session) {
+      tasks.push(importSessionInitiatives.bind(null, deputy.id, session));
+    });
+
+    async.series(tasks, function(err, result) {
+      callback(null, result);
+    });
+  }
+
+  var importInitiatives = function(deputies, callback) {
+    tasks = [];
+    deputies.map(function(deputy) {
+      tasks.push(importDeputyInitiatives.bind(null, deputy));
+    });
+    async.series(tasks, function(err, initiatives) {
+      callback(err, initiatives);
+      console.log('Finished all deputies initiatives');
+    });
+  }
+
   // //Reading initiatives from 3 deputy
   // async.times(3, readDeputy , function(err, deputies) {
   //     //Reading initiative details
@@ -138,26 +246,19 @@ models.sequelize.sync().then(function () {
   //     });
   // });
 
-  var sessionsHash = {};
-
-  var save = function(deputies) {
-    deputies.forEach(function(deputy) {
-      models.Session
-        .bulkCreate(deputy.sessions, { ignoreDuplicates: true })
-        .then(function(sessions) {
-          sessions.forEach(function(session) {
-            sessionsHash[sessions.name] = session.get({ plain: true });
-          });
-          console.log(sessionsHash);
-        });
-    });
-  }
-
   fs.readFile('./initiatives.json', 'utf8', function (err,data) {
     if (err)
       return console.log(err);
-    data = JSON.parse(data);
-    save(data);
+
+    deputies = JSON.parse(data);
+
+    async.series({
+      savedSessions: saveSessions.bind(null, deputies),
+      sessionsHash: hashSessions,
+      initiatives: importInitiatives.bind(null, deputies)
+    }, function(err, results) {
+      console.log(results);
+    });
   });
 
 });

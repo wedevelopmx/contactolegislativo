@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Session = sequelize.define("Session", {
-    name: { type: DataTypes.STRING, name: 'name' }
+    name: { type: DataTypes.STRING, name: 'name', unique: true }
   }, {
     classMethods: {
       associate: function(models) {
