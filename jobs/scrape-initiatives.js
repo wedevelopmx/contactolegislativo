@@ -3,7 +3,6 @@ var cheerio = require('cheerio');
 var async = require('async');
 var fs = require('fs');
 var iconv  = require('iconv-lite');
-var _  = require('underscore');
 var models = require("../app/models");
 
 models.sequelize.sync().then(function () {
