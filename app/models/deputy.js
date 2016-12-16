@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes) {
     picture: { type: DataTypes.STRING, name: 'picture' },
     party: { type: DataTypes.STRING, name: 'party', defaultValue: 'Uknown' },
     sup: { type: DataTypes.STRING, name: 'sup' },
+    twitter: { type: DataTypes.STRING, name: 'twitter' },
     hash: { type: DataTypes.INTEGER, name: 'hash', defaultValue: 0 }
   }, {
     classMethods: {

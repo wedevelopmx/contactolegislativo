@@ -79,10 +79,14 @@ models.sequelize.sync().then(function () {
                 //console.log(index + ' - ' + $(this).attr('src'));
                 if(index == 1)
                   d['picture'] = $(this).attr('src');
+                if(index == 2) { //images/pan.png
+                  regex = /.*\/(\w+)\..*/.exec($(this).attr('src'));
+                  d['party'] = regex != null? regex[1]:'Uknown';
+                }
 
             });
 
-            console.log('push: ' + d.displayName);
+            console.log('Store: ' + d.displayName);
             next(null, d);
         }
     });
@@ -105,5 +109,7 @@ models.sequelize.sync().then(function () {
             });
         });
   });
+
+  //console.log(/.*\/(\w+)\..*/.exec('images/pan.png'));
 
 });
