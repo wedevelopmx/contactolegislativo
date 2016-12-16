@@ -71,8 +71,8 @@ models.sequelize.sync().then(function () {
                 case 0:
                   initiatives.push({});
                   //Intitiative
-                  init = /(\d*)(.*)[\.|\,]/.exec(text);
-                  //init = /(\d*)(.*)\.?/.exec(text);
+                  //init = /(\d*)(.*)[\.|\,]/.exec(text);
+                  init = /(\d*)(.*)[\.|\,|\:]/.exec(text);
                   if(init != null) {
                       initiatives[initiatives.length - 1].order = init[1].trim();
                       initiatives[initiatives.length - 1].name = init[2].trim();
@@ -81,7 +81,7 @@ models.sequelize.sync().then(function () {
                   }
 
                   //Relation
-                  name = /\.\W?(.*)\:(.*?)\((.*?)\)/.exec(text);
+                  name = /(\w+)\:(.*?)\((.*?)\)/.exec(text);
                   if(name != null) {
                       initiatives[initiatives.length - 1].type = name[1].trim();
                       initiatives[initiatives.length - 1].person = name[2].trim();
@@ -174,7 +174,7 @@ models.sequelize.sync().then(function () {
       initiatives.push(initiative);
       //Storing name for DeputyInitiative record
       if(rawInitiativesHash.hasOwnProperty(initiative.name))
-        console.log(' !Deputy ' + deputyId + ' already have ' + initiative.name.substr(0, 40) );
+        console.log(' !Deputy ' + deputyId + ' already have ' + initiative.name !== undefined? initiative.name.substr(0, 40) : 'uknown name!' );
 
       rawInitiativesHash[initiative.name] = initiative;
     });
@@ -269,5 +269,9 @@ models.sequelize.sync().then(function () {
   //     console.log(results);
   //   });
   // });
-
+  //
+  // text = '28 Proyecto de decreto que reforma y y 5o. de la Ley de Caminos, Puentes y Autotransporte Federal.Adherente: Álvarez López Jorge (PVEM) Suscrita por diputados integrantes del Grupo Parlamentario del PVEM';
+  // // init = /(\d*)(.*)[\.|\,|\:]/.exec(text);
+  // init = /(\w+)\:(.*?)\((.*?)\)/.exec(text);
+  // console.log(init);
 });
