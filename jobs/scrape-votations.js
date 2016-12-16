@@ -4,6 +4,7 @@ var async = require('async');
 var fs = require('fs');
 var iconv  = require('iconv-lite');
 var models = require("../app/models");
+var argv = require("../jobs/helper/arguments");
 
 models.sequelize.sync().then(function () {
 
@@ -26,11 +27,11 @@ models.sequelize.sync().then(function () {
   }
 
   var readDeputy = function(index, next) {
-    var votations = { id: index + 1, sessions: [] };
+    var votations = { id: index, sessions: [] };
     var options =  {
         encoding: null,
         method: 'GET',
-        url: 'http://sitl.diputados.gob.mx/LXIII_leg/votaciones_diputados_xperiodonplxiii.php?dipt=' + (index + 1)
+        url: 'http://sitl.diputados.gob.mx/LXIII_leg/votaciones_diputados_xperiodonplxiii.php?dipt=' + votations.id
     }
     request(options, function(error, response, html) {
         if(!error){
@@ -206,33 +207,42 @@ models.sequelize.sync().then(function () {
     });
   }
 
+  var sequence = argv();
+  async.map(sequence.ids, readDeputy, function(err, deputies) {
   // //Reading votations from 3 deputy
   // async.times(3, readDeputy , function(err, deputies) {
-  //     //Reading session details
-  //     async.map(deputies, readDeputiesSessions, function(error, result) {
-  //       console.log('Finish processing diputados');
-  //       console.log(result);
-  //       //Inserting in database
-  //       //TODO: Insering!
-  //       //Storing in file for inspection
-  //       fs.writeFile('./downloads/json/votations.json', JSON.stringify(result) , 'utf-8');
-  //     });
-  // });
+      //Reading session details
+      async.map(deputies, readDeputiesSessions, function(error, deputies) {
+        console.log('Finish processing diputados');
 
+        //Inserting in database
+        async.series({
+          savedSessions: saveSessions.bind(null, deputies),
+          sessionsHash: hashSessions,
+          votations: importVotations.bind(null, deputies)
+        }, function(err, results) {
+          console.log(results);
+        });
 
-  fs.readFile('./downloads/json/votations.json', 'utf8', function (err,data) {
-    if (err)
-      return console.log(err);
-
-    deputies = JSON.parse(data);
-
-    async.series({
-      savedSessions: saveSessions.bind(null, deputies),
-      sessionsHash: hashSessions,
-      votations: importVotations.bind(null, deputies)
-    }, function(err, results) {
-      console.log(results);
-    });
+        //Storing in file for inspection
+        fs.writeFile('./downloads/json/votations_' + sequence.from + '_' + sequence.to + '.json', JSON.stringify(deputies) , 'utf-8');
+      });
   });
+
+
+  // fs.readFile('./downloads/json/votations.json', 'utf8', function (err,data) {
+  //   if (err)
+  //     return console.log(err);
+  //
+  //   deputies = JSON.parse(data);
+  //
+  //   async.series({
+  //     savedSessions: saveSessions.bind(null, deputies),
+  //     sessionsHash: hashSessions,
+  //     votations: importVotations.bind(null, deputies)
+  //   }, function(err, results) {
+  //     console.log(results);
+  //   });
+  // });
 
 });

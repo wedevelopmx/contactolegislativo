@@ -4,6 +4,7 @@ var async = require('async');
 var fs = require('fs');
 var iconv  = require('iconv-lite');
 var models = require("../app/models");
+var argv = require("../jobs/helper/arguments");
 
 models.sequelize.sync().then(function () {
 
@@ -30,7 +31,7 @@ models.sequelize.sync().then(function () {
 
   var readDiputado = function(index, next) {
     var d = {
-      id: index + 1
+      id: index
     };
     var options =  {
         encoding: null,
@@ -87,10 +88,12 @@ models.sequelize.sync().then(function () {
     });
   }
 
-  // generate 5 users
-  async.times(10, readDiputado , function(err, bulkDiputados) {
+  //Reading arguments from=X to=Y
+  var sequence = argv();
+  async.map(sequence.ids, readDiputado, function(err, bulkDiputados) {
+  // // generate 5 users
+  // async.times(10, readDiputado , function(err, bulkDiputados) {
       console.log('Times completed!');
-
       models.Deputy
         .bulkCreate(bulkDiputados, { ignoreDuplicates: true })
         .then(function(diputados) {
@@ -102,6 +105,5 @@ models.sequelize.sync().then(function () {
             });
         });
   });
-
 
 });
