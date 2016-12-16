@@ -241,11 +241,11 @@ models.sequelize.sync().then(function () {
   //       //Inserting in database
   //       //TODO: Insering!
   //       //Storing in file for inspection
-  //       fs.writeFile('./initiatives.json', JSON.stringify(result) , 'utf-8');
+  //       fs.writeFile('./downloads/json/initiatives.json', JSON.stringify(result) , 'utf-8');
   //     });
   // });
 
-  fs.readFile('./initiatives.json', 'utf8', function (err,data) {
+  fs.readFile('./downloads/json/initiatives.json', 'utf8', function (err,data) {
     if (err)
       return console.log(err);
 
