@@ -4,6 +4,9 @@ var readline = require('readline');
 var stream = require('stream');
 var models = require("../app/models");
 
+// Current job process files provided by Diego Valle in his blog
+// We use them in order to pull out states, municipalities and districts
+// We use this info in order to identify which district user belongs to and which deputy represent him
 // Source: https://blog.diegovalle.net/2013/02/download-shapefiles-of-mexico.html
 
 models.sequelize.sync().then(function () {
