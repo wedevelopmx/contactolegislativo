@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var session      = require('express-session');
 
 var routes = require('./routes/index');
-var scrape = require('./routes/scrape');
+var deputy = require('./routes/deputy');
 
 var app = express();
 
@@ -38,7 +38,7 @@ function isLoggedIn(req, res, next) {
 }
 
 app.use('/', routes);
-app.use('/scrape', scrape);
+app.use('/deputy', deputy);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

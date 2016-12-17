@@ -1,0 +1,45 @@
+body {
+  background-color: #f50057;
+  color:#FFFFFF;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-light {
+  color: #f8bbd0;
+}
+
+.section {
+  position: relative;
+  height: 100vh;
+}
+
+.section div {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6rem;
+}
+
+.section h1, .section h2 {
+  margin-top: 3rem;
+  line-height: 2.5rem;
+}
+
+.next {
+    background-color: #f8bbd0;
+    margin-top: 4rem;
+    width: 4rem;
+    height: 4rem;
+    display: inline-block;
+    border-radius: 2rem;
+    cursor: pointer;
+}
+
+.next i {
+  color: #f50057;
+  padding-top: .5rem;
+  cursor: pointer;
+}
