@@ -24,6 +24,7 @@
     "angular-route": "1.4.8",
     "angular-resource": "1.4.8",
     "bootstrap": "^3.3.7",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "Scrollify": "https://github.com/lukehaas/Scrollify.git#^1.0.9"
   }
 }

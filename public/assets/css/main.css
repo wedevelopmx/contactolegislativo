@@ -19,8 +19,9 @@ body {
 .section div {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  padding: 6rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
 }
 
 .section h1, .section h2 {
