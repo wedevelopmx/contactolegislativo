@@ -1,14 +1,52 @@
-body {
-  background-color: #f50057;
-  color:#FFFFFF;
+.pink {
+  background-color: #f50057!important;
+  color:#FFFFFF!important;
 }
+
+.pink .text-secondary {
+  color: #F8BBD0;
+}
+
+.pink .next {
+    background-color: #f8bbd0;
+    margin-top: 4rem;
+    width: 5rem;
+    height: 5rem;
+    display: inline-block;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.pink .next i {
+  color: #f50057;
+  padding-top: .5rem;
+  cursor: pointer;
+}
+
+
+.text-secondary {
+  color: #757575;
+}
+
+.next {
+    background-color: #f50057;
+    margin-top: 4rem;
+    width: 5rem;
+    height: 5rem;
+    display: inline-block;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.next i {
+  color: #ffffff;
+  padding-top: .5rem;
+  cursor: pointer;
+}
+
 
 .text-center {
   text-align: center;
-}
-
-.text-light {
-  color: #f8bbd0;
 }
 
 .section {
@@ -26,21 +64,37 @@ body {
 
 .section h1, .section h2 {
   margin-top: 3rem;
-  line-height: 2.5rem;
+  line-height: 3.5rem!important;
 }
 
-.next {
-    background-color: #f8bbd0;
-    margin-top: 4rem;
-    width: 4rem;
-    height: 4rem;
-    display: inline-block;
-    border-radius: 2rem;
-    cursor: pointer;
+.picture {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  overflow: hidden
 }
 
-.next i {
+@media (max-width: 768px) {
+  .xs-tx-center {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px ) {
+  .sm-p-t {
+      margin-top: 2rem;
+  }
+}
+
+.btn-group {
+  padding: 0;
+}
+
+.circle-btn {
+  padding: 1.3rem;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 1rem;
+  background-color: #F8BBD0;
   color: #f50057;
-  padding-top: .5rem;
-  cursor: pointer;
 }

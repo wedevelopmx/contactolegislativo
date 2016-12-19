@@ -1,1 +1,15 @@
-<h1>Deputy {{deputyId}}</h1>
+<div class="row">
+  <div class="col-xs-12 col-sm-4">
+    <div class="picture img-circle">
+      <img ng-src="http://sitl.diputados.gob.mx/LXIII_leg/{{deputy.picture}}"/>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-8 xs-tx-center sm-p-t">
+    <h1>{{deputy.displayName}}</h1>
+    <h3 class="text-secondary">{{deputy.state}} - Distrito: {{deputy.district}}</h3>
+    <ul class="btn-group">
+      <li class="circle-btn"><i class="fa fa-2x fa-twitter"></i></li>
+      <li class="circle-btn"><i class="fa fa-2x fa-envelope"></i></li>
+    </ul>
+  </div>
+</div>
