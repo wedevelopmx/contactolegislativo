@@ -6,6 +6,7 @@ angular.module('app')
           console.log(attrs.scrollify);
           $.scrollify({
             section : attrs.scrollify,
+            updateHash: false
           });
         }
     }
