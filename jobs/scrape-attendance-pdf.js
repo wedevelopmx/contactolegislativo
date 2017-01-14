@@ -30,7 +30,7 @@ models.sequelize.sync().then(function () {
   }
 
   //Execute elevent times (we validate that pages exist)
-  async.times(1, readAttendance , function(err, result) {
+  async.times(11, readAttendance , function(err, result) {
       console.log('Times completed!');
       var bulkFiles = [];
       for(i in result) {

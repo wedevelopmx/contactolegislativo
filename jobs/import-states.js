@@ -12,7 +12,7 @@ var models = require("../app/models");
 models.sequelize.sync().then(function () {
 
   var importCountry = function(callback) {
-    var instream = fs.createReadStream('downloads/diego/data/municipios-inegi.csv');
+    var instream = fs.createReadStream('downloads/data/inegi/municipios-inegi.csv');
     var outstream = new stream;
     var rl = readline.createInterface(instream, outstream);
 
@@ -72,8 +72,8 @@ models.sequelize.sync().then(function () {
   var importStateDistrict = function(townsHash, state, callback) {
     var number = ('0' + state.id);
     var folder = number.substr(number.length-2, 2) + state.name;
-    console.log('./downloads/diego/ife/' + folder + '/' +  number.substr(number.length-2, 2) + 'hogar_seccion.txt')
-    var instream = fs.createReadStream('./downloads/diego/ife/' + folder + '/' +  number.substr(number.length-2, 2) + 'hogar_seccion.txt');
+    console.log('./downloads/data/ife/' + folder + '/' +  number.substr(number.length-2, 2) + 'hogar_seccion.txt')
+    var instream = fs.createReadStream('./downloads/data/ife/' + folder + '/' +  number.substr(number.length-2, 2) + 'hogar_seccion.txt');
     var outstream = new stream;
     var rl = readline.createInterface(instream, outstream);
 
@@ -97,7 +97,7 @@ models.sequelize.sync().then(function () {
   }
 
   async.series([importCountry], function(err, result) {
-    console.log(result);
+    //console.log(result);
     // console.log('States: ' + result.states);
     // console.log('Municipalities: ' + result.towns);
   })

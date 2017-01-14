@@ -3,8 +3,8 @@ var models = require("../app/models");
 
 models.sequelize.sync().then(function () {
 
-  var attendanceQuery = "select d.id as DiputadoId, a.attendance, a.attendanceDate, a.id as stgId " +
-  " from Diputados d join AttendanceStgs a on d.hash = a.hash and a.step = 0" +
+  var attendanceQuery = "select d.id as DeputyId, a.attendance, a.attendanceDate, a.id as stgId " +
+  " from Deputies d join AttendanceStgs a on d.hash = a.hash and a.step = 0" +
   " order by d.id, a.attendanceDate";
 
   var importedAttendanceRecords = "select s.* from AttendanceStgs s join Attendances a on a.stgId = s.id and s.step = 0";
@@ -19,7 +19,7 @@ models.sequelize.sync().then(function () {
           console.log('imported attendance: ' + imported.length);
           callback();
         });
-      callback();
+      //callback();
     }
 
     var updateStaging = function(callback) {

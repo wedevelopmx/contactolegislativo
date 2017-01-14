@@ -40,9 +40,8 @@ models.sequelize.sync().then(function () {
               if(row.length == 3) {
                 last = row[row.length-1];
                 if(last === 'ASISTENCIA'  || last === 'JUSTIFICADA' ||
-                    last === 'JUSTIFICADA' || last === 'INASISTENCIA' ||
-                    last === 'CÉDULA' || last === 'OFICIAL COMISIÓN' ||
-                    last === 'PERMISO MESA DIRECTIVA' ) {
+                    last === 'INASISTENCIA' || last === 'CÉDULA' ||
+                    last === 'OFICIAL COMISIÓN' || last === 'PERMISO MESA DIRECTIVA' ) {
                   attendance.push({
                     name: row[1],
                     hash: hashFullName(row[1]),
@@ -98,7 +97,7 @@ models.sequelize.sync().then(function () {
 
     var processFiles = function(callback) {
       models.DownloadedFile
-        .findAll({ where: { step: 1 } }) // Find All downloaded files
+        .findAll({ where: { step: 1 }, limit: 10 }) // Find All downloaded files
         .then(function(files) {
           async.map(files, function(file, callback) {
             //Convert PDF to JSON
