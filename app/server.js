@@ -9,6 +9,8 @@ var session      = require('express-session');
 
 var routes = require('./routes/index');
 var deputy = require('./routes/deputy');
+var party = require('./routes/party');
+var chamber = require('./routes/chamber');
 
 var app = express();
 
@@ -39,6 +41,8 @@ function isLoggedIn(req, res, next) {
 
 app.use('/', routes);
 app.use('/deputy', deputy);
+app.use('/party', party);
+app.use('/chamber', chamber);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
