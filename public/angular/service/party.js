@@ -1,6 +1,6 @@
 angular.module('app')
-	.factory('Deputy', ['$resource', function($resource) {
-	        var Deputy = $resource('deputy/:deputyId/:action', {deputyId: '@id'}, {
+	.factory('Party', ['$resource', function($resource) {
+	        var Party = $resource('party/:party/:action', {party: '@party'}, {
 						query: { method: 'GET',  isArray:true },
 						get: { method: 'GET'},
 						update: { method: 'PUT'},
@@ -10,7 +10,7 @@ angular.module('app')
 							isArray: true,
 							params: {
                 action:'attendance',
-                deputyId: '@id'
+                party: '@party'
             	}
 						},
 						initiatives: {
@@ -18,7 +18,7 @@ angular.module('app')
 							isArray: true,
 							params: {
                 action:'initiatives',
-                deputyId: '@id'
+                party: '@party'
             	}
 						},
 						votes: {
@@ -26,10 +26,10 @@ angular.module('app')
 							isArray: true,
 							params: {
                 action:'votes',
-                deputyId: '@id'
+                party: '@party'
             	}
 						}
 					});
 
-	        return Deputy;
+	        return Party;
 	    }]);
