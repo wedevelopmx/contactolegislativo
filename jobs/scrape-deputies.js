@@ -5,34 +5,20 @@ var fs = require('fs');
 var iconv  = require('iconv-lite');
 var models = require("../app/models");
 var argv = require("../jobs/helper/arguments");
+var KeyGenerator = require("../jobs/helper/keygenerator");
 
 models.sequelize.sync().then(function () {
 
-  var nameHash = {};
-  var namesRecords = [];
-
-  var hashName = function(name) {
-    if(!nameHash.hasOwnProperty(name)) {
-      nameHash[name] = Object.keys(nameHash).length + 1;
-      namesRecords.push({ name: name, hash: nameHash[name]});
-    }
-
-    return nameHash[name];
-  }
-
-  var hashFullName = function(fullName) {
-    key = 1;
-    names = fullName.split(' ');
-    for(i in names) {
-      key *= hashName(names[i].trim());
-    }
-    return key;
-  }
+  var namesKeyGen = new KeyGenerator();
+  var districtKeyGen = new KeyGenerator();
 
   var readDiputado = function(index, next) {
     var d = {
       id: index
     };
+
+    var district = {};
+
     var options =  {
         encoding: null,
         method: 'GET',
@@ -42,9 +28,10 @@ models.sequelize.sync().then(function () {
         if(!error){
             var $ = cheerio.load(iconv.decode(new Buffer(html), 'ISO-8859-1'));
 
-            //$('table table table tbody tr td font strong').filter(function(){
             $('table table table tbody tr td strong').filter(function(index){
-                //console.log(index + ' - ' + $(this).text());
+                //Take value
+                value = $(this).text().trim();
+                //Evaluate destiny field
                 switch (index) {
                   case 0: param = 'displayName'; break;
                   case 1: param = 'election'; break;
@@ -56,23 +43,30 @@ models.sequelize.sync().then(function () {
                   case 7: param = 'alternate'; break;
                 }
 
-                if(index == 0 || index == 7) {
-                  name = $(this).text();
-                  //Remove 'protetesta ..'
-                  name = name.replace('(no rindieron protesta)', '').trim();
-                  //
-                  name = name.replace('(LICENCIA)','').trim();
-                  //Remove 'Dip.''
-                  name = name.substr(name.indexOf('.') + 1, name.lenght).trim();
+                if(index == 2 || index == 3) { // District information
+                  district[param] = value;
+                  if(index == 3){
+                    d['DistrictId'] = district['id'] = districtKeyGen.generateKey(district['state'] + 'D' + district['district']);
+                  }
 
-                  d[param] = name;
+                } else if(index == 0 || index == 7) {
+                  //Remove 'protetesta ..'
+                  value = value.replace('(no rindieron protesta)', '').trim();
+                  //remove Licence advice
+                  value = value.replace('(LICENCIA)','').trim();
+                  //Remove 'Dip.''
+                  value = value.substr(value.indexOf('.') + 1, value.lenght).trim();
+
+                  d[param] = value;
 
                   if(index == 0) {
-                    d['hash'] = hashFullName(d[param]);
+                    d['hash'] = namesKeyGen.generateKeyForTerm(d[param], ' ');
+                  } else {
+                    d['altHash'] = namesKeyGen.generateKeyForTerm(d[param], ' ');
                   }
 
                 } else {
-                  d[param] = decodeURIComponent($(this).text());
+                  d[param] = decodeURIComponent(value);
                 }
 
             });
@@ -109,8 +103,8 @@ models.sequelize.sync().then(function () {
 
             });
 
-            console.log('Store: ' + d.id + ' - ' + d.displayName);
-            next(null, d);
+            console.log('Store: ' + d.id + ' - ' + d.displayName + ' ' + d.hash);
+            next(null, [district, d]);
         }
     });
   }
@@ -120,7 +114,19 @@ models.sequelize.sync().then(function () {
       .findAll()
       .then(function(names) {
         for(i in names) {
-          nameHash[names[i].name] = names[i].hash;
+          //nameHash[names[i].name] = names[i].hash;
+          namesKeyGen.loadPair(names[i].value, names[i].key);
+        }
+        callback(null, true);
+      });
+  }
+
+  var loadDistricts = function(callback) {
+    models.District
+      .findAll()
+      .then(function(districts) {
+        for(i in districts) {
+          districtKeyGen.loadPair(districts[i].state + 'D' + districts[i].district, districts[i].id);
         }
         callback(null, true);
       });
@@ -130,25 +136,35 @@ models.sequelize.sync().then(function () {
     //Reading arguments from=X to=Y
     var sequence = argv();
     async.map(sequence.ids, readDiputado, function(err, bulkDiputados) {
-    // // generate 5 users
-    // async.times(10, readDiputado , function(err, bulkDiputados) {
         console.log('Times completed!');
-        models.Deputy
-          .bulkCreate(bulkDiputados, { ignoreDuplicates: true })
-          .then(function(diputados) {
-            models.Name
-              .bulkCreate(namesRecords, { ignoreDuplicates: true })
-              .then(function(names) {
-                console.log(diputados.length + ' diputados have been saved');
-                console.log(names.length + ' names have been saved');
-                callback(null, true);
-              });
-          });
+        deputies = [];
+        districts = [];
+        bulkDiputados.map(function(item) {
+          districts.push(item[0]);
+          deputies.push(item[1]);
+        });
+        models.District
+        .bulkCreate(districts, { ignoreDuplicates: true })
+        .then(function(districts) {
+          models.Deputy
+            .bulkCreate(deputies, { ignoreDuplicates: true })
+            .then(function(deputies) {
+              models.Name
+                .bulkCreate(namesKeyGen.hashRecord, { ignoreDuplicates: true })
+                .then(function(names) {
+                  console.log(districts.length + ' distritos have been saved');
+                  console.log(deputies.length + ' diputados have been saved');
+                  console.log(names.length + ' names have been saved');
+                  callback(null, true);
+                });
+            });
+        });
+
     });
 
   }
 
-  async.series([loadNamesHash, scrapeDeputies], function(err, results) {
+  async.series([loadNamesHash, loadDistricts, scrapeDeputies], function(err, results) {
     console.log(results);
   });
 

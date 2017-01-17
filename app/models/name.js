@@ -2,8 +2,8 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Name = sequelize.define("Name", {
-    name: { type: DataTypes.STRING, name: 'name', unique: true },
-    hash: { type: DataTypes.INTEGER, name: 'hash', unique: true }
+    value: { type: DataTypes.STRING, name: 'value', unique: true },
+    key: { type: DataTypes.INTEGER, name: 'key', unique: true }
   }, {
     classMethods: {
       associate: function(models) {
