@@ -3,6 +3,7 @@ var fs = require('fs');
 PDFParser = require("pdf2json");
 var async = require('async');
 var models = require("../app/models");
+var KeyGenerator = require("../jobs/helper/keygenerator");
 
 models.sequelize.sync().then(function () {
 
@@ -44,7 +45,7 @@ models.sequelize.sync().then(function () {
                     last === 'OFICIAL COMISIÓN' || last === 'PERMISO MESA DIRECTIVA' ) {
                   attendance.push({
                     name: row[1],
-                    hash: hashFullName(row[1]),
+                    hash: namesKeyGen.generateKeyForTerm(row[1], ' '),
                     attendance: row[2],
                     attendanceDate: date
                   });
@@ -63,36 +64,18 @@ models.sequelize.sync().then(function () {
       return attendance;
     }
 
-    var nameHash = {};
-    var namesRecords = [];
+    var namesKeyGen = new KeyGenerator();
 
     var loadNamesHash  = function(callback) {
       models.Name
         .findAll()
         .then(function(names) {
           for(i in names) {
-            nameHash[names[i].name] = names[i].hash;
+            //nameHash[names[i].name] = names[i].hash;
+            namesKeyGen.loadPair(names[i].value, names[i].key);
           }
           callback(null, true);
         });
-    }
-
-    var hashName = function(name) {
-      if(!nameHash.hasOwnProperty(name)) {
-        nameHash[name] = Object.keys(nameHash).length + 1;
-        namesRecords.push({ name: name, hash: nameHash[name]});
-      }
-
-      return nameHash[name];
-    }
-
-    var hashFullName = function(fullName) {
-      key = 1;
-      names = fullName.split(' ');
-      for(i in names) {
-        key *= hashName(names[i]);
-      }
-      return key;
     }
 
     var processFiles = function(callback) {

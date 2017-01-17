@@ -50,6 +50,8 @@ models.sequelize.sync().then(function () {
                   }
 
                 } else if(index == 0 || index == 7) {
+                  //Remove unecesary spaces
+                  value = value.replace(/  +/g, ' ');
                   //Remove 'protetesta ..'
                   value = value.replace('(no rindieron protesta)', '').trim();
                   //remove Licence advice
