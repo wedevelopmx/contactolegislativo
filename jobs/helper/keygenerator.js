@@ -27,6 +27,7 @@ module.exports  = function() {
   }
 
   this.loadPair  = function(value, key) {
+    value = this.normalize(value.toLowerCase());
     this.hash[value] = key;
     this.hashRecord.push({ value: value, key: key});
   }

@@ -46,7 +46,7 @@ models.sequelize.sync().then(function () {
                 if(index == 2 || index == 3) { // District information
                   district[param] = value;
                   if(index == 3){
-                    d['DistrictId'] = district['id'] = districtKeyGen.generateKey(district['state'] + 'D' + district['district']);
+                    d['DistrictId'] = district['id'] = districtKeyGen.generateKey(district.state + 'D' + district.district);
                   }
 
                 } else if(index == 0 || index == 7) {
@@ -128,6 +128,7 @@ models.sequelize.sync().then(function () {
       .findAll()
       .then(function(districts) {
         for(i in districts) {
+          console.log(districts[i].state + 'D' + districts[i].district + ' is ' + districts[i].id)
           districtKeyGen.loadPair(districts[i].state + 'D' + districts[i].district, districts[i].id);
         }
         callback(null, true);
