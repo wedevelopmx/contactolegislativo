@@ -97,7 +97,7 @@ models.sequelize.sync().then(function () {
 
     var processFiles = function(callback) {
       models.DownloadedFile
-        .findAll({ where: { step: 1 }, limit: 10 }) // Find All downloaded files
+        .findAll({ where: { step: 1 }, limit: 3 }) // Find All downloaded files
         .then(function(files) {
           async.map(files, function(file, callback) {
             //Convert PDF to JSON
