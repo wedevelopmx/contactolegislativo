@@ -173,7 +173,7 @@ models.sequelize.sync().then(function () {
     .then(function(seats) {
       seats.forEach(function(seat) {
         if(seat.type == 'Mayoría Relativa') {
-          districtKeyGen.loadPair(seat.state + 'D' + seat.area, seat.id);
+          districtKeyGen.loadPair(seat.type + '-' + seat.state + '-' + seat.area, seat.id);
         } else {
           districtKeyGen.loadPair(seat.type + '-' + seat.area + '-' + seat.curul, seat.id);
           seatHashMap.put(seat.hash, seat);
@@ -203,7 +203,7 @@ models.sequelize.sync().then(function () {
           seats.push(item[0]);
           deputies.push(item[1]);
         });
-        
+
         models.Seat
         .bulkCreate(seats, { ignoreDuplicates: true })
         .then(function(seats) {
