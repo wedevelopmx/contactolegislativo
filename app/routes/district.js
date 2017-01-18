@@ -1,0 +1,73 @@
+var express = require('express');
+var router = express.Router();
+var models  = require('../models');
+
+router.get('/:id', function(req, res, next) {
+  models.Deputy
+  .findAll({
+    attributes: ['id', 'displayName', 'picture', 'party',
+      'curul', 'email', 'twitter', [models.Sequelize.fn('count', '1'), 'attn']],
+    where : { DistrictId: req.params.id, election: 'Mayoría Relativa'},
+    include: [{
+      attributes: [],
+      model: models.Attendance,
+      as: 'attendance',
+      where: { id : { $not: null} }
+    }],
+    group: ['Deputy.id']
+  })
+  .then(function(deputies) {
+    //console.log(deputies.get({ plain: true}));
+    res.json(deputies);
+  });
+});
+
+
+router.get('/:id/attendance', function(req, res, next) {
+  queryString =
+  'select a.attendance, count(1) as value from Attendances a left outer join Deputies de on de.id = a.DeputyId 	left outer join Districts d on d.id = de.DistrictId where d.id = :districtId group by a.attendance';
+
+  models.sequelize
+  .query(queryString, {
+    replacements: { districtId: req.params.id },
+    type: models.sequelize.QueryTypes.SELECT
+  })
+  .then(function(attendance) {
+    res.json(attendance);
+  });
+
+});
+
+// router.get('/:id/initiatives', function(req, res, next) {
+//
+  // queryString =
+  // 'select  di.type as name, count(1) as value from DeputyInitiatives di join Initiatives i on di.InitiativeId = i.id join Sessions s on s.id = i.SessionId where di.DeputyId = :deputyId group by di.type order by s.name';
+  // //'select s.id, s.name as periodo, di.type as name, count(1) as value from DeputyInitiatives di join Initiatives i on di.InitiativeId = i.id 	join Sessions s on s.id = i.SessionId where di.DeputyId = :deputyId group by di.type, s.name order by s.id, s.name';
+  // console.log(models.sequelize.query);
+  // models.sequelize
+  // .query(queryString, {
+  //   replacements: { deputyId: req.params.id },
+  //   type: models.sequelize.QueryTypes.SELECT
+  // })
+  // .then(function(initiatives) {
+  //   res.json(initiatives)
+  // });
+//
+// });
+//
+// router.get('/:id/votes', function(req, res, next) {
+//
+//   queryString = 'select s.id, s.name as periodo, di.type as name, count(1) as value from DeputyInitiatives di join Initiatives i on di.InitiativeId = i.id 	join Sessions s on s.id = i.SessionId where di.DeputyId = :deputyId group by di.type, s.name order by s.id, s.name';
+//   console.log(models.sequelize.query);
+//   models.sequelize
+//   .query(queryString, {
+//     replacements: { deputyId: req.params.id },
+//     type: models.sequelize.QueryTypes.SELECT
+//   })
+//   .then(function(initiatives) {
+//     res.json(initiatives)
+//   });
+//
+// });
+
+module.exports = router;

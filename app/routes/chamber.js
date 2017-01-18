@@ -14,17 +14,45 @@ var models  = require('../models');
 router.get('/attendance', function(req, res, next) {
 
   queryString =
-    'select value as name, count(1) as value from ( select DeputyId, attendance, count(attendance)  as value from Attendances where attendance in (:attendance) group by DeputyId ) group by value';
+    'select value as attendance, count(1) as deputies from ( select DeputyId, attendance, count(attendance)  as value from Attendances where attendance in (:attendance) group by DeputyId ) group by value order by value';
   models.sequelize
   .query(queryString, {
     replacements: { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'] },
     type: models.sequelize.QueryTypes.SELECT
   })
   .then(function(attendance) {
-    res.json(attendance)
+    total = 0;
+    attendance.forEach(function(item) { total += item.deputies; })
+    result = attendance.map(function(item) {
+      item.percentage =  (item.deputies / total) * 100;
+      return item;
+    });
+    res.json(result);
   });
 
 });
+
+router.get('/attendance/pluri', function(req, res, next) {
+
+  queryString =
+    'select value as attendance, count(1) as deputies from ( select DeputyId, attendance, count(attendance)  as value from Attendances where attendance in (:attendance) group by DeputyId ) group by value order by value';
+  models.sequelize
+  .query(queryString, {
+    replacements: { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'] },
+    type: models.sequelize.QueryTypes.SELECT
+  })
+  .then(function(attendance) {
+    total = 0;
+    attendance.forEach(function(item) { total += item.deputies; })
+    result = attendance.map(function(item) {
+      item.percentage =  (item.deputies / total) * 100;
+      return item;
+    });
+    res.json(result);
+  });
+
+});
+
 
 // select value as name, count(1) as value
 // from (

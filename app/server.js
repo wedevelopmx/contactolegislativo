@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var session      = require('express-session');
 
 var routes = require('./routes/index');
+var district = require('./routes/district');
 var deputy = require('./routes/deputy');
 var party = require('./routes/party');
 var chamber = require('./routes/chamber');
@@ -40,6 +41,7 @@ function isLoggedIn(req, res, next) {
 }
 
 app.use('/', routes);
+app.use('/district', district);
 app.use('/deputy', deputy);
 app.use('/party', party);
 app.use('/chamber', chamber);
