@@ -194,8 +194,8 @@ models.sequelize.sync().then(function () {
   var scrapeDeputies = function(callback) {
     //Reading arguments from=X to=Y
     var sequence = argv();
-    //async.map(sequence.ids, readDiputado, function(err, bulkDiputados) {
-    async.map([847, 848], readDiputado, function(err, bulkDiputados) {
+    async.map(sequence.ids, readDiputado, function(err, bulkDiputados) {
+    //async.map([847, 848], readDiputado, function(err, bulkDiputados) {
         console.log('Times completed!');
         deputies = [];
         seats = [];
