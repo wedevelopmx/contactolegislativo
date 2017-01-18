@@ -25,7 +25,14 @@ models.sequelize.sync().then(function () {
     var updateStaging = function(callback) {
       models.sequelize.query(importedAttendanceRecords, { model: models.AttendanceStg })
       .then(function(attendance){
-        async.map(attendance, function(att) { att.updateAttributes({ step: 1 }); })
+        records = attendance.map(function(item) { return item.id });
+        console.log(records);
+        //async.map(attendance, function(att) { att.updateAttributes({ step: 1 }); })
+        models.AttendanceStg.update(
+            { step: 1 },
+            { where: { id: { $in: records } }}
+          );
+
       })
     }
 

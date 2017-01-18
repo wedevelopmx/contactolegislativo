@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div ui-include="'angular/templates/deputy/attendance.html'"></div>
+  <div ui-include="'angular/templates/district/attendance.html'"></div>
   <!-- <div ui-include="'angular/templates/deputy/initiatives.html'"></div>
   <div ui-include="'angular/templates/deputy/votes.html'"></div>
    -->

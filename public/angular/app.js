@@ -4,6 +4,10 @@ angular.module('app', ['ngRoute', 'ngResource'])
       templateUrl: 'angular/templates/main.html',
       controller: 'MainController'
     })
+    .when('/district/:id', {
+      templateUrl: 'angular/templates/district.html',
+      controller: 'DistrictController'
+    });
     .when('/deputy/:id', {
       templateUrl: 'angular/templates/deputy.html',
       controller: 'DeputyController'

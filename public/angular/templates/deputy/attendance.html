@@ -1,0 +1,40 @@
+<div ng-controller="DeputyAttendanceController">
+  <div class="section">
+    <div class="container">
+      <h2 class="text-center">Asistencia</h2>
+      <h4 class="text-center m-b">Como ha atendido sus deberes tu diputado?:</h4>
+      <div doughnut="attendancePie">
+        <div class="chart"></div>
+      </div>
+    </div>
+  </div>
+  <div class="section pink">
+    <div class="container">
+        <h3 class="text-center m-b">Tu diputado tiene {{deputy.attendance}} asistencias</h3>
+        <div line="chamber.attendanceChart">
+          <div class="chart"></div>
+        </div>
+        <h3 class="text-center">{{(100 - chamber.attendanceChart.milestone).toFixed(2)}}% integrantes de la camara tienen mejor asistencia que el</h3>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <h3 class="text-center m-b">Tu diputado tiene un peor promedio de asistencia que la media en su partido</h3>
+      <div gauge="attendanceGauge">
+        <div class="chart"></div>
+      </div>
+      <h3 class="text-center m-b">Y mejor promedio asistencia que los plurinominales</h3>
+    </div>
+  </div>
+  <div class="section pink">
+    <div class="container">
+
+      <div class="rating">
+        <i class="fa fa-star" ng-repeat="rate in rating.full track by $index"></i>
+        <i class="fa fa-star-half-full" ng-repeat="rate in rating.half track by $index"></i>
+        <i class="fa fa-star-o" ng-repeat="rate in rating.empty track by $index"></i>
+      </div>
+      <h3 class="text-center m-b">Tu diputado alcanza 3.5 en asistencia</h3>
+    </div>
+  </div>
+</div>
