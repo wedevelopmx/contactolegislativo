@@ -130,19 +130,21 @@ models.sequelize.sync().then(function () {
                 d.SeatId = seat.id;
               } else { //First time we process this seat
                 console.log('First processing')
-                plurinominal = 1;
-                if(pluriHashMap.containsKey(seat.type + '-' + seat.area)) {
-                  plurinominal = pluriHashMap.get(seat.type + '-' + seat.area);
-                } else {
-                  pluriHashMap.put(seat.type + '-' + seat.area, plurinominal);
+                var plurinominal = 1;
+                var key = seat.type + '-' + seat.area;
+                if(pluriHashMap.containsKey(key)) {
+                  plurinominal = pluriHashMap.get(key);
                 }
+                // else {
+                //   pluriHashMap.put(key, plurinominal);
+                // }
                 seat.curul = plurinominal;
-                d.SeatId = seat.id = districtKeyGen.generateKey(seat.type + '-' + seat.area + '-' + seat.curul);
+                d.SeatId = seat.id = districtKeyGen.generateKey(key + '-' + seat.curul);
                 seatHashMap.put(d.hash, seat);
                 seatHashMap.put(d.altHash, seat);
 
                 //Increment plurinominal count
-                pluriHashMap.put(seat.type + '-' + seat.area, plurinominal + 1);
+                pluriHashMap.put(key, plurinominal + 1);
               }
             }
 
@@ -179,7 +181,7 @@ models.sequelize.sync().then(function () {
           seatHashMap.put(seat.hash, seat);
           seatHashMap.put(seat.altHash, seat);
           if(pluriHashMap.containsKey(seat.type + '-' + seat.area)) {
-            plurinominal = pluriHashMap.get(seat.type + '-' + seat.area);
+            var plurinominal = pluriHashMap.get(seat.type + '-' + seat.area);
             pluriHashMap.put(seat.type + '-' + seat.area, plurinominal + 1);
           } else {
             pluriHashMap.put(seat.type + '-' + seat.area, 1);
@@ -203,7 +205,7 @@ models.sequelize.sync().then(function () {
           seats.push(item[0]);
           deputies.push(item[1]);
         });
-
+        //console.log(seats);
         models.Seat
         .bulkCreate(seats, { ignoreDuplicates: true })
         .then(function(seats) {
