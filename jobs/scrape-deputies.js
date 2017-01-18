@@ -6,18 +6,58 @@ var iconv  = require('iconv-lite');
 var models = require("../app/models");
 var argv = require("../jobs/helper/arguments");
 var KeyGenerator = require("../jobs/helper/keygenerator");
+var HashMap = require("../jobs/helper/hashmap");
 
 models.sequelize.sync().then(function () {
 
   var namesKeyGen = new KeyGenerator();
   var districtKeyGen = new KeyGenerator();
+  var seatHashMap = new HashMap();
+  var pluriHashMap = new HashMap();
+
+  var cleanDeputyName = function(name) {
+    //Remove unecesary spaces
+    name = name.replace(/  +/g, ' ');
+    //Remove 'protetesta ..'
+    name = name.replace('(no rindieron protesta)', '').trim();
+    //remove Licence advice
+    name = name.replace('(LICENCIA)','').trim();
+    //Remove 'Dip.''
+    name = name.substr(name.indexOf('.') + 1, name.lenght).trim();
+    return name;
+  }
+
+  var identifyParty = function(party) {
+    if(party == 'pri01') {
+      party = 'pri';
+    } else if(party == 'pan') {
+      party = 'pan';
+    } else if(party == 'logvrd') {
+      party = 'pve';
+    } else if(party == 'prd01') {
+      party = 'prd';
+    } else if(party == 'LogoMorena') {
+      party = 'morena';
+    } else if(party == 'logo_movimiento_ciudadano') {
+      party = 'movimiento ciudadano';
+    } else if(party == 'panal') {
+      party = 'panal';
+    } else if(party == 'independiente') {
+      party = 'independiente';
+    } else if(party == 'encuentro') {
+      party = 'encuentro';
+    } else if(party == 'logo_SP') {
+      party = 'sp';
+    }
+    return party;
+  }
 
   var readDiputado = function(index, next) {
     var d = {
       id: index
     };
 
-    var district = {};
+    var seat = {};
 
     var options =  {
         encoding: null,
@@ -34,39 +74,27 @@ models.sequelize.sync().then(function () {
                 //Evaluate destiny field
                 switch (index) {
                   case 0: param = 'displayName'; break;
-                  case 1: param = 'election'; break;
+                  //Seat
+                  case 1: param = 'type'; break;
                   case 2: param = 'state'; break;
-                  case 3: param = 'district'; break;
+                  case 3: param = 'area'; break;
+                  //Deputy
                   case 4: param = 'curul'; break;
                   case 5: param = 'email'; break;
                   case 6: param = 'birthdate'; break;
                   case 7: param = 'alternate'; break;
                 }
 
-                if(index == 2 || index == 3) { // District information
-                  district[param] = value;
-                  if(index == 3){
-                    d['DistrictId'] = district['id'] = districtKeyGen.generateKey(district.state + 'D' + district.district);
-                  }
-
-                } else if(index == 0 || index == 7) {
-                  //Remove unecesary spaces
-                  value = value.replace(/  +/g, ' ');
-                  //Remove 'protetesta ..'
-                  value = value.replace('(no rindieron protesta)', '').trim();
-                  //remove Licence advice
-                  value = value.replace('(LICENCIA)','').trim();
-                  //Remove 'Dip.''
-                  value = value.substr(value.indexOf('.') + 1, value.lenght).trim();
-
-                  d[param] = value;
-
+                if(index == 1 || index == 2 || index == 3) { // Seat information
+                  seat[param] = value;
+                } else if(index == 0 || index == 7) { // Deputy information
+                  d[param] = cleanDeputyName(value);
+                  hash = namesKeyGen.generateKeyForTerm(d[param], ' ');
                   if(index == 0) {
-                    d['hash'] = namesKeyGen.generateKeyForTerm(d[param], ' ');
+                    d['hash'] = hash;
                   } else {
-                    d['altHash'] = namesKeyGen.generateKeyForTerm(d[param], ' ');
+                    d['altHash'] = hash;
                   }
-
                 } else {
                   d[param] = decodeURIComponent(value);
                 }
@@ -74,39 +102,53 @@ models.sequelize.sync().then(function () {
             });
 
             $('table tr td img').filter(function(index){
-                //console.log(index + ' - ' + $(this).attr('src'));
-                if(index == 1)
-                  d['picture'] = $(this).attr('src');
-                if(index == 2) { //images/pan.png
-                  regex = /.*\/(\w+)\..*/.exec($(this).attr('src'));
-                  d['party'] = regex != null? regex[1]:'Uknown';
-                  if(d['party'] == 'pri01') {
-                    d['party'] = 'pri';
-                  } else if(d['party'] == 'pan') {
-                    d['party'] = 'pan';
-                  } else if(d['party'] == 'logvrd') {
-                    d['party'] = 'pve';
-                  } else if(d['party'] == 'prd01') {
-                    d['party'] = 'prd';
-                  } else if(d['party'] == 'LogoMorena') {
-                    d['party'] = 'morena';
-                  } else if(d['party'] == 'logo_movimiento_ciudadano') {
-                    d['party'] = 'movimiento ciudadano';
-                  } else if(d['party'] == 'panal') {
-                    d['party'] = 'panal';
-                  } else if(d['party'] == 'independiente') {
-                    d['party'] = 'independiente';
-                  } else if(d['party'] == 'encuentro') {
-                    d['party'] = 'encuentro';
-                  } else if(d['party'] == 'logo_SP') {
-                    d['party'] = 'sp';
-                  }
+                src = $(this).attr('src');
+                switch (index) {
+                  case 1:
+                    d['picture'] = src;
+                    break;
+                  case 2:
+                    regex = /.*\/(\w+)\..*/.exec(src);
+                    d['party'] = identifyParty(regex != null? regex[1]:'Uknown');
+                    break;
                 }
-
             });
 
-            console.log('Store: ' + d.id + ' - ' + d.displayName + ' ' + d.hash);
-            next(null, [district, d]);
+            console.log('Store: ' + d.id + ' - ' + d.displayName + ' ' + d.hash + ' ' + d.altHash);
+
+            // seat = { type: 'Mayoria Relativa', state: 'NL' , area: '1' , curul: null}
+            if(seat.type == 'Mayoría Relativa') {
+              d.SeatId = seat.id = districtKeyGen.generateKey(seat.type + '-' + seat.state + '-' + seat.area);
+            } else { //Porporcional aka Plurinominal
+              if(seatHashMap.containsKey(d.hash)) { //
+                console.log('Are we reprocessing deputies?!')
+                seat = seatHashMap.get(d.hash);
+                d.SeatId = seat.id;
+              } else if(seatHashMap.containsKey(d.altHash)) { // We are processing alternate deputy, seat was process before
+                console.log('processing alternate');
+                seat = seatHashMap.get(d.altHash);
+                d.SeatId = seat.id;
+              } else { //First time we process this seat
+                console.log('First processing')
+                plurinominal = 1;
+                if(pluriHashMap.containsKey(seat.type + '-' + seat.area)) {
+                  plurinominal = pluriHashMap.get(seat.type + '-' + seat.area);
+                } else {
+                  pluriHashMap.put(seat.type + '-' + seat.area, plurinominal);
+                }
+                seat.curul = plurinominal;
+                d.SeatId = seat.id = districtKeyGen.generateKey(seat.type + '-' + seat.area + '-' + seat.curul);
+                seatHashMap.put(d.hash, seat);
+                seatHashMap.put(d.altHash, seat);
+
+                //Increment plurinominal count
+                pluriHashMap.put(seat.type + '-' + seat.area, plurinominal + 1);
+              }
+            }
+
+            console.log(' Seat:' + seat.type + '-' + seat.area + '-' + seat.curul);
+
+            next(null, [seat, d]);
         }
     });
   }
@@ -124,38 +166,55 @@ models.sequelize.sync().then(function () {
   }
 
   var loadDistricts = function(callback) {
-    models.District
-      .findAll()
-      .then(function(districts) {
-        for(i in districts) {
-          console.log(districts[i].state + 'D' + districts[i].district + ' is ' + districts[i].id)
-          districtKeyGen.loadPair(districts[i].state + 'D' + districts[i].district, districts[i].id);
+
+    var queryString  = 'select s.id, s.type, s.state, s.area, s.curul, d.hash, d.altHash from Seats s join Deputies d on s.id = d.SeatId';
+    models.sequelize
+    .query(queryString, { type: models.sequelize.QueryTypes.SELECT })
+    .then(function(seats) {
+      seats.forEach(function(seat) {
+        if(seat.type == 'Mayoría Relativa') {
+          districtKeyGen.loadPair(seat.state + 'D' + seat.area, seat.id);
+        } else {
+          districtKeyGen.loadPair(seat.type + '-' + seat.area + '-' + seat.curul, seat.id);
+          seatHashMap.put(seat.hash, seat);
+          seatHashMap.put(seat.altHash, seat);
+          if(pluriHashMap.containsKey(seat.type + '-' + seat.area)) {
+            plurinominal = pluriHashMap.get(seat.type + '-' + seat.area);
+            pluriHashMap.put(seat.type + '-' + seat.area, plurinominal + 1);
+          } else {
+            pluriHashMap.put(seat.type + '-' + seat.area, 1);
+          }
         }
-        callback(null, true);
       });
+      callback(null, true);
+    });
+
   }
 
   var scrapeDeputies = function(callback) {
     //Reading arguments from=X to=Y
     var sequence = argv();
-    async.map(sequence.ids, readDiputado, function(err, bulkDiputados) {
+    //async.map(sequence.ids, readDiputado, function(err, bulkDiputados) {
+    async.map([847, 848], readDiputado, function(err, bulkDiputados) {
         console.log('Times completed!');
         deputies = [];
-        districts = [];
+        seats = [];
         bulkDiputados.map(function(item) {
-          districts.push(item[0]);
+          seats.push(item[0]);
           deputies.push(item[1]);
         });
-        models.District
-        .bulkCreate(districts, { ignoreDuplicates: true })
-        .then(function(districts) {
+        console.log(seats)
+
+        models.Seat
+        .bulkCreate(seats, { ignoreDuplicates: true })
+        .then(function(seats) {
           models.Deputy
             .bulkCreate(deputies, { ignoreDuplicates: true })
             .then(function(deputies) {
               models.Name
                 .bulkCreate(namesKeyGen.hashRecord, { ignoreDuplicates: true })
                 .then(function(names) {
-                  console.log(districts.length + ' distritos have been saved');
+                  console.log(seats.length + ' seats have been saved');
                   console.log(deputies.length + ' diputados have been saved');
                   console.log(names.length + ' names have been saved');
                   callback(null, true);
