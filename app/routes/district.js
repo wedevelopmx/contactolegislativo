@@ -3,18 +3,13 @@ var router = express.Router();
 var models  = require('../models');
 
 router.get('/:id', function(req, res, next) {
-  models.Deputy
-  .findAll({
-    attributes: ['id', 'displayName', 'picture', 'party',
-      'curul', 'email', 'twitter', [models.Sequelize.fn('count', '1'), 'attn']],
-    where : { DistrictId: req.params.id, election: 'Mayoría Relativa'},
-    include: [{
-      attributes: [],
-      model: models.Attendance,
-      as: 'attendance',
-      where: { id : { $not: null} }
-    }],
-    group: ['Deputy.id']
+  queryString =
+  'select d.id, d.displayName, di.state, di.district, d.picture, d.party, d.curul, d.twitter, count(1) as attn from Districts di left outer join Deputies d on di.id = d.DistrictId	left outer join Attendances a on d.id = a.DeputyId where di.id = :districtId and d.election = \'Mayoría Relativa\' and a.id is not null group by d.id';
+
+  models.sequelize
+  .query(queryString, {
+    replacements: { districtId: req.params.id },
+    type: models.sequelize.QueryTypes.SELECT
   })
   .then(function(deputies) {
     //console.log(deputies.get({ plain: true}));
@@ -25,7 +20,7 @@ router.get('/:id', function(req, res, next) {
 
 router.get('/:id/attendance', function(req, res, next) {
   queryString =
-  'select a.attendance, count(1) as value from Attendances a left outer join Deputies de on de.id = a.DeputyId 	left outer join Districts d on d.id = de.DistrictId where d.id = :districtId group by a.attendance';
+  'select a.attendance as name, count(1) as value from Attendances a left outer join Deputies de on de.id = a.DeputyId 	left outer join Districts d on d.id = de.DistrictId where d.id = :districtId and de.election = \'Mayoría Relativa\' group by a.attendance';
 
   models.sequelize
   .query(queryString, {
