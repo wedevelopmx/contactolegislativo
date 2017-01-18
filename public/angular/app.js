@@ -7,7 +7,7 @@ angular.module('app', ['ngRoute', 'ngResource'])
     .when('/district/:id', {
       templateUrl: 'angular/templates/district.html',
       controller: 'DistrictController'
-    });
+    })
     .when('/deputy/:id', {
       templateUrl: 'angular/templates/deputy.html',
       controller: 'DeputyController'
