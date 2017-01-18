@@ -203,8 +203,7 @@ models.sequelize.sync().then(function () {
           seats.push(item[0]);
           deputies.push(item[1]);
         });
-        console.log(seats)
-
+        
         models.Seat
         .bulkCreate(seats, { ignoreDuplicates: true })
         .then(function(seats) {
