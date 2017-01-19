@@ -53,7 +53,44 @@ angular.module('app')
 								chart.media += data[i].attendance;
 							}
 							chart.media /= data.length;
-							chart.media = chart.media.toFixed(2)
+							chart.media = chart.media.toFixed(2);
+							return chart;
+						},
+						sortAttendanceforRose: function(data, value) {
+							chart = {
+								rose: [], bar: [0,0,0], media: 0, deputies: 0
+							};
+							section = 0;
+							for(var i = 0; i < data.length; i++ ) {
+								//Rose chart
+								chart.rose.push({
+									value: data[i].deputies,
+									name: data[i].attendance,
+									selected: (data[i].attendance == value)
+								});
+								//Bar Chart
+								if(data[i].attendance < value) {
+									chart.bar[0] += data[i].deputies;
+								} else if(data[i].attendance == value) {
+									chart.bar[1] += data[i].deputies;
+								} else {
+									chart.bar[2] += data[i].deputies;
+								}
+								chart.deputies += data[i].deputies;
+								chart.media += data[i].attendance;
+							}
+							chart.media /= data.length;
+
+							chart.rose.forEach(function(item) {
+								if(Math.round(chart.media) == item.name ) {
+									item.media = true;
+								}
+							});
+
+							chart.media = chart.media.toFixed(2);
+
+							chart.better = (chart.bar[2] / chart.deputies) * 100;
+
 							return chart;
 						}
           };

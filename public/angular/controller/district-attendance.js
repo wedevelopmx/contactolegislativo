@@ -11,12 +11,12 @@ angular.module('app')
       $scope.attendance = attendance;
       $scope.attendancePie = Chart.sortPie(grouping, attendance);
       $scope.deputy.attendance = $scope.attendancePie.total;
-      console.log(attendance);
       console.log($scope.attendancePie)
 
       Chamber.attendance({}, function(attendance) {
         $scope.chamber.attendance = attendance;
-        $scope.chamber.attendanceChart = Chart.sortLinePercentage(attendance, $scope.deputy.attendance);
+        //$scope.chamber.attendanceChart = Chart.sortLinePercentage(attendance, $scope.deputy.attendance);
+        $scope.chamber.attendanceChart = Chart.sortAttendanceforRose(attendance, $scope.deputy.attendance);
         console.log($scope.chamber.attendanceChart);
       });
 
@@ -24,7 +24,8 @@ angular.module('app')
 
     $scope.$on('district-loaded', function(evt, args) {
       //Attendance comparison
-      Party.attendance({ party: 'pan'}, function(attendance) {
+      Party.attendance({ party: $scope.deputy.party}, function(attendance) {
+        console.log(attendance);
         $scope.party.attendance = attendance;
         for(i = 0; i< attendance.length; i++) {
           if(attendance[i].name == $scope.deputy.asistencia)

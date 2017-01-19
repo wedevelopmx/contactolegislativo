@@ -12,12 +12,22 @@ var models  = require('../models');
 // });
 
 router.get('/attendance', function(req, res, next) {
+  console.log(req.query);
+  var replacements = { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'] };
+  var queryString =
+    'select number as attendance, count(1) as deputies from ( select s.id, count(1) as number from Seats s join Deputies d on s.id = d.SeatId join Attendances a on a.DeputyId = d.id where a.attendance in (:attendance) ';
+  if(req.query.party) {
+    queryString += ' and d.party = :party';
+    replacements.party = req.query.party;
+  } else if(req.query.election) {
+    queryString += ' and s.type = :election';
+    replacements.election = req.query.election;
+  }
+  queryString += ' group by s.id ) group by number';
 
-  queryString =
-    'select value as attendance, count(1) as deputies from ( select DeputyId, attendance, count(attendance)  as value from Attendances where attendance in (:attendance) group by DeputyId ) group by value order by value';
   models.sequelize
   .query(queryString, {
-    replacements: { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'] },
+    replacements: replacements,
     type: models.sequelize.QueryTypes.SELECT
   })
   .then(function(attendance) {
@@ -32,13 +42,13 @@ router.get('/attendance', function(req, res, next) {
 
 });
 
-router.get('/attendance/pluri', function(req, res, next) {
+router.get('/:party/attendance', function(req, res, next) {
 
   queryString =
-    'select value as attendance, count(1) as deputies from ( select DeputyId, attendance, count(attendance)  as value from Attendances where attendance in (:attendance) group by DeputyId ) group by value order by value';
+    'select number as attendance, count(1) as deputies from ( select s.id, count(1) as number from Seats s join Deputies d on s.id = d.SeatId join Attendances a on a.DeputyId = d.id where a.attendance in (:attendance) and d.party = :party group by s.id ) group by number';
   models.sequelize
   .query(queryString, {
-    replacements: { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'] },
+    replacements: { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'], party: req.param.party },
     type: models.sequelize.QueryTypes.SELECT
   })
   .then(function(attendance) {

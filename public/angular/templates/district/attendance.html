@@ -8,13 +8,18 @@
       </div>
     </div>
   </div>
-  <div class="section pink">
+  <div class="section">
     <div class="container">
         <h3 class="text-center m-b">Tu diputado tiene {{deputy.attendance}} asistencias</h3>
-        <div line="chamber.attendanceChart">
+        <!-- <div line="chamber.attendanceChart">
           <div class="chart"></div>
+        </div> -->
+
+        <div rose="chamber.attendanceChart">
+          <div class="rose"></div>
+          <div class="bar"></div>
         </div>
-        <h3 class="text-center">{{(100 - chamber.attendanceChart.milestone).toFixed(2)}}% integrantes de la camara tienen mejor asistencia que el</h3>
+        <h3 class="text-center">{{chamber.attendanceChart.bar[2]}} ({{chamber.attendanceChart.better.toFixed(2)}}%) integrantes de la camara tienen mejor asistencia que el</h3>
     </div>
   </div>
   <div class="section">
