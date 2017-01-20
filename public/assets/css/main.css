@@ -3,6 +3,10 @@
   color:#FFFFFF!important;
 }
 
+.pink a {
+  color:#FFFFFF!important;
+}
+
 .pink .text-secondary {
   color: #F8BBD0;
 }
@@ -116,7 +120,7 @@
 }
 
 .circle-btn a {
-    color: #f50057;
+    color: #f50057!important;
 }
 
 .chart {
