@@ -59,16 +59,15 @@ angular.module('app')
             var size = $(window).width() > $(window).height() ?  $(window).height(): $(window).width();
             var $rose = $(elem).find('.rose');
             var $bar = $(elem).find('.bar');
-            $rose.width(size);
+            $rose.width(size * .90);
             $rose.height(size * .70);
-            $bar.width(size);
+            $bar.width(size * .90);
             $bar.height(size * .30);
 
             $scope.rose.rose.forEach(function(item) {
               if(item.selected) {
                 item.itemStyle = selectedItemStyle
-              }
-              if(item.media) {
+              } else if(item.media) {
                 item.itemStyle = mediaItemStyle
               }
             });
