@@ -10,6 +10,12 @@ angular.module('app')
            town: response.data.address.county,
            country: response.data.address.country
          };
+         $http.get('location/' + $scope.address.state + '-' + $scope.address.town, {})
+         .then(function(response) {
+           if(response.data.length > 0) {
+             $scope.districtUrl = '#/district/' + response.data[0].seatId;
+           }
+         });
        });
      }, function(response) {
        console.log('There has been an error on geolocation!');

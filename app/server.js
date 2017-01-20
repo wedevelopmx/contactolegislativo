@@ -12,6 +12,8 @@ var district = require('./routes/district');
 var deputy = require('./routes/deputy');
 var party = require('./routes/party');
 var chamber = require('./routes/chamber');
+var location = require('./routes/location');
+var state = require('./routes/state');
 
 var app = express();
 
@@ -45,6 +47,8 @@ app.use('/district', district);
 app.use('/deputy', deputy);
 app.use('/party', party);
 app.use('/chamber', chamber);
+app.use('/state', state);
+app.use('/location', location);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

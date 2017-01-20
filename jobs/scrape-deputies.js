@@ -14,6 +14,7 @@ models.sequelize.sync().then(function () {
   var districtKeyGen = new KeyGenerator();
   var seatHashMap = new HashMap();
   var pluriHashMap = new HashMap();
+  var statesHashMap = new HashMap();
 
   var cleanDeputyName = function(name) {
     //Remove unecesary spaces
@@ -25,6 +26,16 @@ models.sequelize.sync().then(function () {
     //Remove 'Dip.''
     name = name.substr(name.indexOf('.') + 1, name.lenght).trim();
     return name;
+  }
+
+  var normalize = function(r) {
+    // var r = s.toLowerCase();
+    r = r.replace(new RegExp(/[àáâãäå]/g),"a");
+    r = r.replace(new RegExp(/[èéêë]/g),"e");
+    r = r.replace(new RegExp(/[ìíîï]/g),"i");
+    r = r.replace(new RegExp(/[òóôõö]/g),"o");
+    r = r.replace(new RegExp(/[ùúûü]/g),"u");
+    return r;
   }
 
   var identifyParty = function(party) {
@@ -118,7 +129,8 @@ models.sequelize.sync().then(function () {
 
             // seat = { type: 'Mayoria Relativa', state: 'NL' , area: '1' , curul: null}
             if(seat.type == 'Mayoría Relativa') {
-              d.SeatId = seat.id = districtKeyGen.generateKey(seat.type + '-' + seat.state + '-' + seat.area);
+              seat.StateId = statesHashMap.get(normalize(seat.state));
+              d.SeatId = seat.id = districtKeyGen.generateKey(seat.type + '-' + seat.StateId + '-' + seat.area);
             } else { //Porporcional aka Plurinominal
               if(seatHashMap.containsKey(d.hash)) { //
                 console.log('Are we reprocessing deputies?!')
@@ -135,10 +147,8 @@ models.sequelize.sync().then(function () {
                 if(pluriHashMap.containsKey(key)) {
                   plurinominal = pluriHashMap.get(key);
                 }
-                // else {
-                //   pluriHashMap.put(key, plurinominal);
-                // }
                 seat.curul = plurinominal;
+                seat.StateId = statesHashMap.get(normalize(seat.state));
                 d.SeatId = seat.id = districtKeyGen.generateKey(key + '-' + seat.curul);
                 seatHashMap.put(d.hash, seat);
                 seatHashMap.put(d.altHash, seat);
@@ -169,13 +179,13 @@ models.sequelize.sync().then(function () {
 
   var loadDistricts = function(callback) {
 
-    var queryString  = 'select s.id, s.type, s.state, s.area, s.curul, d.hash, d.altHash from Seats s join Deputies d on s.id = d.SeatId';
+    var queryString  = 'select s.id, s.type, s.StateId, s.area, s.curul, d.hash, d.altHash from Seats s join Deputies d on s.id = d.SeatId';
     models.sequelize
     .query(queryString, { type: models.sequelize.QueryTypes.SELECT })
     .then(function(seats) {
       seats.forEach(function(seat) {
         if(seat.type == 'Mayoría Relativa') {
-          districtKeyGen.loadPair(seat.type + '-' + seat.state + '-' + seat.area, seat.id);
+          districtKeyGen.loadPair(seat.type + '-' + seat.StateId + '-' + seat.area, seat.id);
         } else {
           districtKeyGen.loadPair(seat.type + '-' + seat.area + '-' + seat.curul, seat.id);
           seatHashMap.put(seat.hash, seat);
@@ -190,7 +200,17 @@ models.sequelize.sync().then(function () {
       });
       callback(null, true);
     });
+  }
 
+  var loadStates = function(callback) {
+    models.State
+    .findAll()
+    .then(function(states) {
+      states.forEach(function(state) {
+        statesHashMap.put(state.name, state.id);
+      });
+      callback(null, true);
+    });
   }
 
   var scrapeDeputies = function(callback) {
@@ -205,6 +225,7 @@ models.sequelize.sync().then(function () {
           seats.push(item[0]);
           deputies.push(item[1]);
         });
+        console.log(seats);
         //console.log(seats);
         models.Seat
         .bulkCreate(seats, { ignoreDuplicates: true })
@@ -227,7 +248,7 @@ models.sequelize.sync().then(function () {
 
   }
 
-  async.series([loadNamesHash, loadDistricts, scrapeDeputies], function(err, results) {
+  async.series([loadNamesHash, loadDistricts, loadStates, scrapeDeputies], function(err, results) {
     console.log(results);
   });
 

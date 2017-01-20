@@ -9,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         State.hasMany(models.Municipality, { as: 'municipalities'});
+        State.hasMany(models.Seat, { as: 'seats'});
       }
     }
   });
