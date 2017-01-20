@@ -3,7 +3,6 @@ angular.module('app')
     return {
         restrict: "A",
         link: function(scope, elem, attrs) {
-          console.log(attrs.scrollify);
           $.scrollify({
             section : attrs.scrollify,
             updateHash: false
@@ -15,7 +14,6 @@ angular.module('app')
     return {
       restrict: 'A',
       link: function(scope, elem, attrs) {
-        console.log('here!!!!!');
         elem.bind('click', function() {
             $.scrollify.next();
         });
