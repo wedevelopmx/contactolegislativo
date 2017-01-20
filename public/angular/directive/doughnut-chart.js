@@ -16,8 +16,8 @@ angular.module('app')
 
     var dataStyle = {
         normal: {
-            label: {show:true, textStyle: { color: '#212121' } },
-            labelLine: {show:true, lineStyle: { color: '#212121' } }
+            label: {show:false, textStyle: { color: '#212121' } },
+            labelLine: {show:false, lineStyle: { color: '#212121' } }
         },
         emphasis : {
             label : {
@@ -67,8 +67,8 @@ angular.module('app')
         $scope.$watch('doughnut', function() {
           var $chart = $(elem).find('.chart');
           var size = $(window).width() > $(window).height() ?  $(window).height(): $(window).width();
-          $chart.width(size * .95);
-          $chart.height(size * .95);
+          $chart.width(size * .90);
+          $chart.height(size * .90);
 
           options.legend.x = size / 2;
           options.legend.y = size / 12;
