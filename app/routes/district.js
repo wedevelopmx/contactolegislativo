@@ -4,7 +4,7 @@ var models  = require('../models');
 
 router.get('/:id', function(req, res, next) {
   queryString =
-  'select d.id, d.displayName, s.state, s.area as district, d.picture, d.party, d.curul, d.twitter, count(1) as attn, max(a.attendanceDate) latestAttendance from Seats s left outer join Deputies d on s.id = d.SeatId left outer join Attendances a on d.id = a.DeputyId where s.id = :districtId and s.type = \'Mayoría Relativa\' and a.id is not null group by  d.id, d.displayName, s.state, s.area, d.picture, d.party, d.curul, d.twitter order by d.id';
+  'select d.id, d.displayName, s.state, s.area as district, d.picture, d.party, d.curul, d.twitter, s.type as election, count(1) as attn, max(a.attendanceDate) latestAttendance from Seats s left outer join Deputies d on s.id = d.SeatId left outer join Attendances a on d.id = a.DeputyId where s.id = :districtId and a.id is not null group by  d.id, d.displayName, s.state, s.area, d.picture, d.party, d.curul, d.twitter order by d.id';
 
   models.sequelize
   .query(queryString, {
@@ -20,7 +20,7 @@ router.get('/:id', function(req, res, next) {
 
 router.get('/:id/attendance', function(req, res, next) {
   queryString =
-  'select a.attendance as name, count(1) as value from Attendances a left outer join Deputies de on de.id = a.DeputyId left outer join Seats s on s.id = de.SeatId where s.id = :districtId and s.type = \'Mayoría Relativa\' group by a.attendance';
+  'select a.attendance as name, count(1) as value from Attendances a left outer join Deputies de on de.id = a.DeputyId left outer join Seats s on s.id = de.SeatId where s.id = :districtId group by a.attendance';
 
   models.sequelize
   .query(queryString, {

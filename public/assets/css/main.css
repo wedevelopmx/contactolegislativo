@@ -112,7 +112,11 @@
   display: inline-block;
   margin-right: 1rem;
   background-color: #ffffff;
-  color: #f50057;
+  color: #f50057!important;
+}
+
+.circle-btn a {
+    color: #f50057;
 }
 
 .chart {

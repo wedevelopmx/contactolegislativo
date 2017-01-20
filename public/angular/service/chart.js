@@ -17,11 +17,12 @@ angular.module('app')
                     if(data[k].name == doughnut[j]) {
                       pie[pie.length - 1].push(data[k]);
                       pie[pie.length - 1].total += data[k].value;
+											pie.total += data[k].value;
                     }
                   }
                 }
-                if(pie.total < pie[pie.length - 1].total)
-                  pie.total = pie[pie.length - 1].total;
+                // if(pie.total < pie[pie.length - 1].total)
+                //   pie.total = pie[pie.length - 1].total;
               }
               return pie;
             },
@@ -79,6 +80,7 @@ angular.module('app')
 								chart.deputies += data[i].deputies;
 								chart.media += data[i].attendance;
 							}
+
 							chart.media /= data.length;
 
 							chart.rose.forEach(function(item) {
@@ -87,11 +89,20 @@ angular.module('app')
 								}
 							});
 
-							chart.media = chart.media.toFixed(2);
+							//chart.media = chart.media.toFixed(2);
 
 							chart.better = (chart.bar[2] / chart.deputies) * 100;
 
 							return chart;
+						},
+						calculateMedia: function(data) {
+							chart = data;
+							chart.media = 0;
+							for(var i = 0; i < data.length; i++ ) {
+								chart.media += data[i].attendance;
+							}
+							chart.media /= data.length;
+							return data;
 						}
           };
 

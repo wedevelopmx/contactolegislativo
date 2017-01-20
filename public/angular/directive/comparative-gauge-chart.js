@@ -9,138 +9,141 @@ angular.module('app')
       },
       link: function($scope, elem, attrs) {
 
-        $scope.$watch('gauge.data', function() {
+        $scope.$watch('gauge.resp', function() {
+          if($scope.gauge && $scope.gauge.resp == 3) {
+            console.log($scope.gauge);
 
-          var $chart = $(elem).find('.chart');
-          var size = $(window).width() > $(window).height() ?  $(window).height(): $(window).width();
-          $chart.width(size * .9);
-          $chart.height(size * .9);
+            var $chart = $(elem).find('.chart');
+            var size = $(window).width() > $(window).height() ?  $(window).height(): $(window).width();
+            $chart.width(size * .9);
+            $chart.height(size * .6);
 
-          $chart.chart({
-            tooltip : {
-                formatter: "{a} <br/>{c} {b}"
-            },
-            series : [
-                {
-                    name:'速度',
-                    type:'gauge',
-                    radius : '40%',
-                    z: 3,
-                    min:0,
-                    max:20,
-                    splitNumber:10,
-                    axisLine: {            // 坐标轴线
-                        lineStyle: {       // 属性lineStyle控制线条样式
-                            width: 10
-                        }
-                    },
-                    axisTick: {            // 坐标轴小标记
-                        length :15,        // 属性length控制线长
-                        lineStyle: {       // 属性lineStyle控制线条样式
-                            color: 'auto'
-                        }
-                    },
-                    splitLine: {           // 分隔线
-                        length :20,         // 属性length控制线长
-                        lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                            color: 'auto'
-                        }
-                    },
-                    title : {
-                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                            fontWeight: 'bolder',
-                            fontSize: 20,
-                            fontStyle: 'italic'
-                        }
-                    },
-                    detail : {
-                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                            fontWeight: 'bolder'
-                        }
-                    },
-                    data:[{value: 16, name: 'Diputado'}]
+            $chart.chart({
+                tooltip : {
+                    formatter: "{a} <br/>{c} {b}"
                 },
-                {
-                    name:'转速',
-                    type:'gauge',
-                    center : ['20%', '55%'],    // 默认全局居中
-                    radius : '25%',
-                    min:0,
-                    max:20,
-                    endAngle:45,
-                    splitNumber:5,
-                    axisLine: {            // 坐标轴线
-                        lineStyle: {       // 属性lineStyle控制线条样式
-                            width: 8
-                        }
+                series : [
+                    {
+                        name:'速度',
+                        type:'gauge',
+                        radius : '60%',
+                        z: 3,
+                        min:0,
+                        max:$scope.gauge.max,
+                        splitNumber:10,
+                        axisLine: {            // 坐标轴线
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                width: 10
+                            }
+                        },
+                        axisTick: {            // 坐标轴小标记
+                            length :15,        // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        splitLine: {           // 分隔线
+                            length :20,         // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        title : {
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                fontWeight: 'bolder',
+                                fontSize: 20,
+                                fontStyle: 'italic'
+                            }
+                        },
+                        detail : {
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                fontWeight: 'bolder'
+                            }
+                        },
+                        data:[{value: $scope.gauge.deputy, name: 'Diputado'}]
                     },
-                    axisTick: {            // 坐标轴小标记
-                        length :12,        // 属性length控制线长
-                        lineStyle: {       // 属性lineStyle控制线条样式
-                            color: 'auto'
-                        }
+                    {
+                        name:'转速',
+                        type:'gauge',
+                        center : ['20%', '55%'],    // 默认全局居中
+                        radius : '45%',
+                        min:0,
+                        max:$scope.gauge.max,
+                        endAngle:45,
+                        splitNumber:5,
+                        axisLine: {            // 坐标轴线
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                width: 8
+                            }
+                        },
+                        axisTick: {            // 坐标轴小标记
+                            length :12,        // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        splitLine: {           // 分隔线
+                            length :20,         // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        pointer: {
+                            width:5
+                        },
+                        title : {
+                            offsetCenter: [0, '30%'],       // x, y，单位px
+                        },
+                        detail : {
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                fontWeight: 'bolder'
+                            }
+                        },
+                        data:[{value: $scope.gauge.party.toFixed(1), name: $scope.gauge.partyName}]
                     },
-                    splitLine: {           // 分隔线
-                        length :20,         // 属性length控制线长
-                        lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                            color: 'auto'
-                        }
-                    },
-                    pointer: {
-                        width:5
-                    },
-                    title : {
-                        offsetCenter: [0, '30%'],       // x, y，单位px
-                    },
-                    detail : {
-                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                            fontWeight: 'bolder'
-                        }
-                    },
-                    data:[{value: 17, name: 'PAN'}]
-                },
-                {
-                    name:'油表',
-                    type:'gauge',
-                    center : ['80%', '55%'],    // 默认全局居中
-                    radius : '25%',
-                    min:0,
-                    max:20,
-                    startAngle:135,
-                    endAngle:-45,
-                    splitNumber:5,
-                    axisLine: {            // 坐标轴线
-                        lineStyle: {       // 属性lineStyle控制线条样式
-                            width: 8
-                        }
-                    },
-                    axisTick: {            // 坐标轴小标记
-                        length :12,        // 属性length控制线长
-                        lineStyle: {       // 属性lineStyle控制线条样式
-                            color: 'auto'
-                        }
-                    },
-                    splitLine: {           // 分隔线
-                        length :20,         // 属性length控制线长
-                        lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                            color: 'auto'
-                        }
-                    },
-                    pointer: {
-                        width:5
-                    },
-                    title : {
-                        offsetCenter: [0, '30%'],
-                    },
-                    detail : {
-                        textStyle: {
-                            fontWeight: 'bolder'
-                        }
-                    },
-                    data:[{value: 14, name: 'Pluri'}]
-                }
-            ]
-        });
+                    {
+                        name:'油表',
+                        type:'gauge',
+                        center : ['80%', '55%'],    // 默认全局居中
+                        radius : '45%',
+                        min:0,
+                        max:$scope.gauge.max,
+                        startAngle:135,
+                        endAngle:-45,
+                        splitNumber:5,
+                        axisLine: {            // 坐标轴线
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                width: 8
+                            }
+                        },
+                        axisTick: {            // 坐标轴小标记
+                            length :12,        // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        splitLine: {           // 分隔线
+                            length :20,         // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        pointer: {
+                            width:5
+                        },
+                        title : {
+                            offsetCenter: [0, '30%'],
+                        },
+                        detail : {
+                            textStyle: {
+                                fontWeight: 'bolder'
+                            }
+                        },
+                        data:[{value: $scope.gauge.pluri.toFixed(1), name: 'Pluri'}]
+                    }
+                ]
+            });
+          }
       });
 // clearInterval(timeTicket);
 // timeTicket = setInterval(function (){
