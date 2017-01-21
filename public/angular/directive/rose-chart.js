@@ -55,20 +55,23 @@ angular.module('app')
 
         $scope.$watch('rose', function() {
           if($scope.rose != undefined) {
-
-            var size = $(window).width() > $(window).height() ?  $(window).height(): $(window).width();
             var $rose = $(elem).find('.rose');
             var $bar = $(elem).find('.bar');
-            $rose.width(size * .90);
-            $bar.width(size * .90);
-            if($(window).width() > $(window).height()) {
+            var width = $rose.closest('.container').width();
+            var height = $(window).height();
+            var size = width > height ?  height: width;
+
+            $rose.width(size);
+            $bar.width(size);
+            if(width > height) {
               $rose.height(size * .55);
               $bar.height(size * .20);
             } else {
-              $rose.height(size * .75);
+              $rose.height(size * .80);
               $bar.height(size * .20);
+              console.log($bar.height())
+              console.log($bar.width())
             }
-
 
             $scope.rose.rose.forEach(function(item) {
               if(item.selected) {
@@ -124,9 +127,6 @@ angular.module('app')
             }); //Chart End
 
             $bar.chart({
-                grid: {
-                  height: (size * .2)/2
-                },
                 tooltip : {
                     trigger: 'axis',
                     axisPointer : {            // 坐标轴指示器，坐标轴触发有效

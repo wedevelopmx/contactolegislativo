@@ -11,11 +11,11 @@ angular.module('app')
 
         $scope.$watch('gauge.resp', function() {
           if($scope.gauge && $scope.gauge.resp == 3) {
-            //console.log($scope.gauge);
-
             var $chart = $(elem).find('.chart');
-            var size = $(window).width() > $(window).height() ?  $(window).height(): $(window).width();
-            $chart.width(size * .9);
+            var width = $chart.closest('.container').width();
+            var height = $(window).height();
+            var size = width > height ?  height: width;
+            $chart.width(size);
             $chart.height(size * .6);
 
             $chart.chart({
@@ -26,24 +26,24 @@ angular.module('app')
                     {
                         name:'速度',
                         type:'gauge',
-                        radius : '60%',
+                        radius : '65%',
                         z: 3,
                         min:0,
                         max:$scope.gauge.max,
                         splitNumber:10,
                         axisLine: {            // 坐标轴线
                             lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 10
+                                width: 6
                             }
                         },
                         axisTick: {            // 坐标轴小标记
-                            length :15,        // 属性length控制线长
+                            length :10,        // 属性length控制线长
                             lineStyle: {       // 属性lineStyle控制线条样式
                                 color: 'auto'
                             }
                         },
                         splitLine: {           // 分隔线
-                            length :20,         // 属性length控制线长
+                            length :15,         // 属性length控制线长
                             lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
                                 color: 'auto'
                             }
@@ -66,30 +66,30 @@ angular.module('app')
                         name:'转速',
                         type:'gauge',
                         center : ['20%', '55%'],    // 默认全局居中
-                        radius : '45%',
+                        radius : '55%',
                         min:0,
                         max:$scope.gauge.max,
                         endAngle:45,
-                        splitNumber:5,
+                        splitNumber:4,
                         axisLine: {            // 坐标轴线
                             lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 8
+                                width: 5
                             }
                         },
                         axisTick: {            // 坐标轴小标记
-                            length :12,        // 属性length控制线长
+                            length :10,        // 属性length控制线长
                             lineStyle: {       // 属性lineStyle控制线条样式
                                 color: 'auto'
                             }
                         },
                         splitLine: {           // 分隔线
-                            length :20,         // 属性length控制线长
+                            length :15,         // 属性length控制线长
                             lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
                                 color: 'auto'
                             }
                         },
                         pointer: {
-                            width:5
+                            width:4
                         },
                         title : {
                             offsetCenter: [0, '30%'],       // x, y，单位px
@@ -105,31 +105,31 @@ angular.module('app')
                         name:'油表',
                         type:'gauge',
                         center : ['80%', '55%'],    // 默认全局居中
-                        radius : '45%',
+                        radius : '55%',
                         min:0,
                         max:$scope.gauge.max,
                         startAngle:135,
                         endAngle:-45,
-                        splitNumber:5,
+                        splitNumber:4,
                         axisLine: {            // 坐标轴线
                             lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 8
+                                width: 5
                             }
                         },
                         axisTick: {            // 坐标轴小标记
-                            length :12,        // 属性length控制线长
+                            length :10,        // 属性length控制线长
                             lineStyle: {       // 属性lineStyle控制线条样式
                                 color: 'auto'
                             }
                         },
                         splitLine: {           // 分隔线
-                            length :20,         // 属性length控制线长
+                            length :15,         // 属性length控制线长
                             lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
                                 color: 'auto'
                             }
                         },
                         pointer: {
-                            width:5
+                            width:4
                         },
                         title : {
                             offsetCenter: [0, '30%'],
