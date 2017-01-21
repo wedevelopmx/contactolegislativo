@@ -131,6 +131,10 @@
   margin-bottom: 4rem;
 }
 
+.p-t {
+  padding-top: 4rem;
+}
+
 .rating {
   text-align: center;
   font-size: 5rem;

@@ -21,12 +21,32 @@
   </div>
   <div class="section pink">
     <div class="container text-center">
-      <h2 class="text-secondary">Te invitamos a ver cómo se desempeña el diputado federal de tu distrito</h2>
-      <h1><a ng-href="{{districtUrl}}">{{address.state}}, {{address.town}}, {{address.country}}</a></h1>
-      <h4 class="text-secondary">¿Esta no es tu ubicación? <span>Seleccione aqui<span></h4>
-      <!-- <span class="next" scroll-next="">
-        <i class="fa fa-3x fa-caret-down"></i>
-      </span> -->
+      <h2>Te invitamos a ver cómo se desempeña el diputado federal de tu distrito</h2>
+      <div ng-hide="choseLocation">
+        <h1><a ng-href="{{districtUrl}}">{{address.state}}, {{address.town}}, {{address.country}}</a></h1>
+        <h4 class="text-secondary">¿Esta no es tu ubicación? <span ng-click="choseLocation = true">Seleccione aqui<span></h4>
+      </div>
+      <div class="p-t" ng-show="choseLocation">
+        <h3 class="text-secondary">Selecciona tu estado y municipio:</h3>
+        <form class="row p-t">
+          <div class="col-xm-5 form-group">
+            <select class="form-control" ng-model="selectedState"
+              ng-options="state.name for state in states track by state.id"
+              ng-change="loadMunicipalities()">
+            </select>
+          </div>
+          <div class="col-xm-5 form-group">
+            <select class="form-control" ng-model="selectedTown"
+              ng-options="municipality.name for municipality in municipalities track by municipality.id"
+              ng-change="loadDistrictUrl()">
+              <option value="0" selected>-- Selecciona un municipio --</option>
+            </select>
+          </div>
+          <div class="col-xm-2 form-group">
+            <h2><a ng-href="{{districtUrl}}">Ver {{ selectedState.name }}, {{selectedTown.name}}, Mexico</a></h2>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
