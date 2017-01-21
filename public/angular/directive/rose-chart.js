@@ -60,9 +60,9 @@ angular.module('app')
             var $rose = $(elem).find('.rose');
             var $bar = $(elem).find('.bar');
             $rose.width(size * .90);
-            $rose.height(size * .70);
+            $rose.height(size * .60);
             $bar.width(size * .90);
-            $bar.height(size * .30);
+            $bar.height(size * .20);
 
             $scope.rose.rose.forEach(function(item) {
               if(item.selected) {
@@ -118,9 +118,9 @@ angular.module('app')
             }); //Chart End
 
             $bar.chart({
-                // grid: {
-                //   height: (size * .1)/2
-                // },
+                grid: {
+                  height: (size * .2)/2
+                },
                 tooltip : {
                     trigger: 'axis',
                     axisPointer : {            // 坐标轴指示器，坐标轴触发有效

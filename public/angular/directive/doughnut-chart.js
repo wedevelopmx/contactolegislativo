@@ -68,7 +68,7 @@ angular.module('app')
           var $chart = $(elem).find('.chart');
           var size = $(window).width() > $(window).height() ?  $(window).height(): $(window).width();
           $chart.width(size * .90);
-          $chart.height(size * .90);
+          $chart.height(size * .85);
 
           options.legend.x = size / 2;
           options.legend.y = size / 12;
