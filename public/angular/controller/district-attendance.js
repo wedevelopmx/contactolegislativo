@@ -12,7 +12,7 @@ angular.module('app')
       $scope.attendancePie = Chart.sortPie(grouping, attendance);
       $scope.deputy.attendance = $scope.attendancePie[0].total;
       $scope.attendanceGauge = { deputy: $scope.deputy.attendance, partyName: $scope.deputy.party, max: $scope.attendancePie.total, resp: 0 };
-      console.log($scope.attendancePie);
+      //console.log($scope.attendancePie);
 
       //Generate rate
       $scope.rate = Math.round(($scope.deputy.attendance / (2 * $scope.attendancePie.total)) * 100);
@@ -35,7 +35,7 @@ angular.module('app')
         $scope.chamber.attendanceChart = Chart.sortAttendanceforRose(attendance, $scope.deputy.attendance);
         $scope.attendanceGauge.chamber = $scope.chamber.attendanceChart.media;
         $scope.attendanceGauge.resp ++;
-        console.log($scope.chamber.attendanceChart);
+        //console.log($scope.chamber.attendanceChart);
       });
 
       //Query chamber party attendance
@@ -43,7 +43,7 @@ angular.module('app')
         $scope.chamber.party = { attendance : Chart.calculateMedia(attendance) } ;
         $scope.attendanceGauge.party = $scope.chamber.party.attendance.media;
         $scope.attendanceGauge.resp ++;
-        console.log($scope.chamber.party.attendance);
+        //console.log($scope.chamber.party.attendance);
       });
 
       //Query chamber 'Representación proporcional' aka Plurinominales
@@ -51,7 +51,7 @@ angular.module('app')
         $scope.chamber.pluri = { attendance : Chart.calculateMedia(attendance) };
         $scope.attendanceGauge.pluri = $scope.chamber.pluri.attendance.media;
         $scope.attendanceGauge.resp ++;
-        console.log($scope.chamber.pluri.attendance);
+        //console.log($scope.attendanceGauge);
       });
 
     });

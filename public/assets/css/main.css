@@ -85,6 +85,10 @@
   overflow: hidden
 }
 
+.img-circle img {
+    width: 100%;
+}
+
 .party {
   position: absolute;
   bottom: 0;
