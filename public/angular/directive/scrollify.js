@@ -1,19 +1,22 @@
 angular.module('app')
-  .directive("scrollify", [function() {
+  .directive("scrollify", ['$timeout', function($timeout) {
     return {
         restrict: "A",
         link: function(scope, elem, attrs) {
-          $.scrollify.destroy();
-          $.scrollify({
-            section : attrs.scrollify,
-            updateHash: false,
-            before: function(index, sections) {
-              $(sections[index]).find('.animated').addClass("fadeIn");
-            },
-            after: function(index, sections) {
-              $(sections[index]).find('.animated').removeClass("fadeIn");
-            }
-          });
+          $timeout(function() {
+            $.scrollify.destroy();
+            $.scrollify({
+              section : attrs.scrollify,
+              updateHash: false,
+              touchScroll: true,
+              before: function(index, sections) {
+                $(sections[index]).find('.animated').addClass("fadeIn");
+              },
+              after: function(index, sections) {
+                $(sections[index]).find('.animated').removeClass("fadeIn");
+              }
+            });
+          }, 1000);
         }
     }
   }])
