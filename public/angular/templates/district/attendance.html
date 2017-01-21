@@ -1,7 +1,7 @@
 <div ng-controller="DistrictAttendanceController">
   <div class="section">
     <div class="container">
-      <h2 class="text-center">Asistencia</h2>
+      <h3 class="text-center">Asistencia</h3>
       <h4 class="text-center m-b">Como ha atendido sus deberes tu diputado?:</h4>
       <div doughnut="attendancePie">
         <div class="chart"></div>
@@ -10,23 +10,23 @@
   </div>
   <div class="section">
     <div class="container">
-        <h3 class="text-center m-b">Tu diputado tiene {{deputy.attendance}} asistencias</h3>
+        <h4 class="text-center m-b">Tu diputado tiene {{deputy.attendance}} asistencias</h4>
         <div rose="chamber.attendanceChart">
           <div class="rose"></div>
           <div class="bar"></div>
         </div>
-        <h3 class="text-center p-t">{{chamber.attendanceChart.bar[2]}} ({{chamber.attendanceChart.better.toFixed(2)}}%) integrantes de la camara tienen mejor asistencia que el</h3>
+        <h4 class="text-center p-t">{{chamber.attendanceChart.bar[2]}} ({{chamber.attendanceChart.better.toFixed(2)}}%) integrantes de la camara tienen mejor asistencia que el</h4>
     </div>
   </div>
   <div class="section">
     <div class="container">
-      <h3 class="text-center m-b" ng-show="attendanceGauge.party > attendanceGauge.deputy">Tu diputado tiene un PEOR asistencia que la media en su partido</h3>
-      <h3 class="text-center m-b" ng-show="attendanceGauge.party < attendanceGauge.deputy">Tu diputado tiene un MEJOR asistencia que la media en su partido</h3>
+      <h4 class="text-center m-b" ng-show="attendanceGauge.party > attendanceGauge.deputy">Tu diputado tiene un PEOR asistencia que la media en su partido</h4>
+      <h4 class="text-center m-b" ng-show="attendanceGauge.party < attendanceGauge.deputy">Tu diputado tiene un MEJOR asistencia que la media en su partido</h4>
       <div gauge="attendanceGauge">
         <div class="chart"></div>
       </div>
-      <h3 class="text-center m-b" ng-show="attendanceGauge.pluri < attendanceGauge.deputy">Y MEJOR asistencia que los plurinominales</h3>
-      <h3 class="text-center m-b" ng-show="attendanceGauge.pluri > attendanceGauge.deputy">Y PEOR asistencia que los plurinominales</h3>
+      <h4 class="text-center m-b" ng-show="attendanceGauge.pluri < attendanceGauge.deputy">Y MEJOR asistencia que los plurinominales</h4>
+      <h4 class="text-center m-b" ng-show="attendanceGauge.pluri > attendanceGauge.deputy">Y PEOR asistencia que los plurinominales</h4>
     </div>
   </div>
   <div class="section pink">
@@ -39,7 +39,7 @@
       </div>
       <h3 class="text-center m-b">Tu diputado alcanza {{rate.toFixed(1)}} en asistencia</h3>
 
-      <h2 class="text-center m-b">Comparte tu feedback con tu diputado</h2>
+      <h3 class="text-center m-b">Comparte tu feedback con tu diputado</h3>
       <div class="text-center">
         <ul class="btn-group">
           <li class="circle-btn"><a ng-href="deputy.twitter"><i class="fa fa-2x fa-twitter"></i></a></li>
