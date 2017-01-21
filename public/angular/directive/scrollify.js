@@ -3,6 +3,7 @@ angular.module('app')
     return {
         restrict: "A",
         link: function(scope, elem, attrs) {
+          $.scrollify.destroy();
           $.scrollify({
             section : attrs.scrollify,
             updateHash: false
