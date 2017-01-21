@@ -60,9 +60,15 @@ angular.module('app')
             var $rose = $(elem).find('.rose');
             var $bar = $(elem).find('.bar');
             $rose.width(size * .90);
-            $rose.height(size * .60);
             $bar.width(size * .90);
-            $bar.height(size * .20);
+            if($(window).width() > $(window).height()) {
+              $rose.height(size * .55);
+              $bar.height(size * .20);
+            } else {
+              $rose.height(size * .75);
+              $bar.height(size * .20);
+            }
+
 
             $scope.rose.rose.forEach(function(item) {
               if(item.selected) {
