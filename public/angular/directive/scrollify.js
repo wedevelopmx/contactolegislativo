@@ -6,7 +6,13 @@ angular.module('app')
           $.scrollify.destroy();
           $.scrollify({
             section : attrs.scrollify,
-            updateHash: false
+            updateHash: false,
+            before: function(index, sections) {
+              $(sections[index]).find('.animated').addClass("fadeIn");
+            },
+            after: function(index, sections) {
+              $(sections[index]).find('.animated').removeClass("fadeIn");
+            }
           });
         }
     }

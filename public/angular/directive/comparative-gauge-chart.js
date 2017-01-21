@@ -11,7 +11,7 @@ angular.module('app')
 
         $scope.$watch('gauge.resp', function() {
           if($scope.gauge && $scope.gauge.resp == 3) {
-            console.log($scope.gauge);
+            //console.log($scope.gauge);
 
             var $chart = $(elem).find('.chart');
             var size = $(window).width() > $(window).height() ?  $(window).height(): $(window).width();
