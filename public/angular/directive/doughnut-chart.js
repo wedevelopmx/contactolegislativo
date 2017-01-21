@@ -66,11 +66,13 @@ angular.module('app')
 
         $scope.$watch('doughnut', function() {
           var $chart = $(elem).find('.chart');
-          var size = $(window).width() > $(window).height() ?  $(window).height(): $(window).width();
-          $chart.width(size * .90);
+          var width = $chart.closest('.container').width();
+          var height = $(window).height();
+          var size = width > height ?  height: width;
+          $chart.width(size);
           $chart.height(size * .85);
 
-          options.legend.x = size / 2;
+          options.legend.x = size * .45;
           options.legend.y = size / 12;
 
           index = 1;
@@ -104,6 +106,7 @@ angular.module('app')
                 name: row.legend,
                 type:'pie',
                 clockWise:false,
+                center: ["41%", "50%"],
                 radius : [size - radius, size],
                 itemStyle : dataStyle,
                 data: data
