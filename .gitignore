@@ -1,4 +1,6 @@
+!/downloads
 /downloads/*
+!/downloads/data.zip
 node_modules
 public/assets/vendor/*
 *.sqlite
