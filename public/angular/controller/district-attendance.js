@@ -3,7 +3,7 @@ angular.module('app')
     function($scope, District, Party, Chamber, Chart) {
     $scope.rating = { full: [1, 1, 1], half: [1], empty: [1]};
 
-    $scope.$on('deputy-loaded', function() {
+    $scope.$on('district-loaded', function() {
       District.attendance({ districtId: $scope.deputyId }, function(attendance) {
         grouping = [['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'],
                     ['JUSTIFICADA', 'INASISTENCIA', 'CÉDULA']];
