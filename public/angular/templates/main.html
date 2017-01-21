@@ -1,9 +1,9 @@
 <div scrollify=".section">
   <div class="section pink">
     <div class="container text-center animated fadeIn">
-      <h2 class="text-secondary">Nuestros legisladores realizan una labor importante para todos los ciudadanos</h2>
-      <h1>Lamentablemente no tenemos visibilidad de su desempeño</h1>
-      <h2 class="text-secondary">Y por lo tanto no podemos darles una retroalimentación pertinente</h2>
+      <h3 class="text-secondary">Nuestros legisladores realizan una labor importante para todos los ciudadanos</h3>
+      <h2>Lamentablemente no tenemos visibilidad de su desempeño</h2>
+      <h3 class="text-secondary">Y por lo tanto no podemos darles una retroalimentación pertinente</h3>
       <span class="next" scroll-next="">
         <i class="fa fa-3x fa-caret-down"></i>
       </span>
@@ -11,9 +11,9 @@
   </div>
   <div class="section">
     <div class="container text-center animated">
-      <h2 class="text-secondary">Representa Me</h2>
-      <h1>Te permite ver su desempeño de una forma sencilla</h1>
-      <h2 class="text-secondary">Al interpretar la información del portal de gobernación</h2>
+      <h3 class="text-secondary">Representa Me</h3>
+      <h2>Te permite ver su desempeño de una forma sencilla</h2>
+      <h3 class="text-secondary">Al interpretar la información del portal de gobernación</h3>
       <span class="next" scroll-next="">
         <i class="fa fa-3x fa-caret-down"></i>
       </span>
@@ -21,14 +21,14 @@
   </div>
   <div class="section pink">
     <div class="container text-center animated">
-      <h2>Te invitamos a ver cómo se desempeña el diputado federal de tu distrito</h2>
+      <h3>Te invitamos a ver cómo se desempeña el diputado federal de tu distrito</h3>
       <div ng-hide="choseLocation">
-        <h1><a ng-href="{{districtUrl}}">{{address.state}}, {{address.town}}, {{address.country}}</a></h1>
+        <h2><a ng-href="{{districtUrl}}">{{address.state}}, {{address.town}}, {{address.country}}</a></h2>
         <h4 class="text-secondary">¿Esta no es tu ubicación? <span ng-click="choseLocation = true">Seleccione aqui<span></h4>
       </div>
       <div class="p-t" ng-show="choseLocation">
         <h3 class="text-secondary">Selecciona tu estado y municipio:</h3>
-        <form class="row p-t">
+        <form class="p-t">
           <div class="col-xm-5 form-group">
             <select class="form-control" ng-model="selectedState"
               ng-options="state.name for state in states track by state.id"
@@ -43,7 +43,7 @@
             </select>
           </div>
           <div class="col-xm-2 form-group">
-            <h2><a ng-href="{{districtUrl}}">Ver {{ selectedState.name }}, {{selectedTown.name}}, Mexico</a></h2>
+            <h3><a ng-href="{{districtUrl}}">Ver {{ selectedState.name }}, {{selectedTown.name}}, Mexico</a></h3>
           </div>
         </form>
       </div>
