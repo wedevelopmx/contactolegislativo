@@ -24,7 +24,7 @@ angular.module('app')
                 show : true,
                 position : 'center',
                 textStyle : {
-                    fontSize : '30',
+                    fontSize : '24',
                     fontWeight : 'bold'
                 }
             }

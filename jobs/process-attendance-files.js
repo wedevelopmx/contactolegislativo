@@ -43,6 +43,9 @@ models.sequelize.sync().then(function () {
                 if(last === 'ASISTENCIA'  || last === 'JUSTIFICADA' ||
                     last === 'INASISTENCIA' || last === 'CÉDULA' ||
                     last === 'OFICIAL COMISIÓN' || last === 'PERMISO MESA DIRECTIVA' ) {
+                  if(row[1].trim() == 'Etcheverry Aranda Maricela Emilse') {
+                    row[1] = 'Azul Etcheverry Aranda'; // Name changes somehow!!!
+                  }
                   attendance.push({
                     name: row[1],
                     hash: namesKeyGen.generateKeyForTerm(row[1], ' '),
@@ -108,6 +111,14 @@ models.sequelize.sync().then(function () {
               models.AttendanceStg
                 .bulkCreate(bulkAttendance, { ignoreDuplicates: true })
                 .then(function(attendanceStg) {
+
+                  //Additional names where not being saved
+                  models.Name
+                    .bulkCreate(namesKeyGen.hashRecord, { ignoreDuplicates: true })
+                    .then(function(names) {
+                      console.log(names.length + ' names have been saved');
+                    });
+
                   attendanceStg = attendanceStg.map(function(attn) { return attn.get({ plain: true }); })
                   console.log(attendanceStg);
                 });
