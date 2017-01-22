@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        District.hasMany(models.Deputy, { as: 'deputies'});
+        //District.hasMany(models.Deputy, { as: 'deputies'});
       }
     }
   });
