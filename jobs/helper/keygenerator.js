@@ -34,7 +34,7 @@ module.exports  = function() {
 
   this.generateKeyForTerm = function(term, split) {
     key = 1;
-    names = term.replace(/  +/g, ' ').split(split);
+    names = term.trim().replace(/  +/g, ' ').split(split);
     for(i in names) {
       key *= this.generateKey(names[i].trim());
     }
