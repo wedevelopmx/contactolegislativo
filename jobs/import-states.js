@@ -3,6 +3,7 @@ var fs = require('fs');
 var readline = require('readline');
 var stream = require('stream');
 var models = require("../app/models");
+var HashMap = require("../jobs/helper/hashmap");
 
 // Current job process files provided by Diego Valle in his blog
 // We use them in order to pull out states, municipalities and districts
@@ -10,6 +11,26 @@ var models = require("../app/models");
 // Source: https://blog.diegovalle.net/2013/02/download-shapefiles-of-mexico.html
 
 models.sequelize.sync().then(function () {
+  var circHashMap = new HashMap();
+
+  var importCircunscripcion = function(callback) {
+    var instream = fs.createReadStream('downloads/data/states-circ.csv');
+    var outstream = new stream;
+    var rl = readline.createInterface(instream, outstream);
+
+    rl.on('line', function(line) {
+      col = line.split(',');
+
+      if(!circHashMap.containsKey(col[0])) {
+        circHashMap.put(col[0], col[1]);
+      }
+    });
+
+    rl.on('close', function() {
+      console.log(circHashMap);
+      callback(null, circHashMap)
+    });
+  }
 
   var importCountry = function(callback) {
     var instream = fs.createReadStream('downloads/data/inegi/municipios-inegi.csv');
@@ -27,7 +48,8 @@ models.sequelize.sync().then(function () {
         states.push({
           id: parseInt(col[0]),
           name: col[1],
-          short: col[2]
+          short: col[2],
+          area: circHashMap.containsKey(col[1]) ? circHashMap.get(col[1]) : 0
         });
 
         statesHash[col[1]] = states[states.length -1];
@@ -96,7 +118,7 @@ models.sequelize.sync().then(function () {
     });
   }
 
-  async.series([importCountry], function(err, result) {
+  async.series([importCircunscripcion, importCountry], function(err, result) {
     //console.log(result);
     // console.log('States: ' + result.states);
     // console.log('Municipalities: ' + result.towns);
