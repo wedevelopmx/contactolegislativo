@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
     picture: { type: DataTypes.STRING, name: 'picture' },
     party: { type: DataTypes.STRING, name: 'party', defaultValue: 'Uknown' },
     alternate: { type: DataTypes.STRING, name: 'alternate' },
-    twitter: { type: DataTypes.STRING, name: 'facebook' },
+    facebook: { type: DataTypes.STRING, name: 'facebook' },
     twitter: { type: DataTypes.STRING, name: 'twitter' },
     hash: { type: DataTypes.INTEGER, name: 'hash', defaultValue: 0 },
     altHash: { type: DataTypes.INTEGER, name: 'alt_hash', defaultValue: 0 }

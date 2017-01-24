@@ -11,6 +11,25 @@ var models  = require('../models');
 //   // });
 // });
 
+router.route('/')
+  .get(function(req, res, next) {
+    var queryString =
+    'select s.id, st.name as state, st.short as short, s.area as district, d.id as deputyId, d.displayName, d.party, count(1) as attendance from Seats s	join States st on st.id = s.StateId	join Deputies d on s.id = d.SeatId	left outer join Attendances a on d.id = a.Deputyid group by s.id, st.name, s.area, d.id, d.displayName, d.party order by s.id limit :offset, :limit;'
+
+    var offset = req.query.offset == undefined ? 0 : req.query.offset;
+    var limit = req.query.limit == undefined ? 25 : req.query.limit;
+
+    models.sequelize
+    .query(queryString, {
+      replacements: { offset: offset, limit: limit  },
+      type: models.sequelize.QueryTypes.SELECT
+    })
+    .then(function(attendance) {
+      res.json(attendance);
+    });
+
+  });
+
 router.get('/attendance', function(req, res, next) {
   console.log(req.query);
   var replacements = { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'] };

@@ -28,6 +28,10 @@
     "Scrollify": "https://github.com/lukehaas/Scrollify.git#^1.0.9",
     "angular-echarts": "^0.3.5",
     "async": "^2.1.4",
-    "animate.css": "^3.5.2"
+    "animate.css": "^3.5.2",
+    "datatables.net": "^2.1.1",
+    "datatables.net-dt": "^3.2.2",
+    "datatables.net-responsive": "^2.1.1",
+    "datatables.net-responsive-dt": "^2.1.1"
   }
 }

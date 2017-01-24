@@ -11,6 +11,10 @@ angular.module('app', ['ngRoute', 'ngResource'])
     .when('/deputy/:id', {
       templateUrl: 'angular/templates/deputy.html',
       controller: 'DeputyController'
+    })
+    .when('/chamber', {
+      templateUrl: 'angular/templates/chamber.html',
+      controller: 'ChamberController'
     });
     $routeProvider.otherwise({redirectTo: '/'});
   }]);

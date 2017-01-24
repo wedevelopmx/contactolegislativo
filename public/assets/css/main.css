@@ -88,12 +88,17 @@
     width: 100%;
 }
 
-.party {
+.picture .party {
   position: absolute;
   bottom: 0;
   right: 0;
   width: 50px;
   height: 50px;
+}
+
+td img.party {
+  width: 24px;
+  height: 24px;
 }
 
 @media (max-width: 768px) {
