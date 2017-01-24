@@ -69,8 +69,6 @@ angular.module('app')
             } else {
               $rose.height(size * .80);
               $bar.height(size * .20);
-              console.log($bar.height())
-              console.log($bar.width())
             }
 
             $scope.rose.rose.forEach(function(item) {
@@ -89,7 +87,7 @@ angular.module('app')
                 calculable : true,
                 series : [
                     {
-                        name:'Asistencias',
+                        name: $scope.rose.label,
                         type:'pie',
                         radius : [20, size/4],
                         center : ['50%', '50%'],
@@ -143,7 +141,7 @@ angular.module('app')
                 yAxis : [
                     {
                         type : 'category',
-                        data : ['Asistencia']
+                        data : [$scope.rose.label]
                     }
                 ],
                 series : [

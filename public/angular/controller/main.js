@@ -13,7 +13,7 @@ angular.module('app')
            town: response.data.address.county,
            country: response.data.address.country
          };
-         
+
          if($scope.address.state == 'Ciudad de México')
           $scope.address.state = 'Distrito Federal';
 

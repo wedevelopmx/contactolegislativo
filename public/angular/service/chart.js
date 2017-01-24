@@ -40,45 +40,45 @@ angular.module('app')
 								chart.percentage += data[i].percentage;
 								chart.legend.push(chart.percentage.toFixed(1) + '%');
 								chart.data.push({
-									value: data[i].attendance,
-									selected: (data[i].attendance == value)
+									value: data[i].value,
+									selected: (data[i].value == value)
 								});
-								// chart.legend.push(data[i].attendance);
+								// chart.legend.push(data[i].value);
 								// chart.data.push({
 								// 	value: data[i].deputies,
-								// 	selected: (data[i].attendance == value)
+								// 	selected: (data[i].value == value)
 								// });
-								if(data[i].attendance == value) {
+								if(data[i].value == value) {
 									chart.milestone = chart.percentage.toFixed(2);
 								}
-								chart.media += data[i].attendance;
+								chart.media += data[i].value;
 							}
 							chart.media /= data.length;
 							chart.media = chart.media.toFixed(2);
 							return chart;
 						},
-						sortAttendanceforRose: function(data, value) {
+						sortAttendanceforRose: function(data, value, label) {
 							chart = {
-								rose: [], bar: [0,0,0], media: 0, deputies: 0
+								label: label, rose: [], bar: [0,0,0], media: 0, deputies: 0
 							};
 							section = 0;
 							for(var i = 0; i < data.length; i++ ) {
 								//Rose chart
 								chart.rose.push({
 									value: data[i].deputies,
-									name: data[i].attendance,
-									selected: (data[i].attendance == value)
+									name: data[i].value,
+									selected: (data[i].value == value)
 								});
 								//Bar Chart
-								if(data[i].attendance < value) {
+								if(data[i].value < value) {
 									chart.bar[0] += data[i].deputies;
-								} else if(data[i].attendance == value) {
+								} else if(data[i].value == value) {
 									chart.bar[1] += data[i].deputies;
 								} else {
 									chart.bar[2] += data[i].deputies;
 								}
 								chart.deputies += data[i].deputies;
-								chart.media += data[i].attendance;
+								chart.media += data[i].value;
 							}
 
 							chart.media /= data.length;
@@ -99,7 +99,7 @@ angular.module('app')
 							chart = data;
 							chart.media = 0;
 							for(var i = 0; i < data.length; i++ ) {
-								chart.media += data[i].attendance;
+								chart.media += data[i].value;
 							}
 							chart.media /= data.length;
 							return data;

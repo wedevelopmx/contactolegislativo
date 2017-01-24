@@ -4,6 +4,7 @@ angular.module('app')
     $scope.rating = { full: [1, 1, 1], half: [1], empty: [1]};
 
     $scope.$on('district-loaded', function() {
+
       District.attendance({ districtId: $scope.deputyId }, function(attendance) {
         grouping = [['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'],
                     ['JUSTIFICADA', 'INASISTENCIA', 'CÉDULA']];
@@ -33,7 +34,7 @@ angular.module('app')
         Chamber.attendance({}, function(attendance) {
           $scope.chamber.attendance = attendance;
           //$scope.chamber.attendanceChart = Chart.sortLinePercentage(attendance, $scope.deputy.attendance);
-          $scope.chamber.attendanceChart = Chart.sortAttendanceforRose(attendance, $scope.deputy.attendance);
+          $scope.chamber.attendanceChart = Chart.sortAttendanceforRose(attendance, $scope.deputy.attendance, 'Asistencias');
           $scope.attendanceGauge.chamber = $scope.chamber.attendanceChart.media;
           $scope.attendanceGauge.resp ++;
           //console.log($scope.chamber.attendanceChart);
@@ -44,7 +45,7 @@ angular.module('app')
           $scope.chamber.party = { attendance : Chart.calculateMedia(attendance) } ;
           $scope.attendanceGauge.party = $scope.chamber.party.attendance.media;
           $scope.attendanceGauge.resp ++;
-          //console.log($scope.chamber.party.attendance);
+          console.log($scope.chamber.party.attendance);
         });
 
         //Query chamber 'Representación proporcional' aka Plurinominales
@@ -52,7 +53,7 @@ angular.module('app')
           $scope.chamber.pluri = { attendance : Chart.calculateMedia(attendance) };
           $scope.attendanceGauge.pluri = $scope.chamber.pluri.attendance.media;
           $scope.attendanceGauge.resp ++;
-          //console.log($scope.attendanceGauge);
+          console.log($scope.attendanceGauge);
         });
 
       });

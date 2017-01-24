@@ -25,7 +25,7 @@ router.get('/attendance', function(req, res, next) {
   console.log(req.query);
   var replacements = { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'] };
   var queryString =
-    'select number as attendance, count(1) as deputies from ( select s.id, count(1) as number from Seats s join Deputies d on s.id = d.SeatId join Attendances a on a.DeputyId = d.id where a.attendance in (:attendance) ';
+    'select attendance as value, count(1) as deputies from ( select s.id, count(1) as attendance from Seats s join Deputies d on s.id = d.SeatId join Attendances a on a.DeputyId = d.id where a.attendance in (:attendance) ';
   if(req.query.party) {
     queryString += ' and d.party = :party';
     replacements.party = req.query.party;
@@ -33,7 +33,7 @@ router.get('/attendance', function(req, res, next) {
     queryString += ' and s.type = :election';
     replacements.election = req.query.election;
   }
-  queryString += ' group by s.id ) group by number';
+  queryString += ' group by s.id ) group by attendance';
 
   models.sequelize
   .query(queryString, {
@@ -55,7 +55,7 @@ router.get('/attendance', function(req, res, next) {
 router.get('/:party/attendance', function(req, res, next) {
 
   queryString =
-    'select number as attendance, count(1) as deputies from ( select s.id, count(1) as number from Seats s join Deputies d on s.id = d.SeatId join Attendances a on a.DeputyId = d.id where a.attendance in (:attendance) and d.party = :party group by s.id ) group by number';
+    'select attendance as value, count(1) as deputies from ( select s.id, count(1) as attendance from Seats s join Deputies d on s.id = d.SeatId join Attendances a on a.DeputyId = d.id where a.attendance in (:attendance) and d.party = :party group by s.id ) group by attendance';
   models.sequelize
   .query(queryString, {
     replacements: { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'], party: req.param.party },
@@ -77,7 +77,7 @@ router.get('/initiatives', function(req, res, next) {
   console.log(req.query);
   var replacements = { initiativeType: ['Proponente'] };
   var queryString =
-    'select initiatives, count(1) deputies from ( select s.id, di.type, count(1) as initiatives from Seats s  	join Deputies d on s.id = d.SeatId 	left outer join DeputyInitiatives di on d.id = di.DeputyId and di.type in (:initiativeType) where di.type is not null group by s.id, di.type union select s.id, di.type, 0 as initiatives from Seats s  	join Deputies d on s.id = d.SeatId 	left outer join DeputyInitiatives di on d.id = di.DeputyId and di.type in (:initiativeType) where di.type is null group by s.id, di.type having count(1) == 2 order by s.id ) group by initiatives';
+    'select initiatives as value, count(1) deputies from ( select s.id, di.type, count(1) as initiatives from Seats s  	join Deputies d on s.id = d.SeatId 	left outer join DeputyInitiatives di on d.id = di.DeputyId and di.type in (:initiativeType) where di.type is not null group by s.id, di.type union select s.id, di.type, 0 as initiatives from Seats s  	join Deputies d on s.id = d.SeatId 	left outer join DeputyInitiatives di on d.id = di.DeputyId and di.type in (:initiativeType) where di.type is null group by s.id, di.type having count(1) == 2 order by s.id ) group by initiatives';
 
   models.sequelize
   .query(queryString, {
