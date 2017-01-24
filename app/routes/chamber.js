@@ -2,15 +2,6 @@ var express = require('express');
 var router = express.Router();
 var models  = require('../models');
 
-// router.get('/:id', function(req, res, next) {
-//   // models.Deputy
-//   // .findOne({ where : { id: req.params.id } })
-//   // .then(function(deputy) {
-//   //   console.log(deputy.get({ plain: true}));
-//   //   res.json(deputy);
-//   // });
-// });
-
 router.route('/')
   .get(function(req, res, next) {
     var queryString =
@@ -82,13 +73,27 @@ router.get('/:party/attendance', function(req, res, next) {
 
 });
 
+router.get('/initiatives', function(req, res, next) {
+  console.log(req.query);
+  var replacements = { initiativeType: ['Proponente'] };
+  var queryString =
+    'select initiatives, count(1) deputies from ( select s.id, di.type, count(1) as initiatives from Seats s  	join Deputies d on s.id = d.SeatId 	left outer join DeputyInitiatives di on d.id = di.DeputyId and di.type in (:initiativeType) where di.type is not null group by s.id, di.type union select s.id, di.type, 0 as initiatives from Seats s  	join Deputies d on s.id = d.SeatId 	left outer join DeputyInitiatives di on d.id = di.DeputyId and di.type in (:initiativeType) where di.type is null group by s.id, di.type having count(1) == 2 order by s.id ) group by initiatives';
 
-// select value as name, count(1) as value
-// from (
-// select DeputyId, attendance, count(attendance)  as value
-// from Attendances
-// where attendance = 'ASISTENCIA'
-// group by DeputyId)
-// group by value
+  models.sequelize
+  .query(queryString, {
+    replacements: replacements,
+    type: models.sequelize.QueryTypes.SELECT
+  })
+  .then(function(initiatives) {
+    total = 0;
+    initiatives.forEach(function(item) { total += item.deputies; })
+    result = initiatives.map(function(item) {
+      item.percentage =  (item.deputies / total) * 100;
+      return item;
+    });
+    res.json(result);
+  });
+
+});
 
 module.exports = router;

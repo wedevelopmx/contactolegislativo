@@ -30,7 +30,21 @@ router.get('/:id/attendance', function(req, res, next) {
   .then(function(attendance) {
     res.json(attendance);
   });
+});
 
+
+router.get('/:id/initiatives', function(req, res, next) {
+  queryString =
+  'select di.type as name, count(1) as value from Seats s join Deputies d on s.id = d.SeatId join DeputyInitiatives di on d.id = di.DeputyId where s.id = :districtId group by s.id, di.type';
+
+  models.sequelize
+  .query(queryString, {
+    replacements: { districtId: req.params.id },
+    type: models.sequelize.QueryTypes.SELECT
+  })
+  .then(function(attendance) {
+    res.json(attendance);
+  });
 });
 
 // router.get('/:id/initiatives', function(req, res, next) {
