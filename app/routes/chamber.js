@@ -122,4 +122,32 @@ router.get('/votes', function(req, res, next) {
 
 });
 
+router.get('/votes-avg', function(req, res, next) {
+  var replacements = { };
+
+  var additionalFilter = '';
+  if(req.query.party) {
+    additionalFilter += ' and d.party = :party';
+    replacements.party = req.query.party;
+  } else if(req.query.election) {
+    additionalFilter += ' and s.type = :election';
+    replacements.election = req.query.election;
+  }
+
+  var queryString =
+    'select vote as value, avg(votes) as avg from ( 	select s.id, v.vote, count(1) as votes 	from Seats s  	join Deputies d on d.SeatId = s.id ' +
+    additionalFilter +
+    ' join Votes v on v.DeputyId = d.id 	group by s.id, v.vote 	order by s.id ) group by vote ';
+
+  models.sequelize
+  .query(queryString, {
+    replacements: replacements,
+    type: models.sequelize.QueryTypes.SELECT
+  })
+  .then(function(votes) {
+    res.json(votes);
+  });
+
+});
+
 module.exports = router;

@@ -21,6 +21,13 @@ angular.module('app')
 							params: {
                 action:'votes'
             	}
+						},
+						votesAvg: {
+							method: 'GET',
+							isArray: true,
+							params: {
+                action:'votes-avg'
+            	}
 						}
 					});
 

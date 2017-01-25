@@ -1,0 +1,52 @@
+<div ng-controller="DistrictVotesController">
+  <div class="section">
+    <div class="container">
+      <h3 class="text-center">Votos</h3>
+      <h4 class="text-center m-b">Como ha votado tu diputado?:</h4>
+      <div doughnut="votesPie">
+        <div class="chart"></div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+        <h4 class="text-center m-b">Tu diputado tiene {{deputy.votes}} votos a favor</h4>
+        <div rose="chamber.votesChart">
+          <div class="rose"></div>
+          <div class="bar"></div>
+        </div>
+        <h4 class="text-center p-t">{{chamber.votesChart.bar[2]}} ({{chamber.votesChart.better.toFixed(2)}}%) integrantes de la camara han votado mas a favor que el</h4>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <h4 class="text-center m-b" ng-show="votesGauge.party > votesGauge.deputy">Tu diputado vota MENOS a favor que la media en su partido</h4>
+      <h4 class="text-center m-b" ng-show="votesGauge.party < votesGauge.deputy">Tu diputado vota MAS a favor que la media en su partido</h4>
+      <div gauge="votesGauge">
+        <div class="chart"></div>
+      </div>
+      <h4 class="text-center m-b" ng-show="votesGauge.pluri < votesGauge.deputy">Y vota MENOS a favor que los plurinominales</h4>
+      <h4 class="text-center m-b" ng-show="votesGauge.pluri > votesGauge.deputy">Y vota MAS a favot que los plurinominales</h4>
+    </div>
+  </div>
+  <div class="section pink">
+    <div class="container">
+
+      <div class="rating">
+        <i class="fa fa-star" ng-repeat="rate in rating.full track by $index"></i>
+        <i class="fa fa-star-half-full" ng-repeat="rate in rating.half track by $index"></i>
+        <i class="fa fa-star-o" ng-repeat="rate in rating.empty track by $index"></i>
+      </div>
+      <h3 class="text-center m-b">Tu diputado alcanza {{rate.toFixed(1)}} en votacion</h3>
+
+      <h3 class="text-center m-b">Comparte tu feedback con tu diputado</h3>
+      <div class="text-center">
+        <ul class="btn-group">
+          <li class="circle-btn"><a ng-href="deputy.twitter"><i class="fa fa-2x fa-twitter"></i></a></li>
+          <li class="circle-btn"><a ng-href="deputy.email"><i class="fa fa-2x fa-envelope"></i></a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
