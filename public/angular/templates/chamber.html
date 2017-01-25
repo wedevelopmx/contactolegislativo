@@ -4,20 +4,26 @@
       <table class="table table-hover">
         <thead>
           <tr>
+            <th></th>
             <th class="hidden-xs">Estado</th>
             <th class="visible-xs">Edo</th>
             <th><span class="hidden-xs">Distrito</span><span class="visible-xs">D#</span></th>
+            <th></th>
             <th></th>
             <th>Diputado</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="deputy in deputies">
+            <td ng-bind="$index + 1"></td>
             <td ng-bind="deputy.state" class="hidden-xs"></td>
             <td ng-bind="deputy.short" class="visible-xs"></td>
             <td ng-bind="deputy.district"></td>
             <td>
               <img  class="party" ng-src="assets/images/{{deputy.party}}.png">
+            </td>
+            <td>
+              <span ng-bind="deputy.election"></span>
             </td>
             <td>
               <a ng-href="#/district/{{deputy.id}}">
