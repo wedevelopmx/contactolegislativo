@@ -11,12 +11,17 @@ angular.module('app')
 
         $scope.$watch('gauge.resp', function() {
           if($scope.gauge && $scope.gauge.resp == 3) {
+            //console.log($scope.gauge)
             var $chart = $(elem).find('.chart');
             var width = $chart.closest('.container').width();
             var height = $(window).height();
             var size = width > height ?  height: width;
             $chart.width(size);
             $chart.height(size * .6);
+
+            var graphMax = ($scope.gauge.deputy > $scope.gauge.party ? $scope.gauge.deputy : $scope.gauge.party );
+            graphMax = (graphMax > $scope.gauge.pluri ? graphMax : $scope.gauge.pluri );
+            graphMax = Math.floor(graphMax * 1.2);
 
             $chart.chart({
                 tooltip : {
@@ -29,7 +34,7 @@ angular.module('app')
                         radius : '65%',
                         z: 3,
                         min:0,
-                        max:$scope.gauge.max,
+                        max:graphMax,
                         splitNumber:10,
                         axisLine: {            // 坐标轴线
                             lineStyle: {       // 属性lineStyle控制线条样式
@@ -68,7 +73,7 @@ angular.module('app')
                         center : ['20%', '55%'],    // 默认全局居中
                         radius : '55%',
                         min:0,
-                        max:$scope.gauge.max,
+                        max:graphMax,
                         endAngle:45,
                         splitNumber:4,
                         axisLine: {            // 坐标轴线
@@ -107,7 +112,7 @@ angular.module('app')
                         center : ['80%', '55%'],    // 默认全局居中
                         radius : '55%',
                         min:0,
-                        max:$scope.gauge.max,
+                        max:graphMax,
                         startAngle:135,
                         endAngle:-45,
                         splitNumber:4,
