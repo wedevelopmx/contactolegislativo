@@ -88,4 +88,38 @@ router.get('/initiatives', function(req, res, next) {
 
 });
 
+router.get('/votes', function(req, res, next) {
+  var replacements = { voteType: ['A favor'] };
+
+  var additionalFilter = '';
+  if(req.query.party) {
+    additionalFilter += ' and d.party = :party';
+    replacements.party = req.query.party;
+  } else if(req.query.election) {
+    additionalFilter += ' and s.type = :election';
+    replacements.election = req.query.election;
+  }
+
+  var queryString =
+    'select case	when votes < 100 then \'< 100\'	when votes >= 100 and votes < 150 then \'100-149\' when votes >= 150 and votes < 200 then \'150-199\' when votes >= 200 and votes < 250 then \'200-249\' when votes >= 250 and votes < 300 then \'250-299\' when votes >= 300 and votes < 400 then \'300-399\' 	else \'> 400\' end as value, 	count(1) as deputies from (	select s.id, count(1) as votes 	from Seats s join Deputies d on d.SeatId = s.id join Votes v on v.DeputyId = d.id ' +
+    additionalFilter +
+    ' where v.vote in (:voteType) group by s.id, v.vote 	order by s.id ) group by value ';
+
+  models.sequelize
+  .query(queryString, {
+    replacements: replacements,
+    type: models.sequelize.QueryTypes.SELECT
+  })
+  .then(function(votes) {
+    total = 0;
+    votes.forEach(function(item) { total += item.deputies; })
+    result = votes.map(function(item) {
+      item.percentage =  (item.deputies / total) * 100;
+      return item;
+    });
+    res.json(result);
+  });
+
+});
+
 module.exports = router;

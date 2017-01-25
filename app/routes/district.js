@@ -47,36 +47,18 @@ router.get('/:id/initiatives', function(req, res, next) {
   });
 });
 
-// router.get('/:id/initiatives', function(req, res, next) {
-//
-  // queryString =
-  // 'select  di.type as name, count(1) as value from DeputyInitiatives di join Initiatives i on di.InitiativeId = i.id join Sessions s on s.id = i.SessionId where di.DeputyId = :deputyId group by di.type order by s.name';
-  // //'select s.id, s.name as periodo, di.type as name, count(1) as value from DeputyInitiatives di join Initiatives i on di.InitiativeId = i.id 	join Sessions s on s.id = i.SessionId where di.DeputyId = :deputyId group by di.type, s.name order by s.id, s.name';
-  // console.log(models.sequelize.query);
-  // models.sequelize
-  // .query(queryString, {
-  //   replacements: { deputyId: req.params.id },
-  //   type: models.sequelize.QueryTypes.SELECT
-  // })
-  // .then(function(initiatives) {
-  //   res.json(initiatives)
-  // });
-//
-// });
-//
-// router.get('/:id/votes', function(req, res, next) {
-//
-//   queryString = 'select s.id, s.name as periodo, di.type as name, count(1) as value from DeputyInitiatives di join Initiatives i on di.InitiativeId = i.id 	join Sessions s on s.id = i.SessionId where di.DeputyId = :deputyId group by di.type, s.name order by s.id, s.name';
-//   console.log(models.sequelize.query);
-//   models.sequelize
-//   .query(queryString, {
-//     replacements: { deputyId: req.params.id },
-//     type: models.sequelize.QueryTypes.SELECT
-//   })
-//   .then(function(initiatives) {
-//     res.json(initiatives)
-//   });
-//
-// });
+router.get('/:id/votes', function(req, res, next) {
+  queryString =
+  'select v.vote as name, count(1) as value from Seats s join Deputies d on d.SeatId = s.id join Votes v on v.DeputyId = d.id where s.id = :districtId group by v.vote order by count(1) desc';
+
+  models.sequelize
+  .query(queryString, {
+    replacements: { districtId: req.params.id },
+    type: models.sequelize.QueryTypes.SELECT
+  })
+  .then(function(attendance) {
+    res.json(attendance);
+  });
+});
 
 module.exports = router;
