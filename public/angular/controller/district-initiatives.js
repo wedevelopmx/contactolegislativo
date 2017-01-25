@@ -16,44 +16,45 @@ angular.module('app')
         $scope.initiativesGauge = { deputy: $scope.deputy.initiatives, partyName: $scope.deputy.party, max: $scope.initiativesPie.total, resp: 0 };
         //console.log($scope.attendancePie);
 
-        // //Generate rate
-        // $scope.rate = Math.round(($scope.deputy.attendance / (2 * $scope.attendancePie.total)) * 100);
-        // var generateIcon = function(stars) {
-        //   r = [];
-        //   for(var i = 0; i < stars; i ++){
-        //     r.push(1);
-        //   }
-        //   return r;
-        // }
-        // $scope.rating.full = generateIcon(Math.floor($scope.rate / 10));
-        // $scope.rating.half = generateIcon(Math.floor(($scope.rate % 10) / 5));
-        // $scope.rating.empty = generateIcon(5 - Math.floor($scope.rate / 10) - Math.floor(($scope.rate % 10) / 5));
-        // $scope.rate /= 10;
-        //
+        //Generate rate
+        
+        $scope.rate = Math.round(($scope.deputy.initiatives / (2 * $scope.initiativesPie.total)) * 100); // 2 beacuse we use 5 start not 10
+        var generateIcon = function(stars) {
+          r = [];
+          for(var i = 0; i < stars; i ++){
+            r.push(1);
+          }
+          return r;
+        }
+        $scope.rating.full = generateIcon(Math.floor($scope.rate / 10));
+        $scope.rating.half = generateIcon(Math.floor(($scope.rate % 10) / 5));
+        $scope.rating.empty = generateIcon(5 - Math.floor($scope.rate / 10) - Math.floor(($scope.rate % 10) / 5));
+        $scope.rate /= 10;
+
         //Query chamber attendance
         Chamber.initiatives({}, function(initiatives) {
           $scope.chamber.initiatives = initiatives;
           $scope.chamber.initiativesChart = Chart.sortAttendanceforRose(initiatives, $scope.deputy.initiatives, 'Iniciativas');
           $scope.initiativesGauge.chamber = $scope.chamber.initiativesChart.media;
           $scope.initiativesGauge.resp ++;
-          console.log($scope.chamber.initiativesChart);
+          //console.log($scope.chamber.initiativesChart);
         });
-        //
-        // //Query chamber party attendance
-        // Chamber.attendance({party: $scope.deputy.party}, function(attendance) {
-        //   $scope.chamber.party = { attendance : Chart.calculateMedia(attendance) } ;
-        //   $scope.attendanceGauge.party = $scope.chamber.party.attendance.media;
-        //   $scope.attendanceGauge.resp ++;
-        //   //console.log($scope.chamber.party.attendance);
-        // });
-        //
-        // //Query chamber 'Representación proporcional' aka Plurinominales
-        // Chamber.attendance({election: 'Representación proporcional'}, function(attendance) {
-        //   $scope.chamber.pluri = { attendance : Chart.calculateMedia(attendance) };
-        //   $scope.attendanceGauge.pluri = $scope.chamber.pluri.attendance.media;
-        //   $scope.attendanceGauge.resp ++;
-        //   //console.log($scope.attendanceGauge);
-        // });
+
+        //Query chamber party attendance
+        Chamber.initiatives({party: $scope.deputy.party}, function(initiatives) {
+          $scope.chamber.party = { initiatives : Chart.calculateMedia(initiatives) } ;
+          $scope.initiativesGauge.party = $scope.chamber.party.initiatives.media;
+          $scope.initiativesGauge.resp ++;
+          //console.log($scope.chamber.party.initiatives);
+        });
+
+        //Query chamber 'Representación proporcional' aka Plurinominales
+        Chamber.initiatives({election: 'Representación proporcional'}, function(initiatives) {
+          $scope.chamber.pluri = { initiatives : Chart.calculateMedia(initiatives) };
+          $scope.initiativesGauge.pluri = $scope.chamber.pluri.initiatives.media;
+          $scope.initiativesGauge.resp ++;
+          //console.log($scope.initiativesGauge);
+        });
 
       });
     });

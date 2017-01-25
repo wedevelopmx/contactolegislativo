@@ -18,15 +18,15 @@
         <h4 class="text-center p-t">{{chamber.initiativesChart.bar[2]}} ({{chamber.initiativesChart.better.toFixed(2)}}%) integrantes de la camara presentaron mas iniciativas que el</h4>
     </div>
   </div>
-  <!-- <div class="section">
+  <div class="section">
     <div class="container">
-      <h4 class="text-center m-b" ng-show="attendanceGauge.party > attendanceGauge.deputy">Tu diputado tiene un PEOR asistencia que la media en su partido</h4>
-      <h4 class="text-center m-b" ng-show="attendanceGauge.party < attendanceGauge.deputy">Tu diputado tiene un MEJOR asistencia que la media en su partido</h4>
-      <div gauge="attendanceGauge">
+      <h4 class="text-center m-b" ng-show="initiativesGauge.party > initiativesGauge.deputy">Tu diputado tiene un MENOS iniciativas que la media en su partido</h4>
+      <h4 class="text-center m-b" ng-show="initiativesGauge.party < initiativesGauge.deputy">Tu diputado tiene un MAS iniciativas que la media en su partido</h4>
+      <div gauge="initiativesGauge">
         <div class="chart"></div>
       </div>
-      <h4 class="text-center m-b" ng-show="attendanceGauge.pluri < attendanceGauge.deputy">Y MEJOR asistencia que los plurinominales</h4>
-      <h4 class="text-center m-b" ng-show="attendanceGauge.pluri > attendanceGauge.deputy">Y PEOR asistencia que los plurinominales</h4>
+      <h4 class="text-center m-b" ng-show="initiativesGauge.pluri < initiativesGauge.deputy">Y MAS iniciativas que los plurinominales</h4>
+      <h4 class="text-center m-b" ng-show="initiativesGauge.pluri > initiativesGauge.deputy">Y MENOS iniciativas que los plurinominales</h4>
     </div>
   </div>
   <div class="section pink">
@@ -37,7 +37,7 @@
         <i class="fa fa-star-half-full" ng-repeat="rate in rating.half track by $index"></i>
         <i class="fa fa-star-o" ng-repeat="rate in rating.empty track by $index"></i>
       </div>
-      <h3 class="text-center m-b">Tu diputado alcanza {{rate.toFixed(1)}} en asistencia</h3>
+      <h3 class="text-center m-b">Tu diputado alcanza {{rate.toFixed(1)}} en iniciativas</h3>
 
       <h3 class="text-center m-b">Comparte tu feedback con tu diputado</h3>
       <div class="text-center">
@@ -48,5 +48,5 @@
       </div>
 
     </div>
-  </div> -->
+  </div>
 </div>

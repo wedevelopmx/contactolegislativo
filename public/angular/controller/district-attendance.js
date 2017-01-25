@@ -45,7 +45,7 @@ angular.module('app')
           $scope.chamber.party = { attendance : Chart.calculateMedia(attendance) } ;
           $scope.attendanceGauge.party = $scope.chamber.party.attendance.media;
           $scope.attendanceGauge.resp ++;
-          console.log($scope.chamber.party.attendance);
+          //console.log($scope.chamber.party.attendance);
         });
 
         //Query chamber 'Representación proporcional' aka Plurinominales
@@ -53,7 +53,7 @@ angular.module('app')
           $scope.chamber.pluri = { attendance : Chart.calculateMedia(attendance) };
           $scope.attendanceGauge.pluri = $scope.chamber.pluri.attendance.media;
           $scope.attendanceGauge.resp ++;
-          console.log($scope.attendanceGauge);
+          //console.log($scope.attendanceGauge);
         });
 
       });

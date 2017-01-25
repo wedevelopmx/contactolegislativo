@@ -95,13 +95,24 @@ angular.module('app')
 
 							return chart;
 						},
+						// calculateMedia: function(data) {
+						// 	chart = data;
+						// 	chart.media = 0;
+						// 	for(var i = 0; i < data.length; i++ ) {
+						// 		chart.media += data[i].value;
+						// 	}
+						// 	chart.media /= data.length;
+						// 	return data;
+						// }
 						calculateMedia: function(data) {
 							chart = data;
 							chart.media = 0;
+							chart.size = 0;
 							for(var i = 0; i < data.length; i++ ) {
-								chart.media += data[i].value;
+								chart.media += (data[i].value * data[i].deputies);
+								chart.size += data[i].deputies;
 							}
-							chart.media /= data.length;
+							chart.media /= chart.size;
 							return data;
 						}
           };
