@@ -78,10 +78,11 @@ angular.module('app')
 									chart.bar[2] += data[i].deputies;
 								}
 								chart.deputies += data[i].deputies;
-								chart.media += data[i].value;
+								chart.media += (data[i].value * data[i].deputies);
 							}
 
-							chart.media /= data.length;
+							//chart.media /= data.length;
+							chart.media /= chart.deputies;
 
 							chart.rose.forEach(function(item) {
 								if(Math.round(chart.media) == item.name ) {
@@ -112,6 +113,7 @@ angular.module('app')
 								chart.media += (data[i].value * data[i].deputies);
 								chart.size += data[i].deputies;
 							}
+							
 							chart.media /= chart.size;
 							return data;
 						}
