@@ -1,5 +1,19 @@
 angular.module('app')
-  .directive('rose', [function() {
+  .directive('rose', ['ChartDimentions', function(ChartDimentions) {
+    var barItemStyle = {
+      normal: {
+        label : {
+          show: true,
+          formatter: "{c}",
+          position: 'insideTop',
+          textStyle: {
+            fontSize: 16,
+            align: 'center'
+          }
+        }
+      }
+    };
+
     var selectedItemStyle =  {
         normal : {
             label : {
@@ -55,21 +69,19 @@ angular.module('app')
 
         $scope.$watch('rose', function() {
           if($scope.rose != undefined) {
+            ChartDimentions.init();
             var $rose = $(elem).find('.rose');
             var $bar = $(elem).find('.bar');
-            var width = $rose.closest('.container').width();
-            var height = $(window).height();
-            var size = width > height ?  height: width;
+            var size = ChartDimentions.graphSize();
+            var fontSize = ChartDimentions.find('fontSize');
+            mediaItemStyle.normal.label.textStyle.fontSize = fontSize;
+            selectedItemStyle.normal.label.textStyle.fontSize = fontSize;
+            barItemStyle.normal.label.textStyle.fontSize = fontSize;
 
             $rose.width(size);
             $bar.width(size);
-            if(width > height) {
-              $rose.height(size * .55);
-              $bar.height(size * .20);
-            } else {
-              $rose.height(size * .80);
-              $bar.height(size * .20);
-            }
+            $rose.height(size * .80);
+            $bar.height(size * .20);
 
             $scope.rose.rose.forEach(function(item) {
               if(item.selected) {
@@ -99,7 +111,7 @@ angular.module('app')
                                 label : {
                                     show : false,
                                     textStyle: {
-                                      fontSize: 16
+                                      fontSize: fontSize
                                     }
                                 },
                                 labelLine : {
@@ -111,7 +123,7 @@ angular.module('app')
                                     show : true,
                                     formatter: "{b} {a}",
                                     textStyle: {
-                                      fontSize: 16
+                                      fontSize: fontSize
                                     }
                                 },
                                 labelLine : {
@@ -125,13 +137,15 @@ angular.module('app')
             }); //Chart End
 
             $bar.chart({
+                tile: { show: false },
+                grid: { height: "70%" },
                 tooltip : {
                     trigger: 'axis',
                     axisPointer : {            // 坐标轴指示器，坐标轴触发有效
                         type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                     }
                 },
-                calculable : true,
+                calculable : false,
                 xAxis : [
                     {
                         type : 'value',
@@ -141,7 +155,8 @@ angular.module('app')
                 yAxis : [
                     {
                         type : 'category',
-                        data : [$scope.rose.label]
+                        data : [$scope.rose.label],
+                        axisLabel: { show: false }
                     }
                 ],
                 series : [
@@ -149,21 +164,22 @@ angular.module('app')
                         name:'Menor',
                         type:'bar',
                         stack: 'group 1',
-                        itemStyle : { normal: {label : {show: true, formatter: "{c}", position: 'insideRight'}}},
+                        barMinHeight: 40,
+                        itemStyle : barItemStyle,
                         data:[$scope.rose.bar[0]]
                     },
                     {
                         name:'Igual',
                         type:'bar',
                         stack: 'group 1',
-                        itemStyle : { normal: {label : {show: true, formatter: "{c}", position: 'insideRight'}}},
+                        itemStyle : barItemStyle,
                         data:[$scope.rose.bar[1]]
                     },
                     {
                         name:'Mejor',
                         type:'bar',
                         stack: 'group 1',
-                        itemStyle : { normal: {label : {show: true, formatter: "{c}", position: 'insideRight'}}},
+                        itemStyle : barItemStyle,
                         data:[$scope.rose.bar[2]]
                     }
                 ]

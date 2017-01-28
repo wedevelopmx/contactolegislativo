@@ -1,5 +1,5 @@
 angular.module('app')
-  .directive('gauge', [function() {
+  .directive('gauge', ['ChartDimentions', function(ChartDimentions) {
 
 
     return {
@@ -11,17 +11,17 @@ angular.module('app')
 
         $scope.$watch('gauge.resp', function() {
           if($scope.gauge && $scope.gauge.resp == 3) {
-            //console.log($scope.gauge)
+            ChartDimentions.init();
+
             var $chart = $(elem).find('.chart');
-            var width = $chart.closest('.container').width();
-            var height = $(window).height();
-            var size = width > height ?  height: width;
+
+            var size = ChartDimentions.graphSize();
             $chart.width(size);
             $chart.height(size * .6);
 
             var graphMax = ($scope.gauge.deputy > $scope.gauge.party ? $scope.gauge.deputy : $scope.gauge.party );
             graphMax = (graphMax > $scope.gauge.pluri ? graphMax : $scope.gauge.pluri );
-            graphMax = Math.floor(graphMax * 1.2);
+            graphMax = Math.ceil(graphMax);
 
             $chart.chart({
                 tooltip : {
@@ -29,39 +29,33 @@ angular.module('app')
                 },
                 series : [
                     {
-                        name:'速度',
+                        name:'Diputado',
                         type:'gauge',
                         radius : '65%',
                         z: 3,
                         min:0,
                         max:graphMax,
-                        splitNumber:10,
-                        axisLine: {            // 坐标轴线
-                            lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 6
+                        splitNumber:8,
+                        axisLine: {
+                            lineStyle: {
+                                width: ChartDimentions.find('axisLine')
                             }
                         },
-                        axisTick: {            // 坐标轴小标记
-                            length :10,        // 属性length控制线长
-                            lineStyle: {       // 属性lineStyle控制线条样式
-                                color: 'auto'
-                            }
+                        axisTick: {
+                            length : ChartDimentions.find('axisTick')
                         },
-                        splitLine: {           // 分隔线
-                            length :15,         // 属性length控制线长
-                            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                                color: 'auto'
-                            }
+                        splitLine: {
+                            length :ChartDimentions.find('splitLine')
                         },
                         title : {
-                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            textStyle: {
                                 fontWeight: 'bolder',
-                                fontSize: 20,
+                                fontSize: ChartDimentions.find('headingSize'),
                                 fontStyle: 'italic'
                             }
                         },
                         detail : {
-                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            textStyle: {
                                 fontWeight: 'bolder'
                             }
                         },
@@ -76,21 +70,27 @@ angular.module('app')
                         max:graphMax,
                         endAngle:45,
                         splitNumber:4,
-                        axisLine: {            // 坐标轴线
-                            lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 5
+                        axisLine: {
+                            lineStyle: {
+                                width: ChartDimentions.find('axisLine')
                             }
                         },
-                        axisTick: {            // 坐标轴小标记
-                            length :10,        // 属性length控制线长
-                            lineStyle: {       // 属性lineStyle控制线条样式
-                                color: 'auto'
+                        axisTick: {
+                            length : ChartDimentions.find('axisTick')
+                        },
+                        splitLine: {
+                            length :ChartDimentions.find('splitLine')
+                        },
+                        title : {
+                            textStyle: {
+                                fontWeight: 'bolder',
+                                fontSize: ChartDimentions.find('headingSize'),
+                                fontStyle: 'italic'
                             }
                         },
-                        splitLine: {           // 分隔线
-                            length :15,         // 属性length控制线长
-                            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                                color: 'auto'
+                        detail : {
+                            textStyle: {
+                                fontWeight: 'bolder'
                             }
                         },
                         pointer: {
@@ -116,21 +116,27 @@ angular.module('app')
                         startAngle:135,
                         endAngle:-45,
                         splitNumber:4,
-                        axisLine: {            // 坐标轴线
-                            lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 5
+                        axisLine: {
+                            lineStyle: {
+                                width: ChartDimentions.find('axisLine')
                             }
                         },
-                        axisTick: {            // 坐标轴小标记
-                            length :10,        // 属性length控制线长
-                            lineStyle: {       // 属性lineStyle控制线条样式
-                                color: 'auto'
+                        axisTick: {
+                            length : ChartDimentions.find('axisTick')
+                        },
+                        splitLine: {
+                            length :ChartDimentions.find('splitLine')
+                        },
+                        title : {
+                            textStyle: {
+                                fontWeight: 'bolder',
+                                fontSize: ChartDimentions.find('headingSize'),
+                                fontStyle: 'italic'
                             }
                         },
-                        splitLine: {           // 分隔线
-                            length :15,         // 属性length控制线长
-                            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                                color: 'auto'
+                        detail : {
+                            textStyle: {
+                                fontWeight: 'bolder'
                             }
                         },
                         pointer: {

@@ -1,19 +1,5 @@
 angular.module('app')
-  .directive('doughnut', [function() {
-    var title = {
-        text: 'Pie doughnut',
-        subtext: '',
-        sublink: 'http://e.weibo.com/1341556070/AhQXtjbqh',
-        x: 'center',
-        y: 'center',
-        itemGap: 20,
-        textStyle : {
-            color : 'rgba(30,144,255,0.8)',
-            fontSize : 35,
-            fontWeight : 'bolder'
-        }
-    };
-
+  .directive('doughnut', ['ChartDimentions', function(ChartDimentions) {
     var dataStyle = {
         normal: {
             label: {show:false, textStyle: { color: '#212121' } },
@@ -49,40 +35,23 @@ angular.module('app')
         doughnut: '=doughnut'
       },
       link: function($scope, elem, attrs) {
-        var options = {
-            tooltip : {
-              trigger: 'item',
-              formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient : 'vertical',
-                x : 100,
-                y : 45,
-                itemGap:12,
-                data:['68% Asistencias','29% Justificadas','3% Faltas']
-            },
-            series : []
-        };
-
         $scope.$watch('doughnut', function() {
-          var $chart = $(elem).find('.chart');
-          var width = $chart.closest('.container').width();
-          var height = $(window).height();
-          var size = width > height ?  height: width;
-          $chart.width(size);
-          $chart.height(size * .85);
+          if($scope.doughnut != undefined && $scope.doughnut.length > 0) {
+            ChartDimentions.init();
+            dataStyle.emphasis.label.textStyle.fontSize = ChartDimentions.find('headingSize');
 
-          options.legend.x = size * .45;
-          options.legend.y = size / 12;
 
-          index = 1;
-          size = size / 3;
-          radius = size / (2 * ($scope.doughnut ? $scope.doughnut.length : 1));
-          legend =[];
-          hashLegend = {};
+            var $chart = $(elem).find('.chart');
+            var size = ChartDimentions.graphSize();
+            $chart.width(size);
+            $chart.height(size);
 
-          if($scope.doughnut != null) {
-            $scope.doughnut.forEach(function(row) {
+            size = size / 3;
+            radius = size / (2 * ($scope.doughnut ? $scope.doughnut.length : 1));
+            legend =[];
+            series = [];
+            hashLegend = {};
+            $scope.doughnut.forEach(function(row, index) {
               p = $scope.doughnut.total * 1.2;
               data = [];
 
@@ -91,18 +60,13 @@ angular.module('app')
                   hashLegend[column.name] = true;
                   legend.push(column.name);
                 }
-
                 data.push(column);
                 p-= column.value;
               });
 
-              data.push({
-                value: p,
-                name:'invisible',
-                itemStyle : placeHolderStyle
-              });
+              data.push({ value: p, name:'NA', itemStyle : placeHolderStyle });
 
-              options.series.push({
+              series.push({
                 name: row.legend,
                 type:'pie',
                 clockWise:false,
@@ -112,13 +76,29 @@ angular.module('app')
                 data: data
               });
 
-              size -= radius; index++;
+              size -= radius;
+            });
+
+            size = ChartDimentions.graphSize();
+            //Draw the charts
+            $chart.chart({
+                tooltip : {
+                  trigger: 'item',
+                  formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient : 'vertical',
+                    x : "45%",
+                    y : "15%",
+                    itemGap: 12,
+                    data: legend,
+                    textStyle: { fontSize: ChartDimentions.find('fontSize') }
+                },
+                series : series
             });
           }
-          options.legend.data = legend;
-
-          $chart.chart(options);
         });
       }
-    }
-  }]);
+  };
+
+}]);

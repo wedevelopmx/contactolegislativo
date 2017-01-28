@@ -101,7 +101,9 @@ router.get('/votes', function(req, res, next) {
   }
 
   var queryString =
-    'select case	when votes < 100 then \'< 100\'	when votes >= 100 and votes < 150 then \'100-149\' when votes >= 150 and votes < 200 then \'150-199\' when votes >= 200 and votes < 250 then \'200-249\' when votes >= 250 and votes < 300 then \'250-299\' when votes >= 300 and votes < 400 then \'300-399\' 	else \'> 400\' end as value, 	count(1) as deputies from (	select s.id, count(1) as votes 	from Seats s join Deputies d on d.SeatId = s.id join Votes v on v.DeputyId = d.id ' +
+    //'select case	when votes < 100 then \'< 100\'	when votes >= 100 and votes < 150 then \'100-149\' when votes >= 150 and votes < 200 then \'150-199\' when votes >= 200 and votes < 250 then \'200-249\' when votes >= 250 and votes < 300 then \'250-299\' when votes >= 300 and votes < 400 then \'300-399\' 	else \'> 400\' end as value, 	count(1) as deputies from (	select s.id, count(1) as votes 	from Seats s join Deputies d on d.SeatId = s.id join Votes v on v.DeputyId = d.id ' +
+    ' select case	when votes < 100 then \'< 100\'	when votes >= 100 and votes < 125 then \'100-124\' when votes >= 125 and votes < 150 then \'125-149\' when votes >= 150 and votes < 175 then \'150-174\' when votes >= 175 and votes < 200 then \'175-199\' when votes >= 200 and votes < 225 then \'200-224\' when votes >= 225 and votes < 250 then \'225-249\' when votes >= 250 and votes < 275 then \'250-274\' when votes >= 275 and votes < 300 then \'275-299\' when votes >= 300 and votes < 325 then \'300-324\' when votes >= 325 and votes < 350 then \'325-349\' 	when votes >= 350 and votes < 375 then \'350-374\' 	when votes >= 375 and votes < 400 then \'375-400\' 	else \'> 400\' end as value, 	count(1) as deputies ' +
+    ' from (	select s.id, count(1) as votes 	from Seats s join Deputies d on d.SeatId = s.id join Votes v on v.DeputyId = d.id ' +
     additionalFilter +
     ' where v.vote in (:voteType) group by s.id, v.vote 	order by s.id ) group by value ';
 
