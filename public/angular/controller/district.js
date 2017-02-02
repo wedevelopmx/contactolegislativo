@@ -12,6 +12,7 @@ angular.module('app')
     District.get({ districtId: $routeParams.id }, function(district) {
       $scope.district = district;
       $scope.deputy = district[0];
+      console.log($scope.deputy)
       $rootScope.$broadcast('district-loaded');
     });
 
