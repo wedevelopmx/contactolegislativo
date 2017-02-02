@@ -17,6 +17,7 @@
     "express": "~4.0.0",
     "express-session": "~1.0.0",
     "google": "^2.1.0",
+    "google-search": "0.0.5",
     "iconv-lite": "^0.4.15",
     "morgan": "~1.6.1",
     "pdf2json": "^1.1.7",

@@ -6,31 +6,40 @@ var iconv  = require('iconv-lite');
 var models = require("../app/models");
 var argv = require("../jobs/helper/arguments");
 var google = require('google')
+var GoogleSearch = require('google-search');
 
 models.sequelize.sync().then(function () {
 
-  var searchDeputy = function(deputy, callback) {
-    google.resultsPerPage = 5
-    var nextCounter = 0
+  var googleSearch = new GoogleSearch({
+    key: 'AIzaSyAKMO6S-DKVLTSIjAZddf-__Pn5WfQfg48',
+    cx: '014513992047204772114:xuvoom0s0a0'
+  });
 
-    google('twitter ' + deputy.displayName, function (err, res){
-      if (err) console.error(err)
-      stop = false;
-      for (var i = 0; i < res.links.length; ++i) {
-        var link = res.links[i];
-        regex = /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/.exec(link.href);
+  var searchDeputy = function(deputy, callback) {
+
+    googleSearch.build({ //Arlette Ivette Muñoz Cervantes
+      q: deputy.displayName + ' twitter',
+      num: 5
+    }, function(error, response) {
+      console.log(response)
+      for(var i = 0; response.items != undefined && i < response.items.length; i++) {
+        item = response.items[i];
+        regex = /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/.exec(item.link);
         if(regex[3] == 'twitter.com') {
           console.log(deputy.displayName + " " + regex[3] + " - " + regex[6]);
           deputy.update({ twitter: regex[6] })
           .then(function(){
-            callback(null, deputy);
+            callback(null,  {
+              id: deputy.id,
+              displayName: deputy.displayName,
+              twitter: regex[6]
+            });
           });
-          //Break cycle
           break;
         }
-
       }
     });
+
   }
 
   //Reading arguments from=X to=Y
@@ -41,7 +50,8 @@ models.sequelize.sync().then(function () {
     .then(function(deputies){
 
       async.map(deputies, searchDeputy, function(err, bulkDiputados) {
-          console.log('Times completed!');
+          console.log(bulkDiputados);
+          fs.writeFile('./downloads/data/twitter/deputies_' + sequence.from + '_' + sequence.to + '.json', JSON.stringify(bulkDiputados) , 'utf-8');
       });
 
     });
