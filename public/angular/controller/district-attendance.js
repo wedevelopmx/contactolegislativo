@@ -33,8 +33,10 @@ angular.module('app')
         //Query chamber attendance
         Chamber.attendance({}, function(attendance) {
           $scope.chamber.attendance = attendance;
-          //$scope.chamber.attendanceChart = Chart.sortLinePercentage(attendance, $scope.deputy.attendance);
-          $scope.chamber.attendanceChart = Chart.sortAttendanceforRose(attendance, $scope.deputy.attendance, 'Asistencias');
+
+          ranges = { 0: 20, 21: 23, 24: 26, 27: 27, 28: 28, 29: 29, 30: 30, 31: 100 };
+          $scope.chamber.attendanceChart = Chart.groupData(attendance, ranges, $scope.deputy.attendance, 'Asistencias');
+
           $scope.attendanceGauge.chamber = $scope.chamber.attendanceChart.media;
           $scope.attendanceGauge.resp ++;
           //console.log($scope.chamber.attendanceChart);

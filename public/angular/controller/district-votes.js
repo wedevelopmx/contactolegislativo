@@ -34,7 +34,10 @@ angular.module('app')
         //Query chamber attendance
         Chamber.votes({}, function(votes) {
           $scope.chamber.votes = votes;
-          $scope.chamber.votesChart = Chart.sortAttendanceforRose(votes, $scope.deputy.votes, 'Votos');
+
+          ranges = { 0: 100, 101: 150, 151: 200, 201: 225, 226: 250, 251: 275, 276: 300 };
+          $scope.chamber.votesChart = Chart.groupData(votes, ranges, $scope.deputy.votes, 'Votos');
+
           $scope.votesGauge.chamber = $scope.chamber.votesChart.media;
           $scope.votesGauge.resp ++;
           //console.log($scope.chamber.votesChart);

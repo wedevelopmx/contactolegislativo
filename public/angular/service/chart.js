@@ -57,54 +57,23 @@ angular.module('app')
 							chart.media = chart.media.toFixed(2);
 							return chart;
 						},
-						sortAttendanceforRose: function(data, value, label) {
-							chart = {
-								label: label, rose: [], bar: [0,0,0], media: 0, deputies: 0
-							};
-							section = 0;
-							for(var i = 0; i < data.length; i++ ) {
-								//Rose chart
-								chart.rose.push({
-									value: data[i].deputies,
-									name: data[i].value,
-									selected: (data[i].value == value)
-								});
-								//Bar Chart
-								if(data[i].value < value) {
-									chart.bar[0] += data[i].deputies;
-								} else if(data[i].value == value) {
-									chart.bar[1] += data[i].deputies;
-								} else {
-									chart.bar[2] += data[i].deputies;
-								}
-								chart.deputies += data[i].deputies;
-								chart.media += (data[i].value * data[i].deputies);
-							}
-
-							//chart.media /= data.length;
-							chart.media /= chart.deputies;
-
-							chart.rose.forEach(function(item) {
-								if(Math.round(chart.media) == item.name ) {
-									item.media = true;
-								}
-							});
-
-							//chart.media = chart.media.toFixed(2);
-
-							chart.better = (chart.bar[2] / chart.deputies) * 100;
-
-							return chart;
+						isSelected: function(range, value) {
+						  var regex = /(<|>)([0-9]+)|([0-9]+)-([0-9]+)|([0-9]+)/.exec(range);
+						  if(regex != undefined) {
+						    if(regex[1] == '<') {
+						      return value < parseInt(regex[2]);
+						    } else if(regex[1] == '>') {
+						      return value > parseInt(regex[2]);
+						    } else if(regex[5] != undefined) {
+						      return regex[5] == value;
+						    } else {
+						      return value >= regex[3]  && value <= regex[4];
+						    }
+						  } else {
+								console.log('invalid regex for chart!!!');
+						    return false;
+						  }
 						},
-						// calculateMedia: function(data) {
-						// 	chart = data;
-						// 	chart.media = 0;
-						// 	for(var i = 0; i < data.length; i++ ) {
-						// 		chart.media += data[i].value;
-						// 	}
-						// 	chart.media /= data.length;
-						// 	return data;
-						// }
 						calculateMedia: function(data) {
 							chart = data;
 							chart.media = 0;
@@ -113,9 +82,57 @@ angular.module('app')
 								chart.media += (data[i].value * data[i].deputies);
 								chart.size += data[i].deputies;
 							}
-							
+
 							chart.media /= chart.size;
 							return data;
+						},
+						groupData: function(data, ranges, selected, label) {
+						  var group = {};
+						  var minValues = Object.keys(ranges);
+						  var media = Math.floor(this.calculateMedia(data).media);
+							var chart = { rose: [], bar: [0, 0, 0], label: label, deputies: 0 };
+
+							for(var k = 0; k < data.length; k++) {
+								item = data[k];
+						    //Iterate over hash of ranges
+						    for(var i = 0 ; i < minValues.length; i++) {
+						      var min = minValues[i];
+						      if(item.value >= min && item.value <= ranges[min]){
+						        if(!group.hasOwnProperty(min)) {
+											if(min == ranges[min]) {
+												group[min] = { name: min, value: 0, media: false, selected: false };
+											} else {
+												group[min] = { name: min + '-' + ranges[min], value: 0, media: false, selected: false };
+											}
+											chart.rose.push(group[min]);
+										}
+
+						        //Determine selected group
+						        if(selected >= min && selected <= ranges[min])
+						          group[min].selected  = true;
+						        //Determinate media
+						        if(media >= min && media <= ranges[min])
+						          group[min].media  = true;
+						        group[min].value += item.deputies;
+						      }
+						    }
+
+								//Less, Equals, More Bar
+								if(item.value < selected) {
+									chart.bar[0] += item.deputies;
+								} else if(item.value == selected) {
+									chart.bar[1] += item.deputies;
+								} else {
+									chart.bar[2] += item.deputies;
+								}
+								chart.deputies += item.deputies;
+						  }
+
+							chart.media = media;
+							chart.better = (chart.bar[2] / chart.deputies) * 100;
+
+							console.log(chart);
+						  return chart;
 						}
           };
 

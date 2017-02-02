@@ -12,7 +12,7 @@ angular.module('app')
 							splitLine: 15
             },
             medium: {
-							scale: .85,
+							scale: .95,
               fontSize: 16,
 							headingSize: 20,
 							axisLine: 10,
@@ -34,7 +34,7 @@ angular.module('app')
           init: function() {
 						this.height = $(window).height();
 						this.width = $(window).width();
-
+						//console.log(this.width);
 						if(this.width < 450) {
 							this.size = 'small';
 						} else if(this.width < 850) {
@@ -42,7 +42,7 @@ angular.module('app')
 						} else {
 							this.size = 'large';
 						}
-						console.log(this.size);
+						//console.log(this.size);
           },
 					graphSize: function() {
 						var size = this.width < this.height ? this.width: this.height

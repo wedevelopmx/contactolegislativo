@@ -17,7 +17,7 @@ angular.module('app')
         //console.log($scope.attendancePie);
 
         //Generate rate
-        
+
         $scope.rate = Math.round(($scope.deputy.initiatives / (2 * $scope.initiativesPie.total)) * 100); // 2 beacuse we use 5 start not 10
         var generateIcon = function(stars) {
           r = [];
@@ -34,7 +34,11 @@ angular.module('app')
         //Query chamber attendance
         Chamber.initiatives({}, function(initiatives) {
           $scope.chamber.initiatives = initiatives;
-          $scope.chamber.initiativesChart = Chart.sortAttendanceforRose(initiatives, $scope.deputy.initiatives, 'Iniciativas');
+          //$scope.chamber.initiativesChart = Chart.sortAttendanceforRose(initiatives, $scope.deputy.initiatives, 'Iniciativas');
+
+          ranges = { 0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 10, 11: 20, 21: 70 };
+          $scope.chamber.initiativesChart = Chart.groupData(initiatives, ranges, $scope.deputy.initiatives, 'Iniciativas');
+
           $scope.initiativesGauge.chamber = $scope.chamber.initiativesChart.media;
           $scope.initiativesGauge.resp ++;
           //console.log($scope.chamber.initiativesChart);
