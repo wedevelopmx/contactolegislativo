@@ -74,7 +74,7 @@ models.sequelize.sync().then(function () {
                     deputies.push(deputy);
                     if(deputiesHash.containsKey(deputy.hash)) {
                       d = deputiesHash.get(deputy.hash);
-                      d.update({ twitter: deputy.twitter, phone: deputy.phone, email: deputy.email });
+                      d.update({ facebook: deputy.twitter, phone: deputy.phone, email: deputy.email });
                     } else {
                       console.log('Could not found:');
                       console.log(deputy);
