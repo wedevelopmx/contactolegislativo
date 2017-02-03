@@ -11,6 +11,7 @@
             <th></th>
             <th></th>
             <th>Diputado</th>
+            <th>Twitter</th>
           </tr>
         </thead>
         <tbody>
@@ -20,7 +21,9 @@
             <td ng-bind="deputy.short" class="visible-xs"></td>
             <td ng-bind="deputy.district"></td>
             <td>
-              <img  class="party" ng-src="assets/images/{{deputy.party}}.png">
+              <a ng-href="http://twitter.com/{{deputy.twitter}}" target="_blank">
+                <img  class="party" ng-src="assets/images/{{deputy.party}}.png">
+              </a>
             </td>
             <td>
               <span ng-bind="deputy.election"></span>
@@ -28,6 +31,11 @@
             <td>
               <a ng-href="#/district/{{deputy.id}}">
                 <span ng-bind="deputy.displayName"></span>
+              </a>
+            </td>
+            <td>
+              <a ng-href="http://twitter.com/{{deputy.twitter}}" target="_blank">
+                <span>@{{deputy.twitter}}</span>
               </a>
             </td>
           </tr>

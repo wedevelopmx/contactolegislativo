@@ -5,7 +5,7 @@ var models  = require('../models');
 router.route('/')
   .get(function(req, res, next) {
     var queryString =
-    'select s.id, s.type as election, st.name as state, st.short as short, s.area as district, d.id as deputyId, d.displayName, d.party, count(1) as attendance from Seats s	join States st on st.id = s.StateId	join Deputies d on s.id = d.SeatId	left outer join Attendances a on d.id = a.Deputyid group by s.id, st.name, s.area, d.id, d.displayName, d.party having count(1) > 1 order by s.type, st.name, s.area  limit :offset, :limit;'
+    'select s.id, s.type as election, st.name as state, st.short as short, s.area as district, d.id as deputyId, d.displayName, d.party, d.twitter,  count(1) as attendance from Seats s	join States st on st.id = s.StateId	join Deputies d on s.id = d.SeatId	left outer join Attendances a on d.id = a.Deputyid group by s.id, st.name, s.area, d.id, d.displayName, d.party having count(1) > 1 order by s.type, st.name, s.area  limit :offset, :limit;'
 
     var offset = req.query.offset == undefined ? 0 : req.query.offset;
     var limit = req.query.limit == undefined ? 25 : req.query.limit;
