@@ -141,6 +141,10 @@ td img.party {
   margin-bottom: 4rem;
 }
 
+.m-t {
+  margin-top: 4rem;
+}
+
 .p-t {
   padding-top: 4rem;
 }
@@ -157,4 +161,12 @@ td img.party {
 
 .rose, .bar {
   margin: 0 auto;
+}
+
+span.source {
+  display: block;
+  text-align: right;
+  font-style: italic;
+  font-size: 12px;
+  padding-right: 15px;
 }

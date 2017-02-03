@@ -2,20 +2,23 @@
   <div class="section">
     <div class="container">
       <h3 class="text-center">Iniciativas</h3>
-      <h4 class="text-center m-b">Cuantas iniciativas a apoyado tu diputado?:</h4>
+      <h4 class="text-center m-b">¿Cuantas iniciativas a apoyado tu diputado?</h4>
       <div doughnut="initiativesPie">
         <div class="chart"></div>
+        <span class="source">Fuente: <a ng-href="http://sitl.diputados.gob.mx/LXIII_leg/iniciativas_diputados_xperiodonplxiii.php?dipt={{deputy.id}}" target="_blank">Camara de diputados</a></span>
       </div>
+      <h5 class="text-center m-t">¿Cual es la diferencia entre Proponente, Adherente y Suscribe?</h5>
     </div>
   </div>
   <div class="section">
     <div class="container">
-        <h4 class="text-center m-b">Tu diputado tiene {{deputy.initiatives}} inciativas</h4>
+        <h4 class="text-center m-b">Tu diputado tiene {{deputy.initiatives}} inciativas propias</h4>
         <div rose="chamber.initiativesChart">
           <div class="rose"></div>
-          <div class="bar"></div>
+          <!-- <div class="bar"></div> -->
+          <span class="source">Fuente: <a ng-href="http://sitl.diputados.gob.mx/LXIII_leg/iniciativas_diputados_xperiodonplxiii.php?dipt={{deputy.id}}" target="_blank">Camara de diputados</a></span>
         </div>
-        <h4 class="text-center p-t">{{chamber.initiativesChart.bar[2]}} ({{chamber.initiativesChart.better.toFixed(2)}}%) integrantes de la camara presentaron mas iniciativas que el</h4>
+        <h4 class="text-center p-t">{{chamber.initiativesChart.bar[2]}} integrantes de la camara presentaron mas iniciativas, esto es {{chamber.initiativesChart.better.toFixed(2)}}%</h4>
     </div>
   </div>
   <div class="section">
@@ -24,9 +27,10 @@
       <h4 class="text-center m-b" ng-show="initiativesGauge.party < initiativesGauge.deputy">Tu diputado tiene un MAS iniciativas que la media en su partido</h4>
       <div gauge="initiativesGauge">
         <div class="chart"></div>
+        <span class="source">Fuente: <a ng-href="#/metodologia" target="_blank">Metodología  propia</a></span>
       </div>
-      <h4 class="text-center m-b" ng-show="initiativesGauge.pluri < initiativesGauge.deputy">Y MAS iniciativas que los plurinominales</h4>
-      <h4 class="text-center m-b" ng-show="initiativesGauge.pluri > initiativesGauge.deputy">Y MENOS iniciativas que los plurinominales</h4>
+      <h4 class="text-center m-t" ng-show="initiativesGauge.pluri < initiativesGauge.deputy">Y MAS iniciativas que los plurinominales</h4>
+      <h4 class="text-center m-t" ng-show="initiativesGauge.pluri > initiativesGauge.deputy">Y MENOS iniciativas que los plurinominales</h4>
     </div>
   </div>
   <div class="section pink">
