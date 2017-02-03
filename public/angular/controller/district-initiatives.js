@@ -6,6 +6,10 @@ angular.module('app')
 
     $scope.$on('district-loaded', function() {
 
+      District.initiativesStatus({ districtId: $scope.deputyId }, function(initiatives) {
+        console.log(initiatives);
+      });
+
       District.initiatives({ districtId: $scope.deputyId }, function(initiatives) {
         grouping = [['Proponente'],
                     ['Adherente', 'Suscribe']];
@@ -18,18 +22,10 @@ angular.module('app')
         //console.log($scope.attendancePie);
 
         //Generate rate
-
         $scope.rate = Math.round(($scope.deputy.initiatives / (2 * $scope.initiativesPie.total)) * 100); // 2 beacuse we use 5 start not 10
-        var generateIcon = function(stars) {
-          r = [];
-          for(var i = 0; i < stars; i ++){
-            r.push(1);
-          }
-          return r;
-        }
-        $scope.rating.full = generateIcon(Math.floor($scope.rate / 10));
-        $scope.rating.half = generateIcon(Math.floor(($scope.rate % 10) / 5));
-        $scope.rating.empty = generateIcon(5 - Math.floor($scope.rate / 10) - Math.floor(($scope.rate % 10) / 5));
+        $scope.rating.full = Chart.generateIconSet(Math.floor($scope.rate / 10));
+        $scope.rating.half = Chart.generateIconSet(Math.floor(($scope.rate % 10) / 5));
+        $scope.rating.empty = Chart.generateIconSet(5 - Math.floor($scope.rate / 10) - Math.floor(($scope.rate % 10) / 5));
         $scope.rate /= 10;
 
         //Query chamber attendance

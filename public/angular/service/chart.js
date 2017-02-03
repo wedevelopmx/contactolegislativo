@@ -1,6 +1,13 @@
 angular.module('app')
 	.factory('Chart', [function() {
 	        var Chart = {
+						generateIconSet: function(stars) {
+		          r = [];
+		          for(var i = 0; i < stars; i ++){
+		            r.push(1);
+		          }
+		          return r;
+		        },
             // Sort data result in format needed by doughnut directive
             // doughnut : [['ASISTENCIA', 'PERMISO ...', 'COMISION'], ['JUSTIFICADA', 'CEDULA', '...']]
             // data: [ { name: 'ASISTENCIA', value: 10}, { name: 'CEDULA', value: } ]

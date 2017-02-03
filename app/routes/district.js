@@ -47,6 +47,20 @@ router.get('/:id/initiatives', function(req, res, next) {
   });
 });
 
+router.get('/:id/initiatives-status', function(req, res, next) {
+  queryString =
+  'select di.type, i.status, count(1) as number from Seats s  	join Deputies d on s.id = d.SeatId 	join DeputyInitiatives di on d.id = di.DeputyId 	join Initiatives i on i.id = di.InitiativeId where s.id = :districtId group by s.type, d.displayName, di.type, i.status';
+
+  models.sequelize
+  .query(queryString, {
+    replacements: { districtId: req.params.id },
+    type: models.sequelize.QueryTypes.SELECT
+  })
+  .then(function(attendance) {
+    res.json(attendance);
+  });
+});
+
 router.get('/:id/votes', function(req, res, next) {
   queryString =
   'select v.vote as name, count(1) as value from Seats s join Deputies d on d.SeatId = s.id join Votes v on v.DeputyId = d.id where s.id = :districtId group by v.vote order by count(1) desc';

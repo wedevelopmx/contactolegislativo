@@ -21,6 +21,14 @@ angular.module('app')
                 districtId: '@id'
             	}
 						},
+						initiativesStatus: {
+							method: 'GET',
+							isArray: true,
+							params: {
+                action:'initiatives-status',
+                districtId: '@id'
+            	}
+						},
 						votes: {
 							method: 'GET',
 							isArray: true,
