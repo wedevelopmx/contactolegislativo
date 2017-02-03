@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     alternate: { type: DataTypes.STRING, name: 'alternate' },
     facebook: { type: DataTypes.STRING, name: 'facebook' },
     twitter: { type: DataTypes.STRING, name: 'twitter' },
+    phone: { type: DataTypes.STRING, name: 'phone' },
     hash: { type: DataTypes.INTEGER, name: 'hash', defaultValue: 0 },
     altHash: { type: DataTypes.INTEGER, name: 'alt_hash', defaultValue: 0 }
   }, {
