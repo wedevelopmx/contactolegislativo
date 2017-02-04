@@ -120,6 +120,22 @@ td img.party {
   margin-top: 2rem;
 }
 
+.contact-group {
+  list-style: none;
+  text-align: left;
+  display: inline-block;
+  margin: 0;
+  padding: 3rem 0rem 0rem 0rem;
+}
+
+.contact-group li {
+  margin-top: 1rem;
+}
+
+.contact-group h5 {
+  padding-left: 2rem;
+}
+
 .circle-btn {
   padding: 1.3rem;
   border-radius: 50%;
