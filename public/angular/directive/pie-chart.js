@@ -41,9 +41,8 @@ angular.module('app')
                         },
                         label : {
                           textStyle: {
-                            color: '#FFFFFF',
-                            fontSize : '18',
-                            fontWeight : 'bold'
+                            color: '#f50057',
+                            fontSize : '16'
                           }
                         },
                         labelLine : {

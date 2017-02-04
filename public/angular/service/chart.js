@@ -1,6 +1,37 @@
 angular.module('app')
 	.factory('Chart', [function() {
 	        var Chart = {
+						sortStackBar: function(data) {
+							var chart = {
+								legend: ['Aprobada', 'Pendiente','Retirada','Desechada'],
+								xAxis: ['Adherente','Suscribe','Proponente'],
+								series: { aprobada:[], pendiente: [], retirada: [], desechada: [] }
+							};
+
+							var hash = {
+								aprobada: { adherente: 0, suscribe: 0, proponente: 0},
+								pendiente: { adherente: 0, suscribe: 0, proponente: 0},
+								retirada: { adherente: 0, suscribe: 0, proponente: 0},
+								desechada: { adherente: 0, suscribe: 0, proponente: 0}
+							};
+
+							for(var i = 0; i < data.length; i++) {
+								item = data[i];
+								//console.log(item.status.toLowerCase() + ' - ' + item.type.toLowerCase() + ' = ' + item.number)
+								hash[item.status.toLowerCase()][item.type.toLowerCase()] = item.number;
+							}
+
+							chart.legend.forEach(function(item) {
+								row = hash[item.toLowerCase()];
+								//console.log(row);
+								for(inner in row) {
+									chart.series[item.toLowerCase()].push(hash[item.toLowerCase()][inner]);
+								}
+							});
+
+							//console.log(chart);
+							return chart;
+						},
 						generateIconSet: function(stars) {
 		          r = [];
 		          for(var i = 0; i < stars; i ++){
@@ -138,7 +169,7 @@ angular.module('app')
 							chart.media = media;
 							chart.better = (chart.bar[2] / chart.deputies) * 100;
 
-							console.log(chart);
+							//console.log(chart);
 						  return chart;
 						}
           };

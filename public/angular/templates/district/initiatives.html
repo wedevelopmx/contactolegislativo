@@ -24,6 +24,17 @@
   </div>
   <div class="section">
     <div class="container">
+      <h4 class="text-center m-b">¿Que tanto han avanzado sus iniciativas?</h4>
+      <div stack="initiativesStack">
+        <div class="chart"></div>
+        <span class="source">Fuente: <a ng-href="#/metodologia" target="_blank">Metodología  propia</a></span>
+      </div>
+      <h4 class="text-center m-b" ng-show="initiativesStack.series['aprobada'][2] == 0">Ninguna de sus iniciativas propuestas ha sido aprobada</h4>
+      <h4 class="text-center m-b" ng-show="initiativesStack.series['aprobada'][2] > 0">{{initiativesStack.series['aprobada'][2]}} iniciativas propuestas han sido aprobadas</h4>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
       <h4 class="text-center m-b" ng-show="initiativesGauge.party > initiativesGauge.deputy">Tu diputado tiene un MENOS iniciativas que la media en su partido</h4>
       <h4 class="text-center m-b" ng-show="initiativesGauge.party < initiativesGauge.deputy">Tu diputado tiene un MAS iniciativas que la media en su partido</h4>
       <div gauge="initiativesGauge">

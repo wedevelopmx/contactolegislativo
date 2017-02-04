@@ -8,6 +8,7 @@ angular.module('app')
 
       District.initiativesStatus({ districtId: $scope.deputyId }, function(initiatives) {
         console.log(initiatives);
+        $scope.initiativesStack = Chart.sortStackBar(initiatives);
       });
 
       District.initiatives({ districtId: $scope.deputyId }, function(initiatives) {
