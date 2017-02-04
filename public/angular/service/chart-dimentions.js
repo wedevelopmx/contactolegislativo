@@ -20,7 +20,7 @@ angular.module('app')
 							splitLine: 25
             },
             large: {
-							scale: .75,
+							scale: .60,
               fontSize: 20,
 							headingSize: 24,
 							axisLine: 12,
