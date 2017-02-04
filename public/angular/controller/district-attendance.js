@@ -2,9 +2,9 @@ angular.module('app')
   .controller('DistrictAttendanceController', ['$scope', 'District', 'Party', 'Chamber', 'Chart',
     function($scope, District, Party, Chamber, Chart) {
     $scope.rating = { full: [1, 1, 1], half: [1], empty: [1]};
-    $scope.tweetText = 'Sobre su nivel de asistencia %23representame';
 
     $scope.$on('district-loaded', function() {
+      $scope.tweetText = 'Diputado @' + $scope.deputy.twitter + ' usted me representa, por lo que estoy al pendiente de su desempeno en %23representame';
 
       District.attendance({ districtId: $scope.deputyId }, function(attendance) {
         grouping = [['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'],

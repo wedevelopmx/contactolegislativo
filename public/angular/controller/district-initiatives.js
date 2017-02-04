@@ -2,12 +2,12 @@ angular.module('app')
   .controller('DistrictInitiativesController', ['$scope', 'District', 'Party', 'Chamber', 'Chart',
     function($scope, District, Party, Chamber, Chart) {
     $scope.rating = { full: [1, 1, 1], half: [1], empty: [1]};
-    $scope.tweetText = 'Sobre su nivel las iniciativas que ha propuesto %23representame';
 
     $scope.$on('district-loaded', function() {
+      $scope.tweetText = 'Diputado  @' + $scope.deputy.twitter + ' usted me representa, por lo que estoy al pendiente de su desempeno en %23representame';
 
       District.initiativesStatus({ districtId: $scope.deputyId }, function(initiatives) {
-        console.log(initiatives);
+        //console.log(initiatives);
         $scope.initiativesStack = Chart.sortStackBar(initiatives);
       });
 
