@@ -8,3 +8,4 @@ node_modules
 !/public/assets/vendor/bootstrap/*
 
 *.sqlite
+npm-debug.log
