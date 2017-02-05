@@ -10,6 +10,7 @@ module.exports  = function() {
     r = r.replace(new RegExp(/[ìíîï]/g),"i");
     r = r.replace(new RegExp(/[òóôõö]/g),"o");
     r = r.replace(new RegExp(/[ùúûü]/g),"u");
+    r = r.replace(new RegExp(/[ñ]/g),"n");
     return r;
   }
 
@@ -20,6 +21,7 @@ module.exports  = function() {
   this.generateKey = function(value) {
     value = this.normalize(value.toLowerCase());
     if(!this.hash.hasOwnProperty(value)) {
+      console.log('Creating: ' + value)
       this.loadPair(value, this.nextKey());
     }
 
