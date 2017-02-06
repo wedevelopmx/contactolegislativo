@@ -65,7 +65,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  padding: 0;
 }
 
 .section h1, .section h2 {
@@ -111,18 +110,6 @@
 td img.party {
   width: 24px;
   height: 24px;
-}
-
-@media (max-width: 768px) {
-  .xs-tx-center {
-    text-align: center;
-  }
-}
-
-@media (min-width: 768px ) {
-  .sm-p-t {
-      margin-top: 2rem;
-  }
 }
 
 .btn-group {
@@ -216,7 +203,7 @@ span.source {
 }
 
 .party-budget .party {
-  min-width: 200px;
+  width: 200px;
 }
 
 
@@ -226,4 +213,34 @@ span.source {
   max-width: 150px;
   top: 65%;
   left: 70%;
+}
+
+@media (max-width: 768px) {
+  .xs-tx-center {
+    text-align: center;
+  }
+
+  .party-budget .party {
+    width: 100px;
+  }
+
+  .party-budget .budget {
+    position: absolute;
+    width: 40%;
+    max-width: 75px;
+    top: 50%;
+    left: 60%;
+  }
+
+}
+
+@media (min-width: 768px ) {
+  .sm-p-t {
+      margin-top: 2rem;
+  }
+
+  .section div.container {
+    padding: 0;
+  }
+
 }
