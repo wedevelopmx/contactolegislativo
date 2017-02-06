@@ -44,6 +44,14 @@ angular.module('app')
 						}
 						//console.log(this.size);
           },
+					calculateFit: function($chart) {
+						this.width = $chart.width();
+            this.height = $chart.closest('.section').height();
+						return {
+							width: this.width,
+							height: this.height *  .5
+						};
+					},
 					graphSize: function() {
 						var size = this.width < this.height ? this.width: this.height
 						return size * this.settings[this.size].scale;

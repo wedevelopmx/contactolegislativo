@@ -29,11 +29,13 @@ angular.module('app')
           //console.log($scope.stack);
           if($scope.stack != undefined) {
             ChartDimentions.init();
-            var size = ChartDimentions.graphSize();
-            var fontSize = ChartDimentions.find('fontSize');
             var $chart = $(elem).find('.chart');
-            $chart.width(size);
-            $chart.height(size);
+            var fit = ChartDimentions.calculateFit($chart);
+            var size = fit.width;
+            $chart.width(fit.width);
+            $chart.height(fit.height);
+
+            var fontSize = ChartDimentions.find('fontSize');
 
             var options = {
                 tooltip : {

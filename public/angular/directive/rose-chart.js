@@ -72,16 +72,18 @@ angular.module('app')
             ChartDimentions.init();
             var $rose = $(elem).find('.rose');
             var $bar = $(elem).find('.bar');
-            var size = ChartDimentions.graphSize();
+            var fit = ChartDimentions.calculateFit($rose);
+            var size = fit.width;
+
             var fontSize = ChartDimentions.find('fontSize');
             mediaItemStyle.normal.label.textStyle.fontSize = fontSize;
             selectedItemStyle.normal.label.textStyle.fontSize = fontSize;
             barItemStyle.normal.label.textStyle.fontSize = fontSize;
 
-            $rose.width(size);
-            $bar.width(size);
-            $rose.height(size * .80);
-            $bar.height(size * .20);
+            $rose.width(fit.width);
+            $bar.width(fit.width);
+            $rose.height(fit.height);
+            $bar.height(fit.height);
 
             $scope.rose.rose.forEach(function(item) {
               if(item.selected) {

@@ -42,9 +42,10 @@ angular.module('app')
 
 
             var $chart = $(elem).find('.chart');
-            var size = ChartDimentions.graphSize();
-            $chart.width(size);
-            $chart.height(size);
+            var fit = ChartDimentions.calculateFit($chart);
+            var size = fit.width;
+            $chart.width(fit.width);
+            $chart.height(fit.height);
 
             size = size / 3;
             radius = size / (2 * ($scope.doughnut ? $scope.doughnut.length : 1));
@@ -79,7 +80,7 @@ angular.module('app')
               size -= radius;
             });
 
-            size = ChartDimentions.graphSize();
+            size = fit.width;
             //Draw the charts
             $chart.chart({
                 tooltip : {

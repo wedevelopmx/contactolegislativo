@@ -220,14 +220,18 @@ span.source {
     text-align: center;
   }
 
+  .party-budget {
+    margin-bottom: 2rem;
+  }
+
   .party-budget .party {
-    width: 100px;
+    width: 80px;
   }
 
   .party-budget .budget {
     position: absolute;
     width: 40%;
-    max-width: 75px;
+    max-width: 50px;
     top: 50%;
     left: 60%;
   }
