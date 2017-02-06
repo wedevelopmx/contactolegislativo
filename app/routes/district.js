@@ -4,7 +4,9 @@ var models  = require('../models');
 
 router.get('/:id', function(req, res, next) {
   queryString =
-  'select d.id, d.displayName, st.name as state, s.area as district, d.picture, d.party, d.curul, d.twitter, d.email, d.phone, s.type as election, count(1) as attn, max(a.attendanceDate) latestAttendance from Seats s left outer join States st on s.StateId = st.id left outer join Deputies d on s.id = d.SeatId left outer join Attendances a on d.id = a.DeputyId where s.id = :districtId and a.id is not null group by  d.id, d.displayName, st.name, s.area, d.picture, d.party, d.curul, d.twitter order by count(1) desc';
+  'select d.id, d.displayName, st.name as state, s.area as district, d.picture, ' +
+  'd.party, d.curul, d.facebook, d.twitter, d.email, d.phone, s.type as election, d.tres, d.fiscal, d.patrimonial, d.intereses, ' + 
+  'count(1) as attn, max(a.attendanceDate) latestAttendance from Seats s left outer join States st on s.StateId = st.id left outer join Deputies d on s.id = d.SeatId left outer join Attendances a on d.id = a.DeputyId where s.id = :districtId and a.id is not null group by  d.id, d.displayName, st.name, s.area, d.picture, d.party, d.curul, d.twitter order by count(1) desc';
 
   models.sequelize
   .query(queryString, {

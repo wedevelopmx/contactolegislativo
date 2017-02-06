@@ -151,13 +151,24 @@ td img.party {
   border-radius: 50%;
   display: inline-block;
   margin-right: 1rem;
-  background-color: #ffffff;
-  color: #f50057!important;
+  background-color: #f50057!important;
+  color: #fff!important;
 }
 
 .circle-btn a {
-    color: #f50057!important;
+  color: #fff!important;
 }
+
+.pink .circle-btn {
+  background-color: #ffffff!important;
+  color: #f50057!important;
+}
+
+.pink .circle-btn a {
+  color: #f50057!important;
+}
+
+
 
 .chart {
   margin: 0 auto;
@@ -195,4 +206,24 @@ span.source {
   font-style: italic;
   font-size: 12px;
   padding-right: 15px;
+}
+
+.party-budget {
+  margin: 0 auto;
+  width: 250px;
+  position: relative;
+  margin-bottom: 6rem;
+}
+
+.party-budget .party {
+  min-width: 200px;
+}
+
+
+.party-budget .budget {
+  position: absolute;
+  width: 40%;
+  max-width: 150px;
+  top: 65%;
+  left: 70%;
 }

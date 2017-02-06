@@ -13,6 +13,7 @@ angular.module('app')
       $scope.district = district;
       $scope.deputy = district[0];
       console.log($scope.deputy)
+      $scope.tweetText = '@' + $scope.deputy.twitter + ' los ciudadanos queremos que seas un %23FuncionarioTransparente y publiques tus %233de3 @IMCOmx @IntegridadMx'
       $rootScope.$broadcast('district-loaded');
     });
 

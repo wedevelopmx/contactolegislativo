@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     facebook: { type: DataTypes.STRING, name: 'facebook' },
     twitter: { type: DataTypes.STRING, name: 'twitter' },
     phone: { type: DataTypes.STRING, name: 'phone' },
-    tres: { type: DataTypes.INTEGER, name: 'tres' },
+    tres: { type: DataTypes.INTEGER, name: 'tres', defaultValue: 0 },
     fiscal: { type: DataTypes.STRING, name: 'fiscal' },
     intereses: { type: DataTypes.STRING, name: 'intereses' },
     patrimonial: { type: DataTypes.STRING, name: 'patrimonial' },

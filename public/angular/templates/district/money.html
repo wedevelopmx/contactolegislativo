@@ -1,0 +1,36 @@
+<div class="section">
+  <div class="container">
+    <div class="row text-center">
+      <img src="assets/images/banker256.png"/>
+      <h3 class="m-b">Tu diputado recibe <a ng-href="http://www3.diputados.gob.mx/camara/004_transparencia/000_canales_principales/002_camara_de_diputados/03_remuneraciones" target="_blank">$148, 558 MX</a> Mensuales</h3>
+
+    </div>
+  </div>
+</div>
+
+<div class="section" ng-controller="PartyBudgetController">
+  <div class="container">
+    <div class="row text-center">
+      <div ng-if="hasParty">
+        <h3 class="m-b">Y su partido recibirá <a ng-href="http://www3.diputados.gob.mx/camara/004_transparencia/000_canales_principales/002_camara_de_diputados/03_remuneraciones" target="_blank" ng-bind="budget"></a> MX este año</h3>
+        <div class="party-budget">
+          <img class="party" ng-src="assets/images/{{deputy.party}}.png"/>
+          <img class="budget" src="assets/images/notes.png"/>
+        </div>
+      </div>
+      <div ng-if="!hasParty">
+        <h3 class="m-b">Este año los partidos recibirán <a ng-href="http://www3.diputados.gob.mx/camara/004_transparencia/000_canales_principales/002_camara_de_diputados/03_remuneraciones" target="_blank" ng-bind="budget"></a> MX</h3>
+        <div class="party-budget">
+          <img class="party" ng-src="assets/images/notes.png"/>
+        </div>
+      </div>
+      <h3 clas="m-t">¿Consideras que es demasiado presupuesto?</h3>
+      <h4 clas="m-t">Te invitamos a participar en la iniciativa <a href="http://sinvotonohaydinero.mx/" target="_blank">#SinVotoNohayDinero</a> que propone recortar el gasto de los partidos</h4>
+      <h4 clas="m-t">Escribe a tu diputado invitándolo a unirse a la iniciativa</h4>
+      <ul class="btn-group">
+        <li class="circle-btn animated infinite wobble"><a ng-href="https://twitter.com/intent/tweet?screen_name={{deputy.twitter}}&text={{tweetText}}" target="_blank"><i class="fa fa-3x fa-twitter"></i></a></li>
+        <li class="circle-btn animated infinite wobble"><a ng-href="mailto:{{deputy.email}}?subject={{mailSubject}}&body={{mailBody}}" target="_top"><i class="fa fa-3x fa-envelope"></i></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
