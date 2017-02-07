@@ -73,7 +73,7 @@ angular.module('app')
             var $rose = $(elem).find('.rose');
             var $bar = $(elem).find('.bar');
             var fit = ChartDimentions.calculateFit($rose);
-            var size = fit.width;
+            var size = fit.size;
 
             var fontSize = ChartDimentions.find('fontSize');
             mediaItemStyle.normal.label.textStyle.fontSize = fontSize;

@@ -39,11 +39,10 @@ angular.module('app')
           if($scope.doughnut != undefined && $scope.doughnut.length > 0) {
             ChartDimentions.init();
             dataStyle.emphasis.label.textStyle.fontSize = ChartDimentions.find('headingSize');
-
-
+            
             var $chart = $(elem).find('.chart');
             var fit = ChartDimentions.calculateFit($chart);
-            var size = fit.width;
+            var size = fit.size;
             $chart.width(fit.width);
             $chart.height(fit.height);
 
@@ -80,7 +79,6 @@ angular.module('app')
               size -= radius;
             });
 
-            size = fit.width;
             //Draw the charts
             $chart.chart({
                 tooltip : {

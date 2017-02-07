@@ -16,9 +16,9 @@ angular.module('app')
             var $chart = $(elem).find('.chart');
 
             var fit = ChartDimentions.calculateFit($chart);
-            var size = fit.width;
+            
             $chart.width(fit.width);
-            $chart.height(fit.width * .6);
+            $chart.height(fit.width * .5);
 
             var graphMax = ($scope.gauge.deputy > $scope.gauge.party ? $scope.gauge.deputy : $scope.gauge.party );
             graphMax = (graphMax > $scope.gauge.pluri ? graphMax : $scope.gauge.pluri );

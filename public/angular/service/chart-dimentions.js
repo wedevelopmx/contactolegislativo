@@ -48,6 +48,7 @@ angular.module('app')
 						this.width = $chart.width();
             this.height = $chart.closest('.section').height();
 						return {
+							size: this.width < this.height ? (this.width * .8): (this.height * .6),
 							width: this.width,
 							height: this.height *  .5
 						};
