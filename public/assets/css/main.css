@@ -215,6 +215,10 @@ span.source {
   left: 70%;
 }
 
+.crafted img {
+  max-width: 230px;
+}
+
 @media (max-width: 768px) {
   .xs-tx-center {
     text-align: center;

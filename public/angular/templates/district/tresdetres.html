@@ -1,0 +1,38 @@
+<div class="section">
+  <div class="container">
+    <div class="row text-center" ng-if="deputy.tres">
+      <h3 class="m-b">Tu diputado ha declarado su 3de3</h3>
+      <h4 class="m-b">Pudes ver sus declaraciones en el portal de <a href="http://tresdetres.mx" target="_blank">tresdetres.mx</a></h4>
+      <ul class="btn-group">
+        <li class="circle-btn">
+          <a ng-href="{{deputy.fiscal}}" target="_blank">
+            <i class="fa fa-3x fa-money"></i>
+          </a>
+        </li>
+        <li class="circle-btn">
+          <a ng-href="{{deputy.patrimonial}}" target="_blank">
+            <i class="fa fa-3x fa-pencil"></i>
+          </a>
+        </li>
+        <li class="circle-btn">
+          <a ng-href="{{deputy.intereses}}" target="_blank">
+            <i class="fa fa-3x fa-comment"></i>
+          </a>
+        </li>
+      </ul>
+      <h4 style="width: 80%;margin: 4rem auto;">3 de 3 es una iniciativa impulsada por <a href="http://twitter.com/imcomx" target="_blank">@IMCOmx</a> e <a href="http://twitter.com/IntegridadMx" target="_blank">@IntegridadMx</a>, para mas informacion visita <a href="http://tresdetres.mx" target="_blank">tresdetres.mx</a>.</h4>
+    </div>
+    <div class="row text-center" ng-if="deputy.tres == 0">
+      <h3 class="m-b">Tu diputado no ha declarado su tres de tres</h3>
+      <h4 class="m-b">Pídele a tu diputado que publique sus tres declaraciones</h4>
+      <ul class="btn-group">
+        <li class="circle-btn" ng-click="selected = 1">
+          <a ng-href="https://twitter.com/intent/tweet?screen_name={{deputy.twitter}}&text={{tweetText}}" target="_blank">
+            <i class="fa fa-2x fa-twitter"></i>
+          </a>
+        </li>
+      </ul>
+      <h4 style="width: 80%;margin: 4rem auto;">3 de 3 es una iniciativa impulsada por <a href="http://twitter.com/imcomx" target="_blank">@IMCOmx</a> e <a href="http://twitter.com/IntegridadMx" target="_blank">@IntegridadMx</a>, para mas informacion visita <a href="http://tresdetres.mx" target="_blank">tresdetres.mx</a>.</h4>
+    </div>
+  </div>
+</div>
