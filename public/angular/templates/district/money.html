@@ -12,19 +12,19 @@
   <div class="container">
     <div class="row text-center">
       <div ng-if="hasParty">
-        <h3 class="m-b">Y su partido recibirá <a ng-href="http://www3.diputados.gob.mx/camara/004_transparencia/000_canales_principales/002_camara_de_diputados/03_remuneraciones" target="_blank" ng-bind="budget|currency"></a> MX este año</h3>
+        <h3 class="m-b">Y su partido recibirá <a ng-href="http://www.ine.mx/archivos3/portal/historico/recursos/IFE-v2/DS/DS-CG/DS-SesionesCG/CG-acuerdos/2016/08_Agosto/CGex201608-26/CGex201608-26-ap-1.pdf" target="_blank" ng-bind="budget|currency"></a> MX este año</h3>
         <div class="party-budget">
           <img class="party" ng-src="assets/images/{{deputy.party}}.png"/>
           <img class="budget" src="assets/images/notes.png"/>
         </div>
       </div>
       <div ng-if="!hasParty">
-        <h3 class="m-b">Este año los partidos recibirán <a ng-href="http://www3.diputados.gob.mx/camara/004_transparencia/000_canales_principales/002_camara_de_diputados/03_remuneraciones" target="_blank" ng-bind="budget | currency"></a> MX</h3>
+        <h3 class="m-b">Este año los partidos recibirán <a ng-href="http://www.ine.mx/archivos3/portal/historico/recursos/IFE-v2/DS/DS-CG/DS-SesionesCG/CG-acuerdos/2016/08_Agosto/CGex201608-26/CGex201608-26-ap-1.pdf" target="_blank" ng-bind="budget | currency"></a> MX</h3>
         <div class="party-budget">
           <img class="party" ng-src="assets/images/notes.png"/>
         </div>
       </div>
-      <h3 class="m-t">¿Consideras que es demasiado presupuesto?</h3>
+      <h3 class="m-t hidden-xs">¿Consideras que es demasiado presupuesto?</h3>
       <h4 class="m-t">Te invitamos a participar en la iniciativa <a href="http://sinvotonohaydinero.mx/" target="_blank">#SinVotoNohayDinero</a> que propone recortar el gasto de los partidos</h4>
       <h4 class="hidden-xs">Ahorrariamos <span>{{(totalBudget * .41)|currency}}</span> anualmente, esto es 41%</h4>
       <h4 class="m-t">Escribe a tu diputado invitándolo a unirse a la iniciativa</h4>
