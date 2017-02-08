@@ -5,7 +5,7 @@ var models  = require('../models');
 router.get('/:id', function(req, res, next) {
   queryString =
   'select d.id, d.displayName, st.name as state, s.area as district, d.picture, ' +
-  'd.party, d.curul, d.facebook, d.twitter, d.email, d.phone, s.type as election, d.tres, d.fiscal, d.patrimonial, d.intereses, ' + 
+  'd.party, d.curul, d.facebook, d.twitter, d.email, d.phone, s.type as election, d.tres, d.fiscal, d.patrimonial, d.intereses, ' +
   'count(1) as attn, max(a.attendanceDate) latestAttendance from Seats s left outer join States st on s.StateId = st.id left outer join Deputies d on s.id = d.SeatId left outer join Attendances a on d.id = a.DeputyId where s.id = :districtId and a.id is not null group by  d.id, d.displayName, st.name, s.area, d.picture, d.party, d.curul, d.twitter order by count(1) desc';
 
   models.sequelize
@@ -51,7 +51,7 @@ router.get('/:id/initiatives', function(req, res, next) {
 
 router.get('/:id/initiatives-status', function(req, res, next) {
   queryString =
-  'select di.type, i.status, count(1) as number from Seats s  	join Deputies d on s.id = d.SeatId 	join DeputyInitiatives di on d.id = di.DeputyId 	join Initiatives i on i.id = di.InitiativeId where s.id = :districtId group by s.type, d.displayName, di.type, i.status';
+  'select di.type, i.status, count(1) as number from Seats s  	join Deputies d on s.id = d.SeatId 	join DeputyInitiatives di on d.id = di.DeputyId 	join Initiatives i on i.id = di.InitiativeId where s.id = :districtId and i.status is not null group by s.type, d.displayName, di.type, i.status';
 
   models.sequelize
   .query(queryString, {
