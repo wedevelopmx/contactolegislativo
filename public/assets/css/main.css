@@ -164,7 +164,11 @@ td img.party {
   color: #ffffff!important;
 }
 
-
+.pink .btn span {
+  font-size: 20px;
+  font-weight: bold;
+  padding-left: 1rem;  
+}
 
 .chart {
   margin: 0 auto;
@@ -287,6 +291,10 @@ img.contacto {
     max-width: 50px;
     top: 50%;
     left: 60%;
+  }
+
+  img.contacto {
+    max-width: 200px;
   }
 
   .crafted span {
