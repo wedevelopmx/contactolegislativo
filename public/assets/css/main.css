@@ -167,7 +167,7 @@ td img.party {
 .pink .btn span {
   font-size: 20px;
   font-weight: bold;
-  padding-left: 1rem;  
+  padding-left: 1rem;
 }
 
 .chart {
@@ -317,4 +317,9 @@ img.contacto {
     padding: 0;
   }
 
+}
+
+.container.top {
+  margin-top: 50px;
+  text-align: justify;
 }
