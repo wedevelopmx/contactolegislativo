@@ -16,7 +16,8 @@ angular.module('app')
                 $(sections[index]).find('.animated').removeClass("fadeIn");
               }
             });
-          }, 1000);
+            $.scrollify.move("#first");
+          }, 2000);
         }
     }
   }])
