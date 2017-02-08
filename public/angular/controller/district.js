@@ -10,7 +10,7 @@ angular.module('app')
     };
 
     $scope.facebookShare = {
-      url: 'http://representame.pokemongrind.com',
+      url: 'http://contactolegislativo.com',
       title: '¿Sabes que diputado te representa?'
     };
 
