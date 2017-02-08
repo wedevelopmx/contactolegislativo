@@ -4,7 +4,7 @@ angular.module('app')
     $scope.rating = { full: [1, 1, 1], half: [1], empty: [1]};
 
     $scope.$on('district-loaded', function() {
-      $scope.tweetText = 'Diputado @' + $scope.deputy.twitter + ' usted me representa, por lo que estoy al pendiente de su desempeno en %23representame';
+      $scope.tweetText = 'Diputado @' + $scope.deputy.twitter + ' usted me representa, y estoy al pendiente de su desempeño en %23contactoLegislativo contactolegislativo.com';
 
       District.attendance({ districtId: $scope.deputyId }, function(attendance) {
         grouping = [['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'],
