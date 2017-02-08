@@ -155,6 +155,15 @@ td img.party {
   color: #f50057!important;
 }
 
+.pink .btn {
+  background-color: #f50057!important;
+  color: #ffffff!important;
+}
+
+.pink .btn a {
+  color: #ffffff!important;
+}
+
 
 
 .chart {
@@ -215,8 +224,48 @@ span.source {
   left: 70%;
 }
 
+.crafted {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translate(-50%, -10%);
+}
+
+.crafted span {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+}
+
 .crafted img {
   max-width: 230px;
+}
+
+img.contacto {
+  max-width: 250px;
+}
+
+.navbar-brand {
+  max-width: 280px!important;
+}
+
+.navbar-brand img {
+  max-width: 45px;
+}
+
+.navbar-brand img {
+  max-height: 100px;
+  vertical-align: -4px;
+  display: inline-block!important;
+}
+
+.navbar-brand > span {
+    display: inline-block;
+    line-height: 0.8;
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 @media (max-width: 768px) {
@@ -238,6 +287,15 @@ span.source {
     max-width: 50px;
     top: 50%;
     left: 60%;
+  }
+
+  .crafted span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .crafted img {
+    max-width: 160px;
   }
 
 }

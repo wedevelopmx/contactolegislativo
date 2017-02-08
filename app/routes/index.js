@@ -5,7 +5,7 @@ var models  = require('../models');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	res.render('index', {
-  		title: 'RepresentaMe'});
+  		title: 'Contacto Legislativo'});
 });
 
 module.exports = router;

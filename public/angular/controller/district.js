@@ -9,6 +9,12 @@ angular.module('app')
       attendance: []
     };
 
+    $scope.facebookShare = {
+      url: 'http://representame.pokemongrind.com',
+      title: '¿Sabes que diputado te representa?'
+    };
+
+
     District.get({ districtId: $routeParams.id }, function(district) {
       $scope.district = district;
       $scope.deputy = district[0];
