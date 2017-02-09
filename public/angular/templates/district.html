@@ -42,23 +42,54 @@
       <div class="row text-center">
         <h3 class="m-b">Invita a tus amigos a conocer mas sobre sus diputados</h3>
         <ul class="btn-group">
-          <li class="btn ">
+          <li class="btn btn-primary">
             <a target="_blank" ng-href="http://www.facebook.com/sharer/sharer.php?u={{facebookShare.url}}&amp;title={{facebookShare.title}}">
               <i class="fa fa-2x fa-facebook-official"></i> <span>Compartir</span>
             </a>
           </li>
+          <li class="btn btn-info">
+            <a target="_blank" ng-href="https://twitter.com/intent/tweet?text={{twitterShare}}">
+              <i class="fa fa-2x fa-twitter-square"></i> <span>Compartir</span>
+            </a>
+          </li>
+          <li class="btn btn-success">
+            <a href="whatsapp://send?text={{whatsappShare}}">
+            <!-- <a target="_blank" ng-href="whatsapp://send?text={{whatsappShare}}" data-action="share/whatsapp/share"> -->
+              <i class="fa fa-2x fa-whatsapp"></i> <span>Compartir</span>
+            </a>
+          </li>
         </ul>
-        <h4 class="m-t">por un México con ciudadanos informados y diputados responsables</h4>
+        <h3 class="m-t">por un México con ciudadanos informados y diputados responsables</h3>
       </div>
     </div>
+</div>
 
-
-    <div class="crafted text-center">
-      <span>Crafted with love by</span>
-      <a href="http://wedevelop.mx" target="_blank">
-        <img src="assets/images/wedevelop_white_trans.png"/>
-      </a>
+<div class="section pink">
+  <div class="container">
+    <div class="row text-center">
+      <h3 class="m-b">Te invitamos a seguir de cerca nuestra propuesta en</h3>
+      <ul class="btn-group">
+        <li class="btn btn-primary">
+          <a target="_blank" ng-href="http://www.facebook.com/contactolegislativo">
+            <i class="fa fa-2x fa-facebook-official"></i>
+          </a>
+        </li>
+        <li class="btn btn-info">
+          <a target="_blank" ng-href="http://www.twitter.com/contactolegislativo">
+            <i class="fa fa-2x fa-twitter"></i>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
+
+
+  <div class="crafted text-center">
+    <span>Crafted with love by</span>
+    <a href="http://www.facebook.com/wedevelopmx" target="_blank">
+      <img src="assets/images/wedevelop_white_trans.png"/>
+    </a>
+  </div>
+</div>
 
 </div>
