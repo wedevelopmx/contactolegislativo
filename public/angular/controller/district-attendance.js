@@ -6,9 +6,16 @@ angular.module('app')
     $scope.$on('district-loaded', function() {
       $scope.tweetText = 'Diputado @' + $scope.deputy.twitter + ' usted me representa, y estoy al pendiente de su desempeño en %23contactoLegislativo contactolegislativo.com';
 
+      // A = Asistencia por sistema
+      // AO = Asistencia por Comisión Oficial
+      // PM = Permiso de Mesa Directiva
+      // IV = Inasistencia por Votaciones
+      // AC = Asistencia por cédula
+      // IJ = Inasistencia justificada
+      // I = Inasistencia
       District.attendance({ districtId: $scope.deputyId }, function(attendance) {
-        grouping = [['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'],
-                    ['JUSTIFICADA', 'INASISTENCIA', 'CÉDULA']];
+        grouping = [['A', 'AO', 'PM', 'IV'],
+                    ['AC', 'IJ', 'I']];
 
         //Attendance Graph
         $scope.attendance = attendance;

@@ -21,11 +21,20 @@ router.route('/')
 
   });
 
+  // A = Asistencia por sistema
+  // AO = Asistencia por Comisión Oficial
+  // PM = Permiso de Mesa Directiva
+  // IV = Inasistencia por Votaciones
+  // AC = Asistencia por cédula
+  // IJ = Inasistencia justificada
+  // I = Inasistencia
+
 router.get('/attendance', function(req, res, next) {
   console.log(req.query);
-  var replacements = { attendance: ['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'] };
+  var replacements = { attendance: ['A', 'AO', 'PM', 'IV'] };
+
   var queryString =
-    'select attendance as value, count(1) as deputies from ( select s.id, count(1) as attendance from Seats s join Deputies d on s.id = d.SeatId join Attendances a on a.DeputyId = d.id where a.attendance in (:attendance) ';
+    'select st.attendance as value, count(1) as deputies from ( select s.id, count(1) as attendance from Seats s join Deputies d on s.id = d.SeatId join Attendances a on a.DeputyId = d.id where a.attendance in (:attendance) ';
   if(req.query.party) {
     queryString += ' and d.party = :party';
     replacements.party = req.query.party;
@@ -33,7 +42,7 @@ router.get('/attendance', function(req, res, next) {
     queryString += ' and s.type = :election';
     replacements.election = req.query.election;
   }
-  queryString += ' group by s.id ) group by attendance';
+  queryString += ' group by s.id ) st group by st.attendance';
 
   models.sequelize
   .query(queryString, {
@@ -65,11 +74,13 @@ router.get('/initiatives', function(req, res, next) {
   }
 
   var queryString =
-    'select initiatives as value, count(1) deputies from ( select s.id, di.type, count(1) as initiatives from Seats s  	join Deputies d on s.id = d.SeatId 	' +
+    'select st.initiatives as value, count(1) deputies from ( select s.id, di.type, count(1) as initiatives from Seats s  	join Deputies d on s.id = d.SeatId 	' +
     additionalFilter +
     ' left outer join DeputyInitiatives di on d.id = di.DeputyId and di.type in (:initiativeType) where di.type is not null group by s.id, di.type union select s.id, di.type, 0 as initiatives from Seats s  	join Deputies d on s.id = d.SeatId ' +
     additionalFilter +
-    ' left outer join DeputyInitiatives di on d.id = di.DeputyId and di.type in (:initiativeType) where di.type is null group by s.id, di.type having count(1) == 2 order by s.id ) group by initiatives';
+    ' left outer join DeputyInitiatives di on d.id = di.DeputyId and di.type in (:initiativeType) where di.type is null group by s.id, di.type having count(1) = 2 ) st group by initiatives';
+
+  console.log(queryString);
 
   models.sequelize
   .query(queryString, {

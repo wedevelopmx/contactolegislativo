@@ -3,9 +3,16 @@ angular.module('app')
     function($scope, Deputy, Party, Chamber, Chart) {
     $scope.rating = { full: [1, 1, 1], half: [1], empty: [0]};
 
+    // A = Asistencia por sistema
+    // AO = Asistencia por Comisión Oficial
+    // PM = Permiso de Mesa Directiva
+    // IV = Inasistencia por Votaciones
+    // AC = Asistencia por cédula
+    // IJ = Inasistencia justificada
+    // I = Inasistencia
     Deputy.attendance({ deputyId: $scope.deputyId }, function(attendance) {
-      grouping = [['ASISTENCIA', 'OFICIAL COMISIÓN', 'PERMISO MESA DIRECTIVA'],
-                  ['JUSTIFICADA', 'INASISTENCIA', 'CÉDULA']];
+      grouping = [['A', 'AO', 'PM', 'IV'],
+                  ['AC', 'IJ', 'I']];
 
       //Attendance Graph
       $scope.attendance = attendance;

@@ -11,13 +11,20 @@ router.get('/:id', function(req, res, next) {
   // });
 });
 
+// A = Asistencia por sistema
+// AO = Asistencia por Comisión Oficial
+// PM = Permiso de Mesa Directiva
+// IV = Inasistencia por Votaciones
+// AC = Asistencia por cédula
+// IJ = Inasistencia justificada
+// I = Inasistencia
 router.get('/:party/attendance', function(req, res, next) {
 
   queryString =
     'select value as name, count(1) as value from ( select d.id, d.party, a.attendance, count(1)  as value from Attendances a join Deputies d on a.DeputyId = d.id where a.attendance = :attendance and d.party = :party group by d.id ) group by value';
   models.sequelize
   .query(queryString, {
-    replacements: { party: req.params.party, attendance: 'ASISTENCIA' },
+    replacements: { party: req.params.party, attendance: 'A' },
     type: models.sequelize.QueryTypes.SELECT
   })
   .then(function(attendance) {
@@ -25,15 +32,5 @@ router.get('/:party/attendance', function(req, res, next) {
   });
 
 });
-
-// select value as name, count(1) as value
-// from (
-// select d.id, d.party, a.attendance, count(1)  as value
-// from Attendances a join Deputies d on a.DeputyId = d.id
-// where a.attendance = 'ASISTENCIA'
-// and d.party = 'pan'
-// group by d.id
-// )
-// group by value
 
 module.exports = router;
