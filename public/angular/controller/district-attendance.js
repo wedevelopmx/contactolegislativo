@@ -43,7 +43,7 @@ angular.module('app')
           Chamber.attendance({}, function(attendance) {
             $scope.chamber.attendance = attendance;
 
-            ranges = { 0: 50, 51: 60, 61: 70, 71: 80, 81: 90, 91: 105, 106: 900 };
+            ranges = { 0: 80, 81: 85, 86: 90, 91: 95, 96: 100, 101:101, 102:102, 103:103, 104:104};
             $scope.chamber.attendanceChart = Chart.groupData(attendance, ranges, $scope.deputy.attendance, 'Asistencias');
 
             $scope.attendanceGauge.chamber = $scope.chamber.attendanceChart.media;
