@@ -22,7 +22,7 @@ router.get('/:id', function(req, res, next) {
 
 router.get('/:id/attendance', function(req, res, next) {
   queryString =
-  'select a.attendance as name, count(1) as value from Attendances a left outer join Deputies de on de.id = a.DeputyId left outer join Seats s on s.id = de.SeatId where s.id = :districtId group by a.attendance';
+  'select a.description as name, count(1) as value from Attendances a left outer join Deputies de on de.id = a.DeputyId left outer join Seats s on s.id = de.SeatId where s.id = :districtId group by a.description';
 
   models.sequelize
   .query(queryString, {

@@ -15,8 +15,8 @@ angular.module('app')
         // IJ = Inasistencia justificada
         // I = Inasistencia
         District.attendance({ districtId: $scope.deputyId }, function(attendance) {
-          grouping = [['A', 'AO', 'PM', 'IV'],
-                      ['AC', 'IJ', 'I']];
+          grouping = [['Asistencia por sistema', 'Asistencia por Comisión Oficial', 'Permiso de Mesa Directiva', 'Inasistencia por Votaciones'],
+                      ['Asistencia por cédula', 'Inasistencia justificada', 'Inasistencia']];
 
           //Attendance Graph
           $scope.attendance = attendance;
