@@ -17,8 +17,8 @@ module.exports = function(sequelize, DataTypes) {
     fiscal: { type: DataTypes.STRING, name: 'fiscal' },
     intereses: { type: DataTypes.STRING, name: 'intereses' },
     patrimonial: { type: DataTypes.STRING, name: 'patrimonial' },
-    hash: { type: DataTypes.INTEGER, name: 'hash', defaultValue: 0 },
-    altHash: { type: DataTypes.INTEGER, name: 'alt_hash', defaultValue: 0 }
+    hash: { type: DataTypes.STRING, name: 'hash', defaultValue: 0 },
+    altHash: { type: DataTypes.STRING, name: 'alt_hash', defaultValue: 0 }
   }, {
     classMethods: {
       associate: function(models) {

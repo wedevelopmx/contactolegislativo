@@ -147,14 +147,14 @@ models.sequelize.sync().then(function () {
                 if(pluriHashMap.containsKey(key)) {
                   plurinominal = pluriHashMap.get(key);
                 }
+                //Increment plurinominal count
+                pluriHashMap.put(key, plurinominal + 1);
+                
                 seat.curul = plurinominal;
                 seat.StateId = statesHashMap.get(normalize(seat.state));
                 d.SeatId = seat.id = districtKeyGen.generateKey(key + '-' + seat.curul);
                 seatHashMap.put(d.hash, seat);
                 seatHashMap.put(d.altHash, seat);
-
-                //Increment plurinominal count
-                pluriHashMap.put(key, plurinominal + 1);
               }
             }
 
