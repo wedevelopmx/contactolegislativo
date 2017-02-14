@@ -74,8 +74,11 @@ models.sequelize.sync().then(function () {
                   //init = /(\d*)(.*)[\.|\,]/.exec(text);
                   init = /(\d*)(.*)[\.|\,|\:]/.exec(text);
                   if(init != null) {
+                      var name = init[2].replace("Adherente", "").replace("Suscribe", "");
+
                       initiatives[initiatives.length - 1].order = init[1].trim();
-                      initiatives[initiatives.length - 1].name = init[2].trim();
+                      initiatives[initiatives.length - 1].name = name.substr(0,name.length < 255 ? name.length : 255).toLowerCase();
+                      initiatives[initiatives.length - 1].longName = name;
                   } else {
                     console.log(" !!Could not parse: <" + text + ">");
                   }
@@ -175,32 +178,42 @@ models.sequelize.sync().then(function () {
       //Storing name for DeputyInitiative record
       if(rawInitiativesHash.hasOwnProperty(initiative.name))
         console.log(' !Deputy ' + deputyId + ' already have ' + initiative.name !== undefined? initiative.name.substr(0, 40) : 'uknown name!' );
-
-      rawInitiativesHash[initiative.name] = initiative;
+      // if(initiative.name.length > 1000)
+      //   console.log('----------->>> HUGE NAME' + initiative.name.length)
+      rawInitiativesHash[escape(initiative.name)] = initiative;
     });
 
-    console.log('Pair: ' + deputyId + "/" + sessionId +  " with " + initiatives.length + " initiatives ");
+    //console.log('Pair: ' + deputyId + "/" + sessionId +  " with " + initiatives.length + " initiatives ");
 
     //Bulk insert initiatives
     models.Initiative
       .bulkCreate(initiatives, { ignoreDuplicates: true })
       .then(function(initiatives) {
-        console.log(' Searching ' + Object.keys(rawInitiativesHash).length + ' initiatives');
+        //console.log(' Searching ' + Object.keys(rawInitiativesHash).length + ' initiatives');
         //console.log(Object.keys(rawInitiativesHash));
         //Reading initiatives to load ID
+        var unescaped = [];
+        var keys = Object.keys(rawInitiativesHash);
+        for(var i = 0; i < keys.length; i++) {
+          unescaped.push(unescape(keys[i]));
+        }
         models.Initiative
-          .findAll({ where: { name: { $in: Object.keys(rawInitiativesHash) }, SessionId: sessionId  }})
+          .findAll({ where: { name: { $in: unescaped }, SessionId: sessionId  }})
           .then(function(initiatives) {
-            console.log(' Read ' + initiatives.length + ' initiatives' )
+            //console.log(' Read ' + initiatives.length + ' initiatives' )
 
             var deputyInitiatives = [];
             //Generating object deputy initiative
             initiatives.forEach(function(initiative) {
-              deputyInitiatives.push({
-                DeputyId: deputyId,
-                InitiativeId: initiative.id,
-                type: rawInitiativesHash[initiative.name].type
-              });
+              if(rawInitiativesHash.hasOwnProperty(escape(initiative.name))) {
+                deputyInitiatives.push({
+                  DeputyId: deputyId,
+                  InitiativeId: initiative.id,
+                  type: rawInitiativesHash[escape(initiative.name)].type
+                });
+              } else {
+                console.log('Could not find ' + initiative.name)
+              }
             });
             //Inserting deputy initiatives
             models.DeputyInitiative
@@ -208,6 +221,7 @@ models.sequelize.sync().then(function () {
               .then(function(deputyInitiatives) {
                 callback(null, deputyInitiatives.length);
               });
+
           });
       });
   }

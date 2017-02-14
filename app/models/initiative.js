@@ -3,6 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
   var Initiative = sequelize.define("Initiative", {
     name: { type: DataTypes.STRING, name: 'name' },
+    longName: { type: DataTypes.TEXT('long'), name: 'long_name' },
     sinopsis: { type: DataTypes.STRING, name: 'sinopsis' },
     comision: { type: DataTypes.STRING, name: 'comision' },
     comisionDate: { type: DataTypes.DATE, name: 'comision_date' },
