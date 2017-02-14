@@ -2,7 +2,7 @@ angular.module('app')
   .controller('PartyBudgetController', ['$rootScope', '$scope', function($rootScope, $scope) {
 
     $scope.$watch('deputy', function() {
-      if($scope.deputy.party != undefined) {
+      if($scope.deputy != undefined) {
         $scope.tweetText =
           'Queremos devolverle los partidos a las personas, ' +
           'tu me representas y quiero que apoyes %23SinVotoNoHayDinero sinvotonohaydinero.mx';
