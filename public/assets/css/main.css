@@ -117,6 +117,18 @@ td img.party {
   margin-top: 2rem;
 }
 
+.btn-group .btn {
+  margin-left: 2rem!important;
+  margin-bottom: 1rem!important;
+  float: none!important;
+}
+
+.btn-group .btn-success:hover, .btn-group .btn-success:focus,
+.btn-group .btn-info:hover, .btn-group .btn-info:focus,
+.btn-group .btn-primary:hover, .btn-group .btn-primary:focus {
+  background-position: 0!important;
+}
+
 .contact-group {
   list-style: none;
   text-align: left;

@@ -22,4 +22,7 @@ angular.module('app', ['ngRoute', 'ngResource'])
       templateUrl: 'angular/templates/static/methodology.html'
     });
     $routeProvider.otherwise({redirectTo: '/'});
+  }])
+  .config(['$compileProvider', function( $compileProvider ) {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|whatsapp):/);
   }]);
