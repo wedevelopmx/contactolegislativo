@@ -15,7 +15,7 @@ angular.module('app')
     };
 
     $scope.whatsappShare = 'Te invito a conocer mas sobre el diputado que te representa en http://contactolegislativo.com';
-    $scope.twitterShare = 'Te invito a conocer mas sobre el diputado que te representa en @contactolegislativo http://contactolegislativo.com';
+    $scope.twitterShare = 'Te invito a conocer mas sobre el diputado que te representa en @clegislativomx http://contactolegislativo.com';
 
     District.get({ districtId: $routeParams.id }, function(district) {
       $scope.district = district;
@@ -26,7 +26,7 @@ angular.module('app')
 
       $scope.mailSubject = 'Tu me representas y estoy al pendiente de su desempeño en %23contactoLegislativo';
       $scope.mailBody = 'Dip.' + $scope.deputy.displayName +
-        ', tu me representas y estoy al pendiente de su desempeño en %23contactoLegislativo';
+        ', tu me representas y estoy al pendiente de su desempeño en %23contactoLegislativo (http://contactolegislativo.com)';
 
       $scope.mail3Subject = 'Tu me representas y quiero que publiques tu %233de3';
       $scope.mail3Body = 'Dip.' + $scope.deputy.displayName +
