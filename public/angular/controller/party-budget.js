@@ -4,8 +4,8 @@ angular.module('app')
     $scope.$watch('deputy', function() {
       if($scope.deputy.party != undefined) {
         $scope.tweetText =
-          'Queremos devolverle los partidos a las personas. @' + $scope.deputy.twitter +
-          ', tu me representas y quiero que apoyes %23SinVotoNoHayDinero sinvotonohaydinero.mx';
+          'Queremos devolverle los partidos a las personas, ' +
+          'tu me representas y quiero que apoyes %23SinVotoNoHayDinero sinvotonohaydinero.mx';
 
         $scope.mailSubject = 'Tu me representas y quiero que apoyes %23SinVotoNoHayDinero';
         $scope.mailBody = 'Queremos devolverle los partidos a las personas. Dip.' + $scope.deputy.displayName +
