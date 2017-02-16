@@ -7,7 +7,7 @@ angular.module('app')
      .then(function(response) {
        $http.get('http://nominatim.openstreetmap.org/reverse?format=json&lat=' + response.data.location.lat + '&lon=' + response.data.location.lng + '&zoom=18&addressdetails=1', {})
        .then(function(response) {
-         console.log(response.data.address);
+         //console.log(response.data.address);
          $scope.address = {
            state: response.data.address.state,
            town: response.data.address.county,

@@ -20,7 +20,7 @@ angular.module('app')
     District.get({ districtId: $routeParams.id }, function(district) {
       $scope.district = district;
       $scope.deputy = district[0];
-      console.log($scope.deputy)
+      //console.log($scope.deputy)
 
       $scope.tweetText = '@' + $scope.deputy.twitter + ' los ciudadanos queremos que seas un %23FuncionarioTransparente y publiques tus %233de3 @IMCOmx @IntegridadMx'
 
@@ -32,7 +32,6 @@ angular.module('app')
       $scope.mail3Body = 'Dip.' + $scope.deputy.displayName +
         ', los ciudadanos queremos que seas un %23FuncionarioTransparente y publiques tus %233de3 @IMCOmx @IntegridadMx';
 
-      $rootScope.$broadcast('district-loaded');
     });
 
     $scope.attendanceOptions = {
