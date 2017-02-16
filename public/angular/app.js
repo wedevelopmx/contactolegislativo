@@ -28,6 +28,9 @@ angular.module('app', ['ngRoute', 'ngResource'])
     .when('/about', {
       templateUrl: 'angular/templates/static/about.html'
     })
+    .when('/privacy', {
+      templateUrl: 'angular/templates/static/privacy.html'
+    })
     .when('/sources', {
       templateUrl: 'angular/templates/static/sources.html'
     })
