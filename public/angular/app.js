@@ -1,4 +1,17 @@
 angular.module('app', ['ngRoute', 'ngResource'])
+  .run(['$rootScope', '$location', '$window', function ($rootScope, $location, $window) {
+    $rootScope.$on('$routeChangeSuccess', function () {
+      //console.log('Route Change: ' + $location.url());
+      $window.ga('send', {
+        'hitType': 'screenview',
+        'appName' : 'contactoLegislativoWeb',
+        'screenName' : $location.url(),
+        'hitCallback': function() {
+          console.log('GA Hitback: ' + $location.url());
+        }
+      });
+    });
+  }])
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/', {
       templateUrl: 'angular/templates/main.html',
@@ -24,5 +37,6 @@ angular.module('app', ['ngRoute', 'ngResource'])
     $routeProvider.otherwise({redirectTo: '/'});
   }])
   .config(['$compileProvider', function( $compileProvider ) {
-        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|whatsapp):/);
+    //Allowing links to whatsapp
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|whatsapp):/);
   }]);
