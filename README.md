@@ -2,7 +2,7 @@
 
 Te permite ubicar a tu diputado y ver su desempeño de una forma sencilla.
 
-##Sobre Nosotros
+## Sobre Nosotros
 Contacto Legislativo es una iniciativa creada por un grupo de ciudadanos independientes preocupados por la brecha de comunicación entre representantes políticos y la ciudadanía. 
 
 Creemos que abrir espacios de debate entre representantes y ciudadanos favorece el desarrollo del país, pues propicia la participación ciudadana en el desarrollo de iniciativas e incrementa el sentido de responsabilidad de servidores públicos. 
@@ -11,16 +11,16 @@ Con tal propósito se ha creado una plataforma web que permita a la ciudadanía 
 
 Contacto Legislativo recaba información de varias fuentes como lo son INEGI, INE, Cámara de Diputados, así como de otras iniciativas como 3de3 de IMCO y #SinVotoNoHayDinero. 
 
-##Instalacion
+## Instalacion
 
-###Produccion
+### Produccion
 
 Este portal esta dicenado para trabajar en [Digital Ocean](http://digitalocean.com)
 
 1. Instalar ambiente de NodeJS siguiendo las [instrucciones](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04).
 2. Instalar base de datos MySQL siguiendo las [instrucciones](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-14-04).
 
-###Base de datos
+### Base de datos
 
 1. Crear base de datos
   
@@ -40,7 +40,7 @@ Este portal esta dicenado para trabajar en [Digital Ocean](http://digitalocean.c
   GRANT ALL PRIVILEGES ON contacto_db.* TO contacto@localhost;
   ```
 
-###Web
+### Web
  
 1. Clone repository
  
@@ -78,7 +78,7 @@ Este portal esta dicenado para trabajar en [Digital Ocean](http://digitalocean.c
   
   La aplicacion se conectara a la base de datos y creara las tablas necesarias para operar
   
-##Licencia
+## Licencia
 Copyright (c) 2017 WeDevelop.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
