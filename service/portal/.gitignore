@@ -1,0 +1,11 @@
+!/downloads
+/downloads/*
+!/downloads/data.zip
+node_modules
+
+/public/assets/vendor/*
+!/public/assets/vendor/bootstrap
+!/public/assets/vendor/bootstrap/*
+
+*.sqlite
+npm-debug.log
