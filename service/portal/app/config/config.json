@@ -14,10 +14,10 @@
     "dialect": "sqlite"
   },
   "production": {
-    "username": "",
-    "password": "",
-    "database": "contacto_legislativo",
-    "host": "127.0.0.1",
+    "username": "contacto",
+    "password": "contacto",
+    "database": "contacto_db",
+    "host": "mysql",
     "dialect": "mysql",
     "port": 3306,
     "define": {

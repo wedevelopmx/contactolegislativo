@@ -1,0 +1,32 @@
+version: "2"
+services:
+  portal:
+    depends_on:
+       - mysql
+    build: ./service/portal
+    volumes:
+      - ./service/portal:/portal
+      - ./data/log/pm2:/var/log/pm2
+    links:
+      - mysql
+  gateway:
+    build: nginx
+    volumes:
+      - ./data/log/nginx:/var/log/nginx/
+      - ./nginx/services:/etc/nginx/conf.d/
+    links:
+      - portal
+    ports:
+      - "80:80"
+  mysql:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./data/db/mysql:/var/lib/mysql
+    environment:
+       MYSQL_ROOT_PASSWORD: pass1word
+       MYSQL_DATABASE: contacto_db
+       MYSQL_USER: contacto
+       MYSQL_PASSWORD: contacto

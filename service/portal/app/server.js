@@ -29,7 +29,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.use(session({ secret: '4815162342s' }));
+app.use(session({
+  secret: '4815162342s',
+  saveUninitialized: false,
+  resave: false
+}));
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
