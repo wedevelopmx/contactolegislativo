@@ -11,7 +11,7 @@ var redis   = require("redis");
 var client  = redis.createClient();
 
 var env       = process.env.NODE_ENV || 'development';
-var config    = require(path.join(__dirname, '../config/config.json'))[env];
+var config    = require(path.join(__dirname, './config/config.json'))[env];
 
 var routes = require('./routes/index');
 var district = require('./routes/district');
