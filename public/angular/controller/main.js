@@ -79,7 +79,7 @@ angular.module('app')
         .then(function(response) {
           if(response.data.length > 0) {
             $scope.district = response.data[0].district;
-            $scope.districtUrl = `#/district/${$scope.id}`;
+            $scope.districtUrl = `#/district/${response.data[0].id}`;
           }
         });
      }
