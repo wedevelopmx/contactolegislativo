@@ -7,7 +7,7 @@ angular.module('app')
      .then(function(response) {
        $http.get('http://nominatim.openstreetmap.org/reverse?format=json&lat=' + response.data.location.lat + '&lon=' + response.data.location.lng + '&zoom=18&addressdetails=1', {})
        .then(function(response) {
-         //console.log(response.data.address);
+         console.log(response.data.address);
          $scope.address = {
            state: response.data.address.state,
            town: response.data.address.county,
@@ -41,16 +41,40 @@ angular.module('app')
        State.towns({ stateId: $scope.selectedState.id }, function(municipalities) {
          $scope.municipalities = municipalities;
          $scope.selectedTown = $scope.municipalities[0];
-         $scope.loadDistrictUrl();
        })
-     };
+     }; 
+     
+     // Load section ranges
+     $scope.loadRanges = function() {
+       $http.get('location/' + $scope.selectedState.id + '-' + $scope.selectedTown.mid + '/ranges', {})
+       .then(function(response) {
+         $scope.ranges = response.data;
+         $scope.selectedRange = $scope.ranges[0];
+         $scope.loadDistrictUrl();
+       });
+     }
+     
+     $scope.$watch('selectedTown', function() {
+       if(!$scope.selectedTown) return; 
+       if($scope.selectedTown.multiple > 0) {
+         $scope.loadRanges();
+       } else {
+         $scope.loadDistrictUrl();
+       }
+     });
 
      $scope.loadDistrictUrl = function() {
-       $http.get('location/' + $scope.selectedState.id + '-' + $scope.selectedTown.mid + '/byId', {})
-       .then(function(response) {
-         if(response.data.length > 0) {
-           $scope.districtUrl = '#/district/' + response.data[0].seatId;
-         }
-       });
+        var endpoint = `location/${$scope.selectedState.id}/town/${$scope.selectedTown.mid}`;
+        if($scope.selectedTown.multiple) {
+          endpoint = `location/${$scope.selectedState.id}/range/${$scope.selectedRange.id}`;
+        } 
+         
+        $http.get(endpoint, {})
+        .then(function(response) {
+          if(response.data.length > 0) {
+            $scope.district = response.data[0].id;
+            $scope.districtUrl = `#/district/${$scope.district}`;
+          }
+        });
      }
   }]);

@@ -29,9 +29,9 @@ router.route('/:state-:town')
 
   });
 
-  router.route('/:state-:town/byId')
+  router.route('/:state/town/:town')
     .get(function(req, res, next) {
-      var queryString = 'select s.id as stateId, s.name as state, m.mid as municipalityId, m.name as municipality, m.district, seat.id as seatId from States s left outer join Municipalities m on s.id = m.StateId left outer join Seats seat on seat.StateId = s.id and m.district = seat.area where s.id = :stateId and m.mid = :townId and seat.curul is null';
+      var queryString = 'select st.id, st.type, st.state, st.area from States s join Municipalities m on s.id = m.StateId join Seats st on st.state = s.name and st.area = m.district  where s.id = :stateId and m.mid = :townId and curul is null';
 
       models.sequelize
       .query(queryString, {
@@ -40,6 +40,38 @@ router.route('/:state-:town')
       })
       .then(function(state) {
         //console.log(state.get({ plain: true}));
+        res.json(state);
+      });
+
+    });
+    
+  router.route('/:state/range/:range')
+    .get(function(req, res, next) {
+      var queryString = 'select st.id, st.type, st.state, st.area as district from Ranges r join States s on s.id = r.sid join Seats st on st.state = s.name and st.area = r.district where r.sid = :stateId and r.id = :rangeId and st.curul is null';
+
+      models.sequelize
+      .query(queryString, {
+        replacements: { stateId: req.params.state, rangeId: req.params.range },
+        type: models.sequelize.QueryTypes.SELECT
+      })
+      .then(function(state) {
+        //console.log(state.get({ plain: true}));
+        res.json(state);
+      });
+
+    });
+  
+    
+  router.route('/:state-:town/ranges')
+    .get(function(req, res, next) {
+      var queryString = 'select r.id, r.district, r.start, r.end, concat(r.start, " - ", r.end) as displayText from Ranges r where r.sid = :stateId and r.mid = :townId';
+
+      models.sequelize
+      .query(queryString, {
+        replacements: { stateId: req.params.state, townId: req.params.town },
+        type: models.sequelize.QueryTypes.SELECT
+      })
+      .then(function(state) {
         res.json(state);
       });
 
