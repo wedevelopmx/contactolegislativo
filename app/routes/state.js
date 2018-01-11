@@ -15,7 +15,7 @@ router.route('/')
 router.route('/:id')
   .get(function(req, res, next) {
     models.State
-    .findAll({ where: { id: req.params.id }})
+    .findAll({ where: { id: req.params.id }, order: [['name', 'DESC']]})
     .then(function(states) {
       res.json(states);
     });
@@ -24,7 +24,7 @@ router.route('/:id')
 router.route('/:id/towns')
   .get(function(req, res, next) {
     models.Municipality
-    .findAll({ where: { StateId: req.params.id } })
+    .findAll({ where: { StateId: req.params.id }, order: [['name', 'DESC']] })
     .then(function(municipalities) {
       res.json(municipalities);
     })
