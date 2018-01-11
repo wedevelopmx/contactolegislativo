@@ -17,7 +17,19 @@ angular.module('app')
         District.attendance({ districtId: $scope.deputyId }, function(attendance) {
           grouping = [['Asistencia por sistema', 'Asistencia por Comisión Oficial', 'Permiso de Mesa Directiva', 'Inasistencia por Votaciones'],
                       ['Asistencia por cédula', 'Inasistencia justificada', 'Inasistencia']];
-
+          
+          attendance = attendance.map(function(item) {
+            switch(item.name) {
+              case 'A': item.name = 'Asistencia por sistema'; break;
+              case 'PM': item.name = 'Permiso de Mesa Directiva'; break;
+              case 'IV': item.name = 'Inasistencia por Votaciones'; break;
+              case 'AC': item.name = 'Asistencia por cédula'; break;
+              case 'IJ': item.name = 'Inasistencia justificada'; break;
+              case 'I': item.name = 'Inasistencia'; break;
+            }
+            return item;
+          });
+          
           //Attendance Graph
           $scope.attendance = attendance;
           $scope.attendancePie = Chart.sortPie(grouping, attendance);
@@ -43,7 +55,7 @@ angular.module('app')
           Chamber.attendance({}, function(attendance) {
             $scope.chamber.attendance = attendance;
 
-            ranges = { 0: 80, 81: 85, 86: 90, 91: 95, 96: 100, 101:101, 102:102, 103:103, 104:104};
+            ranges = { 0:100, 101:110, 111:120, 121:125, 126:130, 131:135, 136:140 };
             $scope.chamber.attendanceChart = Chart.groupData(attendance, ranges, $scope.deputy.attendance, 'Asistencias');
 
             $scope.attendanceGauge.chamber = $scope.chamber.attendanceChart.media;
