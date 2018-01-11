@@ -14,15 +14,20 @@
     "dialect": "sqlite"
   },
   "production": {
-    "username": "",
-    "password": "",
-    "database": "contacto_legislativo",
+    "username": "contacto",
+    "password": "contacto",
+    "database": "contacto_db",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "port": 3306,
     "define": {
         "paranoid": true
     },
-    "logging": false
+    "logging": false,
+    "redis" : {
+      "host": "redis", 
+      "port": 6379, 
+      "ttl" :  260
+    }
   }
 }

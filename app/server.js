@@ -5,7 +5,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session      = require('express-session');
+var session = require('express-session');
+var redisStore = require('connect-redis')(session);
+var redis   = require("redis");
+var client  = redis.createClient();
+
+var env       = process.env.NODE_ENV || 'development';
+var config    = require(path.join(__dirname, '../config/config.json'))[env];
 
 var routes = require('./routes/index');
 var district = require('./routes/district');
@@ -29,15 +35,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.use(session({ secret: '4815162342s' }));
-
-app.use(session({
-  cookie:{ secure: true, maxAge:60000 },
-  // store: new RedisStore(),
-  secret: 'secret',
-  saveUninitialized: true,
-  resave: false
-}));
+if(env === 'production') {
+  // Add client to config
+  config.redis.client = client;
+  app.use(session({
+    secret: '4815162342',
+    store: new redisStore(config.redis),
+    saveUninitialized: false,
+    resave: false
+  }));
+} else {
+  app.use(session({
+    secret: '4815162342',
+    saveUninitialized: false,
+    resave: false
+  }));
+}
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
