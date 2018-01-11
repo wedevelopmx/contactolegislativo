@@ -31,6 +31,14 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(session({ secret: '4815162342s' }));
 
+app.use(session({
+  cookie:{ secure: true, maxAge:60000 },
+  // store: new RedisStore(),
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: false
+}));
+
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
 

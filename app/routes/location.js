@@ -15,7 +15,7 @@ var normalize = function(r) {
 /* GET home page. */
 router.route('/:state-:town')
   .get(function(req, res, next) {
-    var queryString = 'select s.id as stateId, s.name as state, m.mid as municipalityId, m.name as municipality, m.district, seat.id as seatId from States s left outer join Municipalities m on s.id = m.StateId left outer join Seats seat on seat.StateId = s.id and m.district = seat.area where s.name = :state and m.name = :municipality and seat.curul is null';
+    var queryString = 'select s.id as stateId, s.name as state, m.mid as municipalityId, m.name as municipality, m.district, m.multiple, seat.id as seatId from States s left outer join Municipalities m on s.id = m.StateId left outer join Seats seat on seat.state = s.name and m.district = seat.area where s.name = :state and m.name = :municipality and seat.curul is null';
 
     models.sequelize
     .query(queryString, {
@@ -31,7 +31,7 @@ router.route('/:state-:town')
 
   router.route('/:state/town/:town')
     .get(function(req, res, next) {
-      var queryString = 'select st.id, st.type, st.state, st.area from States s join Municipalities m on s.id = m.StateId join Seats st on st.state = s.name and st.area = m.district  where s.id = :stateId and m.mid = :townId and curul is null';
+      var queryString = 'select st.id, st.type, st.state, st.area as district from States s join Municipalities m on s.id = m.StateId join Seats st on st.state = s.name and st.area = m.district  where s.id = :stateId and m.mid = :townId and curul is null';
 
       models.sequelize
       .query(queryString, {

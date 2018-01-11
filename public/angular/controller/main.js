@@ -19,9 +19,15 @@ angular.module('app')
 
          $http.get('location/' + $scope.address.state + '-' + $scope.address.town, {})
          .then(function(response) {
+           console.log(response);
            if(response.data.length > 0) {
-             $scope.choseLocation = false;
-             $scope.districtUrl = '#/district/' + response.data[0].seatId;
+             if(response.data[0].multiple < 1) {
+               $scope.choseLocation = false;
+               $scope.districtUrl = '#/district/' + response.data[0].seatId;   
+             } else {
+               // TODO: Autoselect 
+             }
+             
            }
          });
        });
@@ -72,7 +78,7 @@ angular.module('app')
         $http.get(endpoint, {})
         .then(function(response) {
           if(response.data.length > 0) {
-            $scope.district = response.data[0].id;
+            $scope.district = response.data[0].district;
             $scope.districtUrl = `#/district/${$scope.district}`;
           }
         });
